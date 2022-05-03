@@ -12,6 +12,7 @@ import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 
@@ -23,7 +24,7 @@ class RegistartionController {
     private lateinit var respondToken: PhoneAuthProvider.ForceResendingToken
     private val firebaseAuth = Firebase.auth
     var user: User? = null
-   private lateinit var getCredential : PhoneAuthCredential
+    private lateinit var getCredential: PhoneAuthCredential
 
 
     constructor(respondCodeInputActivity: SmsCodeCheckActivity?, phoneNumber: String) {
@@ -42,9 +43,8 @@ class RegistartionController {
             //     user action.
             Log.d(TAG, "onVerificationCompleted:$credential")
             getCredential = credential
-
-            respondCodeInputActivity?.loadingProgressBar?.visibility = View.INVISIBLE
             respondCodeInputActivity?.respondCodeTextView?.setText(credential.smsCode)
+            respondCodeInputActivity?.loadingProgressBar?.visibility = View.INVISIBLE
 
         }
 
@@ -52,9 +52,9 @@ class RegistartionController {
             // This callback is invoked in an invalid request for verification is made,
             // for instance if the the phone number format is not valid.
             Log.w(TAG, "onVerificationFailed", e)
-                showDialogBox("Coś poszło nie tak")
+            showDialogBox("Coś poszło nie tak")
             respondCodeInputActivity?.loadingProgressBar?.visibility = View.INVISIBLE
-            respondCodeInputActivity?.button?.isClickable = false
+            //respondCodeInputActivity?.button?.isClickable = false
             if (e is FirebaseAuthInvalidCredentialsException) {
                 // Invalid request
             } else if (e is FirebaseTooManyRequestsException) {
@@ -82,6 +82,7 @@ class RegistartionController {
 
         }
     }
+
     fun SendVeryficationCode() {
         respondCodeInputActivity?.loadingProgressBar?.visibility = View.VISIBLE
         val options = PhoneAuthOptions.newBuilder(firebaseAuth)
@@ -94,45 +95,50 @@ class RegistartionController {
     }
 
 
-     fun signInWithPhoneAuthCredential() {
-        firebaseAuth.signInWithCredential(this.getCredential)
-            .addOnCompleteListener(respondCodeInputActivity!!) { task ->
-                if (respondCodeInputActivity?.respondCodeTextView?.text?.equals(getCredential.smsCode) == true) {
+    fun signInWithPhoneAuthCredential() {
+        try {
+            firebaseAuth.signInWithCredential(this.getCredential)
+                .addOnCompleteListener(respondCodeInputActivity!!) { task ->
                     if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithCredential:success")
-                        user =
-                            User(task.result?.user!!.uid, "Maxteusz", User.Sex.Male, "Jestem Super")
-                        if (user != null) {
-                            showDialogBox("Weryfikacja poprawna")
-                            respondCodeInputActivity?.loadingProgressBar?.visibility =
-                                View.INVISIBLE
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success")
+                            user =
+                                User(
+                                    task.result?.user!!.uid,
+                                    "Maxteusz",
+                                    User.Sex.Male,
+                                    "Jestem Super"
+                                )
+                            if (user != null) {
+                                showDialogBox("Weryfikacja poprawna")
+                                respondCodeInputActivity?.loadingProgressBar?.visibility =
+                                    View.INVISIBLE
+                            }
+                        } else {
+                            // Sign in failed, display a message and update the UI
+                            Log.w(TAG, "signInWithCredential:failure", task.exception)
+                            if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                                showDialogBox("Weryfikacja niepoprawna")
+                                respondCodeInputActivity?.loadingProgressBar?.visibility =
+                                    View.INVISIBLE
+                            }
                         }
-                    } else {
-                        // Sign in failed, display a message and update the UI
-                        Log.w(TAG, "signInWithCredential:failure", task.exception)
-                        if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                            showDialogBox("Weryfikacja niepoprawna")
-                            respondCodeInputActivity?.loadingProgressBar?.visibility =
-                                View.INVISIBLE
-                        }
-
                     }
-                }
-                else
-                    showDialogBox("Weryfikacja niepoprawna")
-            }
-    }
 
-    fun showDialogBox(message : String)
-    {
-        val alertDialog: AlertDialog = AlertDialog.Builder(respondCodeInputActivity).create()
-        alertDialog.setTitle("Weryfikacja")
-        alertDialog.setMessage(message)
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-            DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
-        alertDialog.show()
-    }
+        } catch (e : Exception)  {
+            showDialogBox("Weryfikacja niepoprawna")
+        }
+
+}
+
+fun showDialogBox(message: String) {
+    val alertDialog: AlertDialog = AlertDialog.Builder(respondCodeInputActivity).create()
+    alertDialog.setTitle("Weryfikacja")
+    alertDialog.setMessage(message)
+    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+        DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
+    alertDialog.show()
+}
 
 }
 

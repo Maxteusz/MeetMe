@@ -34,7 +34,9 @@ class SmsCodeCheckActivity : AppCompatActivity() {
         }
 
         button?.setOnClickListener(View.OnClickListener {
-            registration.signInWithPhoneAuthCredential()
+            //registration.signInWithPhoneAuthCredential()
+            registration = RegistartionController(this, phoneNumber)
+            registration.SendVeryficationCode()
         })
 
     }
