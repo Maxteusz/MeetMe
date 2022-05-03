@@ -1,10 +1,12 @@
-package com.example.meetme
+package com.example.meetme.Controllers
 
+import android.app.AlertDialog
 import android.content.ContentValues.TAG
-import android.os.Handler
-import android.text.Editable
+import android.content.DialogInterface
 import android.util.Log
 import android.view.View
+import com.example.meetme.Activities.SmsCodeCheckActivity
+import com.example.meetme.User
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
@@ -12,14 +14,16 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import java.util.concurrent.TimeUnit
 
+
 class RegistartionController {
 
     var respondCodeInputActivity: SmsCodeCheckActivity? = null
     var phoneNumber: String = "";
-    lateinit var verificationID: String
-    lateinit var respondToken: PhoneAuthProvider.ForceResendingToken
+    private lateinit var verificationID: String
+    private lateinit var respondToken: PhoneAuthProvider.ForceResendingToken
     private val firebaseAuth = Firebase.auth
     var user: User? = null
+   private lateinit var getCredential : PhoneAuthCredential
 
 
     constructor(respondCodeInputActivity: SmsCodeCheckActivity?, phoneNumber: String) {
@@ -37,7 +41,8 @@ class RegistartionController {
             //     detect the incoming verification SMS and perform verification without
             //     user action.
             Log.d(TAG, "onVerificationCompleted:$credential")
-            signInWithPhoneAuthCredential(credential)
+            getCredential = credential
+
             respondCodeInputActivity?.loadingProgressBar?.visibility = View.INVISIBLE
             respondCodeInputActivity?.respondCodeTextView?.setText(credential.smsCode)
 
@@ -47,7 +52,9 @@ class RegistartionController {
             // This callback is invoked in an invalid request for verification is made,
             // for instance if the the phone number format is not valid.
             Log.w(TAG, "onVerificationFailed", e)
-
+                showDialogBox("Coś poszło nie tak")
+            respondCodeInputActivity?.loadingProgressBar?.visibility = View.INVISIBLE
+            respondCodeInputActivity?.button?.isClickable = false
             if (e is FirebaseAuthInvalidCredentialsException) {
                 // Invalid request
             } else if (e is FirebaseTooManyRequestsException) {
@@ -69,14 +76,12 @@ class RegistartionController {
             // Save verification ID and resending token so we can use them later
             verificationID = verificationId
             respondToken = token;
-
+            respondCodeInputActivity?.loadingProgressBar?.visibility = View.INVISIBLE
             Log.i("VerificationID", verificationId)
             Log.i("Resend Token", token.toString())
 
         }
     }
-
-
     fun SendVeryficationCode() {
         respondCodeInputActivity?.loadingProgressBar?.visibility = View.VISIBLE
         val options = PhoneAuthOptions.newBuilder(firebaseAuth)
@@ -89,28 +94,46 @@ class RegistartionController {
     }
 
 
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        firebaseAuth.signInWithCredential(credential)
+     fun signInWithPhoneAuthCredential() {
+        firebaseAuth.signInWithCredential(this.getCredential)
             .addOnCompleteListener(respondCodeInputActivity!!) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
-                    user = User(task.result?.user!!.uid, "Maxteusz", User.Sex.Male, "Jestem Super")
-                    if (user != null) {
-                        Log.i("Logged", user!!.uid.toString())
-                        respondCodeInputActivity?.loadingProgressBar?.visibility = View.INVISIBLE
+                if (respondCodeInputActivity?.respondCodeTextView?.text?.equals(getCredential.smsCode) == true) {
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithCredential:success")
+                        user =
+                            User(task.result?.user!!.uid, "Maxteusz", User.Sex.Male, "Jestem Super")
+                        if (user != null) {
+                            showDialogBox("Weryfikacja poprawna")
+                            respondCodeInputActivity?.loadingProgressBar?.visibility =
+                                View.INVISIBLE
+                        }
+                    } else {
+                        // Sign in failed, display a message and update the UI
+                        Log.w(TAG, "signInWithCredential:failure", task.exception)
+                        if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                            showDialogBox("Weryfikacja niepoprawna")
+                            respondCodeInputActivity?.loadingProgressBar?.visibility =
+                                View.INVISIBLE
+                        }
 
                     }
-                } else {
-                    // Sign in failed, display a message and update the UI
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        respondCodeInputActivity?.loadingProgressBar?.visibility = View.INVISIBLE
-                    }
-
                 }
+                else
+                    showDialogBox("Weryfikacja niepoprawna")
             }
     }
+
+    fun showDialogBox(message : String)
+    {
+        val alertDialog: AlertDialog = AlertDialog.Builder(respondCodeInputActivity).create()
+        alertDialog.setTitle("Weryfikacja")
+        alertDialog.setMessage(message)
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+            DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
+        alertDialog.show()
+    }
+
 }
 
 

@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MeetMe">
         <activity
-            android:name=".SmsCodeCheckActivity"
+            android:name=".Activities.SmsCodeCheckActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
