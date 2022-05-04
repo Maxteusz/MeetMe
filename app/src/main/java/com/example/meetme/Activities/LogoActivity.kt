@@ -13,7 +13,8 @@ class LogoActivity : AppCompatActivity() {
         Handler().postDelayed({
             val startUpController = StartUpController(this)
             startUpController.nextActivity()
-        }, 5000)
+            finish()
+        }, 3000)
 
     }
 }
