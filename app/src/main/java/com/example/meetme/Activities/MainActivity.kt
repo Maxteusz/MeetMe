@@ -20,13 +20,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val EPhoneNumber : EditText = findViewById(R.id.edtiText)
         val buttonTest : Button = findViewById(R.id.button);
-        auth = Firebase.auth
-        val currentUser = auth.currentUser
-        if(currentUser != null){
-           Log.i("zalogowany", "zalogowany")
-        }
-
-
         buttonTest.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, SmsCodeCheckActivity::class.java).apply {
                 putExtra("PHONE_NUMBER", EPhoneNumber.text)

@@ -1,6 +1,8 @@
 package com.example.meetme.Controllers
 
 import android.content.Intent
+import android.util.Log
+import android.view.Menu
 import androidx.core.content.ContextCompat.startActivity
 import com.example.meetme.Activities.LogoActivity
 import com.example.meetme.Activities.MainActivity
@@ -12,14 +14,11 @@ import com.google.firebase.ktx.Firebase
 
 class StartUpController {
     var  logoActivity : LogoActivity
-    var  mainActivity: MainActivity
-    var menuActivity : MenuActivity
-    private var auth: FirebaseAuth = Firebase.auth
 
-    constructor(logoActivity: LogoActivity, mainActivity: MainActivity, menuActivity : MenuActivity) {
+    private var auth: FirebaseAuth = Firebase.auth
+    constructor(logoActivity: LogoActivity) {
         this.logoActivity = logoActivity
-        this.mainActivity = mainActivity
-        this.menuActivity = menuActivity
+
     }
 
     private fun isUserLogged () : Boolean
@@ -32,12 +31,12 @@ class StartUpController {
 
     fun nextActivity ()
     {
-        lateinit var intent : Intent;
+         var intent : Intent;
         if(isUserLogged()) {
-            val intent = Intent(logoActivity, mainActivity::class.java)
+            intent = Intent(logoActivity, MenuActivity::class.java)
         }
         else
-             intent = Intent(logoActivity, mainActivity::class.java)
+             intent = Intent(logoActivity, MainActivity::class.java)
         logoActivity.startActivity(intent)
     }
 
