@@ -7,4 +7,11 @@
         <item>Wino</item>
         <item>Whisky</item>
     </string-array>
+
+
+    //activity_menu
+    <string name="title_hint">Tytuł</string>
+    <string name="describe_hint">Opis</string>
+    <string name="chooseAlcohol_hint">Wybierz alkohol</string>
+
 </resources>

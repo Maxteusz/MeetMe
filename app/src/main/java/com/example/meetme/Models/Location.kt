@@ -7,11 +7,11 @@ import android.os.Parcelable
 
 class Location  {
 
-    var  langtitude : Double
+    var  latitude : Double
     var  longtitude : Double
 
     constructor(langtitude: Double, longtitude: Double) {
-        this.langtitude = langtitude
+        this.latitude = langtitude
         this.longtitude = longtitude
     }
 }

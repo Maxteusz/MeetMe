@@ -24,8 +24,9 @@ class SaveInvitedController {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(newInvitedActivity)
     }
 
-    private fun getLocation ()
+    private fun getLocation () : com.example.meetme.Models.Location
     {
+        val currentLocation : com.example.meetme.Models.Location = com.example.meetme.Models.Location(0.0,0.0)
         if (ActivityCompat.checkSelfPermission(
                 newInvitedActivity,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -36,21 +37,24 @@ class SaveInvitedController {
         ) {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location : Location? ->
+                    if (location != null) {
+                        currentLocation.latitude = location.latitude
+                        currentLocation.longtitude = location.longitude
+                    }
 
-                    // Got last known location. In some rare situations this can be null.
                 }
-            return
+
         }
+        return currentLocation
 
     }
 
-    fun saveTest (invited : Invited)
+    fun saveTest ()
     {
-        var location = com.example.meetme.Models.Location(0.3,0.6)
 
         var user  = User(StartUpController.currentUser!!.uid,"Maxteusz", User.Sex.Male, "fdfdfd")
 
-        var invited = Invited(null, true, user,"Dom",null, "Test" , location,"Wódka")
+        var invited = Invited(null, true, user,"Dom",null, "Test" , getLocation(),"Wódka")
         this.myRef.setValue(invited)
 
     }
