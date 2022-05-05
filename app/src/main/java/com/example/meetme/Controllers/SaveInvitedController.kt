@@ -34,18 +34,16 @@ class SaveInvitedController {
                 newInvitedActivity,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location : Location? ->
-                    if (location != null) {
-                        currentLocation?.latitude = location.latitude
-                        currentLocation?.longtitude = location.longitude
-                        Log.i("Lokalizacja", currentLocation?.latitude.toString() + "  " + currentLocation?.longtitude)
-                    }
-
+        ) {    }
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location : Location? ->
+                if (location != null) {
+                    currentLocation?.latitude = location.latitude
+                    currentLocation?.longtitude = location.longitude
+                    Log.i("Lokalizacja", currentLocation?.latitude.toString() + "  " + currentLocation?.longtitude)
                 }
 
-        }
+            }
         return currentLocation
 
     }
