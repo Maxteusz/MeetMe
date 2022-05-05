@@ -13,5 +13,6 @@
     <string name="title_hint">Tytuł</string>
     <string name="describe_hint">Opis</string>
     <string name="chooseAlcohol_hint">Wybierz alkohol</string>
+    <string name="checkbox_text">Mam miejsce do picia</string>
 
 </resources>

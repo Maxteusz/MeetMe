@@ -3,6 +3,7 @@ package com.example.meetme.Controllers
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.example.meetme.Activities.NewInvitedActivity
 import com.example.meetme.Models.Invited
@@ -13,20 +14,19 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 class SaveInvitedController {
-    lateinit var newInvitedActivity : NewInvitedActivity
+    var newInvitedActivity : NewInvitedActivity
     var database = FirebaseDatabase.getInstance("https://meetme-5a1e5-default-rtdb.firebaseio.com")
-    var myRef: DatabaseReference;
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    lateinit var myRef: DatabaseReference;
+    private var fusedLocationClient: FusedLocationProviderClient
 
     constructor(newInvitedActivity: NewInvitedActivity) {
         this.newInvitedActivity = newInvitedActivity
-        myRef = database.getReference("invited").push()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(newInvitedActivity)
     }
 
-    private fun getLocation () : com.example.meetme.Models.Location
+    private fun getLocation () : com.example.meetme.Models.Location?
     {
-        val currentLocation : com.example.meetme.Models.Location = com.example.meetme.Models.Location(0.0,0.0)
+        val currentLocation : com.example.meetme.Models.Location? = null
         if (ActivityCompat.checkSelfPermission(
                 newInvitedActivity,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -38,8 +38,9 @@ class SaveInvitedController {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location : Location? ->
                     if (location != null) {
-                        currentLocation.latitude = location.latitude
-                        currentLocation.longtitude = location.longitude
+                        currentLocation?.latitude = location.latitude
+                        currentLocation?.longtitude = location.longitude
+                        Log.i("Lokalizacja", currentLocation?.latitude.toString() + "  " + currentLocation?.longtitude)
                     }
 
                 }
@@ -49,12 +50,11 @@ class SaveInvitedController {
 
     }
 
-    fun saveTest ()
+    fun saveTest (invited: Invited)
     {
-
-        var user  = User(StartUpController.currentUser!!.uid,"Maxteusz", User.Sex.Male, "fdfdfd")
-
-        var invited = Invited(null, true, user,"Dom",null, "Test" , getLocation(),"Wódka")
+        myRef = database.getReference("invited").push()
+        invited.location = getLocation()
+        invited.owner  = User(StartUpController.currentUser!!.uid,"Maxteusz", User.Sex.Male, "fdfdfd")
         this.myRef.setValue(invited)
 
     }

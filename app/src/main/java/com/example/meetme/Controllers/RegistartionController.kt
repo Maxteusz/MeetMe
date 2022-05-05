@@ -3,8 +3,11 @@ package com.example.meetme.Controllers
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.DialogInterface
+import android.content.Intent
 import android.util.Log
 import android.view.View
+import com.example.meetme.Activities.MainActivity
+import com.example.meetme.Activities.NewInvitedActivity
 import com.example.meetme.Activities.SmsCodeCheckActivity
 import com.example.meetme.Models.User
 import com.google.firebase.FirebaseException
@@ -136,7 +139,9 @@ fun showDialogBox(message: String) {
     alertDialog.setTitle("Weryfikacja")
     alertDialog.setMessage(message)
     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-        DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
+        DialogInterface.OnClickListener { dialog, which -> dialog.dismiss()
+            val intent = Intent(respondCodeInputActivity, NewInvitedActivity::class.java)
+            respondCodeInputActivity!!.startActivity(intent)})
     alertDialog.show()
 }
 

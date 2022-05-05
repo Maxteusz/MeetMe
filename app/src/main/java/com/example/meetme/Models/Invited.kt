@@ -1,20 +1,16 @@
 package com.example.meetme.Models
 
-import android.location.Location
-import com.example.meetme.Controllers.StartUpController
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 
 
 class Invited {
-     var uid : String?;
+     var uid : String? = null;
     var iHavePlace : Boolean = false;
     lateinit var owner : User;
-    lateinit var place : String;
+    var place : String;
     var describe : String? = null
-    lateinit var title : String
-    lateinit var location : com.example.meetme.Models.Location
-    lateinit var kindOfAlcohol : String
+    var title : String
+    var location : com.example.meetme.Models.Location? = null
+    var kindOfAlcohol : String
 
 
     constructor(
@@ -24,7 +20,7 @@ class Invited {
         place: String,
         describe: String?,
         title: String,
-        location: com.example.meetme.Models.Location,
+        location: com.example.meetme.Models.Location?,
         kindOfAlcohol: String
     ) {
         this.uid = uid
@@ -37,6 +33,19 @@ class Invited {
         this.kindOfAlcohol = kindOfAlcohol
     }
 
+    constructor(
+        iHavePlace: Boolean,
+        place: String,
+        describe: String?,
+        title: String,
+        kindOfAlcohol: String
+    ) {
+        this.iHavePlace = iHavePlace
+        this.place = place
+        this.describe = describe
+        this.title = title
+        this.kindOfAlcohol = kindOfAlcohol
+    }
 
 
 }
