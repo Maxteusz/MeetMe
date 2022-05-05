@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MeetMe</string>
+
+    <string-array name="alcohol_array">
+        <item>Piwo</item>
+        <item>Wódka</item>
+        <item>Wino</item>
+        <item>Whisky</item>
+    </string-array>
 </resources>

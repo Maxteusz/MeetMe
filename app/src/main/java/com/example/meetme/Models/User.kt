@@ -1,4 +1,4 @@
-package com.example.meetme
+package com.example.meetme.Models
 
 class User {
     lateinit var uid : String;

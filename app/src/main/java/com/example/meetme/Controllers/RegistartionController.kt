@@ -6,7 +6,7 @@ import android.content.DialogInterface
 import android.util.Log
 import android.view.View
 import com.example.meetme.Activities.SmsCodeCheckActivity
-import com.example.meetme.User
+import com.example.meetme.Models.User
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
