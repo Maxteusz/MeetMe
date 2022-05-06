@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MeetMe2/app/src/main/res/layout/loading_dialog_layout.xml" value="0.25416666666666665" />
         <entry key="app/src/main/res/layout/activity_logo.xml" value="0.29846014492753625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.30027173913043476" />
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.29846014492753625" />

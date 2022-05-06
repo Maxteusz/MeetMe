@@ -2,17 +2,15 @@ package com.example.meetme.Controllers
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Looper
 import android.util.Log
 import androidx.core.app.ActivityCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.meetme.Activities.NewInvitedActivity
 import com.example.meetme.Models.Invited
+import com.example.meetme.Models.LoadingScreen
 import com.example.meetme.Models.Location
 import com.example.meetme.Models.User
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
-import com.google.android.gms.tasks.CancellationToken
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -23,16 +21,17 @@ class SaveInvitedController {
     lateinit var myRef: DatabaseReference;
     private var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
-    lateinit var invited : Invited
 
 
-    constructor(newInvitedActivity: NewInvitedActivity, invited: Invited) {
-        this.invited = invited
+
+    constructor(newInvitedActivity: NewInvitedActivity) {
         this.newInvitedActivity = newInvitedActivity
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(newInvitedActivity)
     }
 
-    fun getLocation(): com.example.meetme.Models.Location? {
+  fun addInvited() {
+      val loadingScreen = LoadingScreen()
+      loadingScreen.displayLoading(newInvitedActivity)
         var currentLocation: com.example.meetme.Models.Location? = null
         if (ActivityCompat.checkSelfPermission(
                 newInvitedActivity,
@@ -44,16 +43,20 @@ class SaveInvitedController {
         ) {
             showPermissionAlert();
         } else {
-            fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null)
+            fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null)
                 .addOnSuccessListener { location : android.location.Location? ->
-                    currentLocation?.longtitude = location?.longitude?.toDouble()!!
-                    currentLocation?.latitude = location?.latitude?.toDouble()!!
-                    saveTest()
+                    if (location != null) {
+                        currentLocation = Location(location.longitude, location.latitude)
+                        saveInvited(createInvited(currentLocation!!))
+                        loadingScreen.hideLoading()
+                    }
+
                     Log.i("Location" , location?.latitude.toString())
 
                 }
+
         }
-        return currentLocation
+
     }
 
     private fun showPermissionAlert() {
@@ -77,23 +80,27 @@ class SaveInvitedController {
         }
     }
 
-    fun saveTest() {
+   private  fun saveInvited(invited: Invited) {
+
         myRef = database.getReference("invited").push()
         invited.owner =
             User(StartUpController.currentUser!!.uid, "Maxteusz", User.Sex.Male, "fdfdfd")
+
         this.myRef.setValue(invited)
+
 
 
     }
 
-    fun createInvited () : Invited
+
+   private fun createInvited (location: Location) : Invited
     {
         val iHavePlace = newInvitedActivity.havePlaceToDrink?.isChecked
         val place = "4343"
         val describe = newInvitedActivity.describe_textfield?.text.toString()
         val title = newInvitedActivity.title_textfield?.text.toString()
         val alcohol = newInvitedActivity.spinner_alcokohol?.text.toString()
-        val invited = Invited(iHavePlace, place, describe, title, alcohol)
+        val invited = Invited(iHavePlace, place, describe, title, alcohol,location )
         return  invited
     }
 }

@@ -2,16 +2,14 @@ package com.example.meetme.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.sax.StartElementListener
-import android.util.Log
 import android.view.View
 import android.widget.*
 import com.example.meetme.Controllers.SaveInvitedController
-import com.example.meetme.Controllers.StartUpController
-import com.example.meetme.Models.Invited
 import com.example.meetme.Models.Location
 import com.example.meetme.R
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class NewInvitedActivity : AppCompatActivity() {
     var spinner_alcokohol : AutoCompleteTextView? = null
@@ -29,18 +27,19 @@ class NewInvitedActivity : AppCompatActivity() {
         describe_textfield  = findViewById(R.id.describe_textfield)
         title_textfield  = findViewById(R.id.title_textfield)
         val addInvited : Button = findViewById(R.id.button3)
+        val saveInvitedController = SaveInvitedController(this)
+
 
         spinner_alcokohol?.setAdapter(adapter)
          havePlaceToDrink = findViewById(R.id.have_place)
 
 
       addInvited.setOnClickListener(View.OnClickListener {
-
-
-                val saveInvitedController = SaveInvitedController(this, )
-              saveInvitedController.saveTest()
-
+          saveInvitedController.addInvited()
       })
+
+
+
     }
 }
 

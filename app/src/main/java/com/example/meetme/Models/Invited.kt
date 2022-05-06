@@ -39,12 +39,15 @@ class Invited {
         describe: String?,
         title: String,
         kindOfAlcohol: String,
+        location: Location?
     ) {
         this.iHavePlace = iHavePlace
         this.place = place
         this.describe = describe
         this.title = title
         this.kindOfAlcohol = kindOfAlcohol
+        this.location  = location
+
     }
 
 
