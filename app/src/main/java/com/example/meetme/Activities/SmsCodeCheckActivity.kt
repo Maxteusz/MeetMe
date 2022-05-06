@@ -12,11 +12,13 @@ import com.google.android.material.textfield.TextInputEditText
 
 
 class SmsCodeCheckActivity : AppCompatActivity() {
+
     var phoneNumber = ""
     var loadingProgressBar : ProgressBar? = null
     var respondCodeTextView : TextInputEditText? = null
     var button : Button? = null
     lateinit var registration : RegistartionController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sms_code_check)
@@ -35,8 +37,6 @@ class SmsCodeCheckActivity : AppCompatActivity() {
 
         button?.setOnClickListener(View.OnClickListener {
             registration.signInWithPhoneAuthCredential()
-            //registration = RegistartionController(this, phoneNumber)
-            //registration.SendVeryficationCode()
         })
 
     }

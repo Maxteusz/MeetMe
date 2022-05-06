@@ -1,75 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation= "vertical"
-    tools:context=".Activities.NewInvitedActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:hint="@string/title_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!-- Note: A RecyclerView can also be used -->
+<androidx.core.widget.NestedScrollView
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:paddingBottom="100dp"
+android:clipToPadding="false">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/title_textfield"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"/>
-    </com.google.android.material.textfield.TextInputLayout>
+<!-- Scrollable content -->
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:hint="@string/chooseAlcohol_hint"
-        android:entries="@array/alcohol_array"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+</androidx.core.widget.NestedScrollView>
 
-        <AutoCompleteTextView
-            android:id="@+id/alcohol_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none" />
-    </com.google.android.material.textfield.TextInputLayout>
-    <CheckBox
-        android:id="@+id/have_place"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/checkbox_text"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:checked="true" />
+<com.google.android.material.bottomappbar.BottomAppBar
+android:id="@+id/bottomAppBar"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_gravity="bottom"
+style="@style/Widget.MaterialComponents.BottomAppBar.Colored"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:hint="@string/describe_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/floating_button"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+app:layout_anchor="@id/bottomAppBar"
+    android:src="@drawable/icon_add"
+    app:fabSize="normal"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/describe_textfield"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:lines="5"/>
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
 
-</LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>

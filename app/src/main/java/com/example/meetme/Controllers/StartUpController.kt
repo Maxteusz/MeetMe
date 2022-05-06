@@ -3,6 +3,7 @@ package com.example.meetme.Controllers
 import android.content.Intent
 import com.example.meetme.Activities.LogoActivity
 import com.example.meetme.Activities.MainActivity
+import com.example.meetme.Activities.MenuActivity
 import com.example.meetme.Activities.NewInvitedActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -31,7 +32,7 @@ class StartUpController {
     {
          var intent : Intent;
         if(isUserLogged()) {
-            intent = Intent(logoActivity, NewInvitedActivity::class.java)
+            intent = Intent(logoActivity, MenuActivity::class.java)
         }
         else
              intent = Intent(logoActivity, MainActivity::class.java)

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import com.example.meetme.Activities.MainActivity
+import com.example.meetme.Activities.MenuActivity
 import com.example.meetme.Activities.NewInvitedActivity
 import com.example.meetme.Activities.SmsCodeCheckActivity
 import com.example.meetme.Models.User
@@ -38,12 +39,6 @@ class RegistartionController {
     private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            // This callback will be invoked in two situations:
-            // 1 - Instant verification. In some cases the phone number can be instantly
-            //     verified without needing to send or enter a verification code.
-            // 2 - Auto-retrieval. On some devices Google Play services can automatically
-            //     detect the incoming verification SMS and perform verification without
-            //     user action.
             Log.d(TAG, "onVerificationCompleted:$credential")
             getCredential = credential
             respondCodeInputActivity?.respondCodeTextView?.setText(credential.smsCode)
@@ -70,13 +65,7 @@ class RegistartionController {
         override fun onCodeSent(
             verificationId: String,
             token: PhoneAuthProvider.ForceResendingToken
-        ) {
-            // The SMS verification code has been sent to the provided phone number, we
-            // now need to ask the user to enter the code and then construct a credential
-            // by combining the code with a verification ID.
-            Log.d(TAG, "onCodeSent:$verificationId")
-
-            // Save verification ID and resending token so we can use them later
+        ) {// Save verification ID and resending token so we can use them later
             verificationID = verificationId
             respondToken = token;
             respondCodeInputActivity?.loadingProgressBar?.visibility = View.INVISIBLE
@@ -140,8 +129,9 @@ fun showDialogBox(message: String) {
     alertDialog.setMessage(message)
     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
         DialogInterface.OnClickListener { dialog, which -> dialog.dismiss()
-            val intent = Intent(respondCodeInputActivity, NewInvitedActivity::class.java)
-            respondCodeInputActivity!!.startActivity(intent)})
+            val intent = Intent(respondCodeInputActivity, MenuActivity::class.java)
+            respondCodeInputActivity!!.startActivity(intent)
+        respondCodeInputActivity!!.finish()})
     alertDialog.show()
 }
 
