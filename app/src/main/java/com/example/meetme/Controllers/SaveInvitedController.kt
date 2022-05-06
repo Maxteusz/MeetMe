@@ -93,7 +93,6 @@ class SaveInvitedController {
         val describe = newInvitedActivity.describe_textfield?.text.toString()
         val title = newInvitedActivity.title_textfield?.text.toString()
         val alcohol = newInvitedActivity.spinner_alcokohol?.text.toString()
-
         val invited = Invited(iHavePlace, place, describe, title, alcohol)
         return  invited
     }
