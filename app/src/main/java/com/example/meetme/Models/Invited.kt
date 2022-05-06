@@ -4,12 +4,12 @@ package com.example.meetme.Models
 
 class Invited {
      var uid : String? = null;
-    var iHavePlace : Boolean = false;
+    var iHavePlace : Boolean? = false;
     lateinit var owner : User;
     var place : String;
     var describe : String? = null
     var title : String
-    var location : com.example.meetme.Models.Location? = null
+    var location : Location? = null
     var kindOfAlcohol : String
 
 
@@ -20,7 +20,7 @@ class Invited {
         place: String,
         describe: String?,
         title: String,
-        location: com.example.meetme.Models.Location?,
+        location: Location?,
         kindOfAlcohol: String
     ) {
         this.uid = uid
@@ -34,11 +34,11 @@ class Invited {
     }
 
     constructor(
-        iHavePlace: Boolean,
+        iHavePlace: Boolean?,
         place: String,
         describe: String?,
         title: String,
-        kindOfAlcohol: String
+        kindOfAlcohol: String,
     ) {
         this.iHavePlace = iHavePlace
         this.place = place
