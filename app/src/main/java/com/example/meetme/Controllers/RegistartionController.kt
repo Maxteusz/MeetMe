@@ -140,7 +140,7 @@ fun showCorrectLoginDialogBox(message: String) {
         alertDialog.setTitle("Weryfikacja")
         alertDialog.setMessage(message)
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-            DialogInterface.OnClickListener { dialog, which -> dialog.dismiss()})
+            { dialog, which -> dialog.dismiss()})
         alertDialog.show()
     }
 
