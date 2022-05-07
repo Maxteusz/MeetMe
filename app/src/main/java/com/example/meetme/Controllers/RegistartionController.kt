@@ -50,7 +50,7 @@ class RegistartionController {
             // This callback is invoked in an invalid request for verification is made,
             // for instance if the the phone number format is not valid.
             Log.w(TAG, "onVerificationFailed", e)
-            showDialogBox("Coś poszło nie tak")
+            showCorrectLoginDialogBox("Coś poszło nie tak")
             respondCodeInputActivity?.loadingProgressBar?.visibility = View.INVISIBLE
             //respondCodeInputActivity?.button?.isClickable = false
             if (e is FirebaseAuthInvalidCredentialsException) {
@@ -102,7 +102,7 @@ class RegistartionController {
                                     "Jestem Super"
                                 )
                             if (user != null) {
-                                showDialogBox("Weryfikacja poprawna")
+                                showCorrectLoginDialogBox("Weryfikacja poprawna")
                                 respondCodeInputActivity?.loadingProgressBar?.visibility =
                                     View.INVISIBLE
                             }
@@ -110,7 +110,7 @@ class RegistartionController {
                             // Sign in failed, display a message and update the UI
                             Log.w(TAG, "signInWithCredential:failure", task.exception)
                             if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                                showDialogBox("Weryfikacja niepoprawna")
+                                showCorrectLoginDialogBox("Weryfikacja niepoprawna")
                                 respondCodeInputActivity?.loadingProgressBar?.visibility =
                                     View.INVISIBLE
                             }
@@ -118,12 +118,12 @@ class RegistartionController {
                     }
 
         } catch (e : Exception)  {
-            showDialogBox("Weryfikacja niepoprawna")
+            showWrongLoginDialogBox("Weryfikacja niepoprawna")
         }
 
 }
 
-fun showDialogBox(message: String) {
+fun showCorrectLoginDialogBox(message: String) {
     val alertDialog: AlertDialog = AlertDialog.Builder(respondCodeInputActivity).create()
     alertDialog.setTitle("Weryfikacja")
     alertDialog.setMessage(message)
@@ -134,6 +134,16 @@ fun showDialogBox(message: String) {
         respondCodeInputActivity!!.finish()})
     alertDialog.show()
 }
+
+    fun showWrongLoginDialogBox(message: String) {
+        val alertDialog: AlertDialog = AlertDialog.Builder(respondCodeInputActivity).create()
+        alertDialog.setTitle("Weryfikacja")
+        alertDialog.setMessage(message)
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+            DialogInterface.OnClickListener { dialog, which -> dialog.dismiss()})
+        alertDialog.show()
+    }
+
 
 }
 
