@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.example.meetme.Activities.NewInvitedActivity
+import com.example.meetme.Controllers.StartUpController.Companion.currentUser
 import com.example.meetme.Models.Invited
 import com.example.meetme.Dialogs.LoadingScreen
 import com.example.meetme.Models.Location
@@ -30,6 +31,9 @@ class SaveInvitedController {
     constructor(newInvitedActivity: NewInvitedActivity) {
         this.newInvitedActivity = newInvitedActivity
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(newInvitedActivity)
+        if (currentUser == null)
+            currentUser = StartUpController.auth.currentUser
+
     }
 
     fun addInvited() {
@@ -88,7 +92,7 @@ class SaveInvitedController {
 
         myRef = database.getReference("invited").push()
         invited.owner =
-            User(StartUpController.currentUser!!.uid, "Maxteusz", User.Sex.Male, "fdfdfd")
+            User(currentUser!!.uid, "Maxteusz", User.Sex.Male, "fdfdfd")
         this.myRef.setValue(invited)
     }
 

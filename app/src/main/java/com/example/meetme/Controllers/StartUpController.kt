@@ -12,8 +12,8 @@ import com.google.firebase.ktx.Firebase
 class StartUpController {
     var  logoActivity : LogoActivity
     companion object {
-        private var auth: FirebaseAuth = Firebase.auth
-        val currentUser = auth.currentUser
+        var auth: FirebaseAuth = Firebase.auth
+        var currentUser = auth.currentUser
     }
 
     constructor(logoActivity: LogoActivity) {
