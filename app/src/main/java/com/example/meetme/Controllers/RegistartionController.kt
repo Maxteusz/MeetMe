@@ -92,7 +92,9 @@ class RegistartionController {
 
                         StartUpController.currentUser = firebaseAuth.currentUser
                         if (StartUpController.currentUser != null) {
-                        StartUpController.loggedUser = StartUpController.getCurrentUser()
+                        StartUpController.loggedUser = StartUpController.getCurrentUser(
+                            smsCodeCheckActivity!!
+                        )
                         showCorrectLoginDialogBox("Weryfikacja poprawna")
                         smsCodeCheckActivity?.loadingProgressBar?.visibility =
                             View.INVISIBLE

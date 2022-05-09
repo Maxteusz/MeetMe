@@ -95,7 +95,7 @@ class SaveInvitedController {
 
     private fun createInvited(location: Location): Invited {
         if (StartUpController.loggedUser.token == null)
-            StartUpController.loggedUser.token = MenuActivityController.getRegistrationToken()
+            StartUpController.loggedUser.token = MenuActivityController.getRegistrationToken(newInvitedActivity)
         val iHavePlace = newInvitedActivity.havePlaceToDrink?.isChecked
         val place = "4343"
         val describe = newInvitedActivity.describe_textfield?.text.toString()

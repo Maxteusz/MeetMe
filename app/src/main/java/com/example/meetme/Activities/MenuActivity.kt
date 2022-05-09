@@ -1,6 +1,7 @@
 package com.example.meetme.Activities
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.android.gms.tasks.OnCompleteListener
 import android.util.Log
 import android.widget.Toast
+import com.example.meetme.Services.MyFirebaseMessagingService
 import com.google.firebase.messaging.FirebaseMessaging
 
 class MenuActivity : AppCompatActivity() {
@@ -23,6 +25,13 @@ class MenuActivity : AppCompatActivity() {
         floatingButton?.setOnClickListener(View.OnClickListener {
             menuActivityController.addInvitedActivity()
         })
+        //startTokenService()
+    }
+    private fun startTokenService()
+    {
+        Log.i("Start service", "ds")
+        val intent = Intent(this, MyFirebaseMessagingService::class.java)
+        startService(intent)
     }
 
 
