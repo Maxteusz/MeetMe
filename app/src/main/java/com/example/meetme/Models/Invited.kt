@@ -5,7 +5,7 @@ package com.example.meetme.Models
 class Invited {
      var uid : String? = null;
     var iHavePlace : Boolean? = false;
-    lateinit var owner : User;
+    var owner : User;
     var place : String;
     var describe : String? = null
     var title : String
@@ -39,7 +39,8 @@ class Invited {
         describe: String?,
         title: String,
         kindOfAlcohol: String,
-        location: Location?
+        location: Location?,
+        owner : User
     ) {
         this.iHavePlace = iHavePlace
         this.place = place
@@ -47,6 +48,7 @@ class Invited {
         this.title = title
         this.kindOfAlcohol = kindOfAlcohol
         this.location  = location
+        this.owner = owner
 
     }
 

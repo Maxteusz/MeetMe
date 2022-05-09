@@ -5,6 +5,7 @@ import com.example.meetme.Activities.LogoActivity
 import com.example.meetme.Activities.MainActivity
 import com.example.meetme.Activities.MenuActivity
 import com.example.meetme.Activities.NewInvitedActivity
+import com.example.meetme.Models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -14,6 +15,14 @@ class StartUpController {
     companion object {
         var auth: FirebaseAuth = Firebase.auth
         var currentUser = auth.currentUser
+        lateinit var loggedUser: User
+        fun getCurrentUser () : User
+        {
+            val user =  User(currentUser!!.uid, "Maxteusz", User.Sex.Male, "fdfdfd",
+                MenuActivityController.getRegistrationToken()
+            )
+            return user
+        }
     }
 
     constructor(logoActivity: LogoActivity) {
@@ -32,12 +41,15 @@ class StartUpController {
     {
          var intent : Intent;
         if(isUserLogged()) {
+            loggedUser = getCurrentUser()
             intent = Intent(logoActivity, MenuActivity::class.java)
         }
         else
              intent = Intent(logoActivity, MainActivity::class.java)
         logoActivity.startActivity(intent)
     }
+
+
 
 
 }

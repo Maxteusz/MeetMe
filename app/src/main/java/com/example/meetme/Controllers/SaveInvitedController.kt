@@ -31,8 +31,7 @@ class SaveInvitedController {
     constructor(newInvitedActivity: NewInvitedActivity) {
         this.newInvitedActivity = newInvitedActivity
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(newInvitedActivity)
-        if (currentUser == null)
-            currentUser = StartUpController.auth.currentUser
+
 
     }
 
@@ -91,18 +90,19 @@ class SaveInvitedController {
     private fun saveInvited(invited: Invited) {
 
         myRef = database.getReference("invited").push()
-        invited.owner =
-            User(currentUser!!.uid, "Maxteusz", User.Sex.Male, "fdfdfd")
         this.myRef.setValue(invited)
     }
 
     private fun createInvited(location: Location): Invited {
+        if (StartUpController.loggedUser.token == null)
+            StartUpController.loggedUser.token = MenuActivityController.getRegistrationToken()
         val iHavePlace = newInvitedActivity.havePlaceToDrink?.isChecked
         val place = "4343"
         val describe = newInvitedActivity.describe_textfield?.text.toString()
         val title = newInvitedActivity.title_textfield?.text.toString()
         val alcohol = newInvitedActivity.spinner_alcokohol?.text.toString()
-        val invited = Invited(iHavePlace, place, describe, title, alcohol, location)
+        val owner = StartUpController.loggedUser
+        val invited = Invited(iHavePlace, place, describe, title, alcohol, location,owner)
         return invited
     }
 
@@ -111,7 +111,7 @@ class SaveInvitedController {
         alertDialog.setMessage(message)
         alertDialog.setButton(
             AlertDialog.BUTTON_POSITIVE, "OK",
-            DialogInterface.OnClickListener { dialog, which -> dialog.dismiss()})
+            { dialog, which -> dialog.dismiss()})
         alertDialog.show()
     }
 

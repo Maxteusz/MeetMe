@@ -12,9 +12,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MeetMe">
+        <service
+            android:name=".Services.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".Activities.MenuActivity"
             android:exported="false" />
+
         <activity
             android:name=".Activities.NewInvitedActivity"
             android:exported="false" />
@@ -32,7 +41,10 @@
             android:exported="false" />
         <activity
             android:name=".Activities.MainActivity"
-            android:exported="false"></activity>
+            android:exported="false">
+        </activity>
+
+
     </application>
 
 </manifest>
