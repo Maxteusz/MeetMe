@@ -14,5 +14,7 @@
     <string name="describe_hint">Opis</string>
     <string name="chooseAlcohol_hint">Wybierz alkohol</string>
     <string name="checkbox_text">Mam miejsce do picia</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

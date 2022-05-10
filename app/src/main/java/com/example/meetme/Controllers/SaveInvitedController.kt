@@ -97,7 +97,7 @@ class SaveInvitedController {
         if (StartUpController.loggedUser.token == null)
             StartUpController.loggedUser.token = MenuActivityController.getRegistrationToken(newInvitedActivity)
         val iHavePlace = newInvitedActivity.havePlaceToDrink?.isChecked
-        val place = "4343"
+        val place = ""
         val describe = newInvitedActivity.describe_textfield?.text.toString()
         val title = newInvitedActivity.title_textfield?.text.toString()
         val alcohol = newInvitedActivity.spinner_alcokohol?.text.toString()
@@ -117,16 +117,16 @@ class SaveInvitedController {
 
     fun showSettingAlert() {
         val alertDialog = AlertDialog.Builder(newInvitedActivity)
-        alertDialog.setTitle("GPS setting!")
-        alertDialog.setMessage("GPS nie jest włączony, proszę")
+        alertDialog.setTitle("Ustawienia GPS")
+        alertDialog.setMessage("Czy przejść do ustawień GPS ?")
         alertDialog.setPositiveButton(
-            "Setting"
+            "Tak"
         ) { dialog, which ->
             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             newInvitedActivity.startActivity(intent)
         }
         alertDialog.setNegativeButton(
-            "Cancel"
+            "Nie"
         ) { dialog, which -> dialog.cancel() }
         alertDialog.show()
     }

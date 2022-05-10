@@ -4,15 +4,12 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.util.Log
+import androidx.fragment.app.FragmentTransaction
 import com.example.meetme.Activities.MenuActivity
 import com.example.meetme.Activities.NewInvitedActivity
-import com.example.meetme.Models.User
-import com.example.meetme.Services.MyFirebaseMessagingService
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.FirebaseMessagingService
+import com.example.meetme.Fragments.MyInvitedFragment
+import com.example.meetme.R
+
 
 class MenuActivityController {
     val menuActivity : MenuActivity
@@ -36,8 +33,16 @@ class MenuActivityController {
     {
         val intent = Intent(menuActivity, NewInvitedActivity::class.java)
        menuActivity!!.startActivity(intent)
+    }
 
-
+    fun loadFirstFragment()
+    {
+        val fm = menuActivity.supportFragmentManager
+        val fragmentTransaction : FragmentTransaction
+        val fragment = MyInvitedFragment()
+        fragmentTransaction = fm.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container_view,fragment).addToBackStack(null)
+        fragmentTransaction.commit()
     }
 
 

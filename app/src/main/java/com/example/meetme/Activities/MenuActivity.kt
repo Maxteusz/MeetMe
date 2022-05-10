@@ -11,27 +11,25 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.android.gms.tasks.OnCompleteListener
 import android.util.Log
+import android.widget.FrameLayout
 import android.widget.Toast
 import com.example.meetme.Services.MyFirebaseMessagingService
 import com.google.firebase.messaging.FirebaseMessaging
 
 class MenuActivity : AppCompatActivity() {
     var floatingButton : FloatingActionButton? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
         val menuActivityController = MenuActivityController(this)
         floatingButton = findViewById(R.id.floating_button)
-        floatingButton?.setOnClickListener(View.OnClickListener {
+        floatingButton?.setOnClickListener({
             menuActivityController.addInvitedActivity()
         })
-        //startTokenService()
-    }
-    private fun startTokenService()
-    {
-        Log.i("Start service", "ds")
-        val intent = Intent(this, MyFirebaseMessagingService::class.java)
-        startService(intent)
+
+        menuActivityController.loadFirstFragment()
+
     }
 
 

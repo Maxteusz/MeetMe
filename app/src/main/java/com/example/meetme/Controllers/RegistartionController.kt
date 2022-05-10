@@ -23,7 +23,8 @@ class RegistartionController {
     private lateinit var verificationID: String
     private lateinit var respondToken: PhoneAuthProvider.ForceResendingToken
     private val firebaseAuth = Firebase.auth
-    private lateinit var getCredential: PhoneAuthCredential
+    private var getCredential: PhoneAuthCredential? = null
+
 
 
     constructor(respondCodeInputActivity: SmsCodeCheckActivity?, phoneNumber: String) {
@@ -35,8 +36,6 @@ class RegistartionController {
 
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
             Log.d(TAG, "onVerificationCompleted:$credential")
-            getCredential = credential
-            smsCodeCheckActivity?.respondCodeTextView?.setText(credential.smsCode)
             smsCodeCheckActivity?.loadingProgressBar?.visibility = View.INVISIBLE
 
         }
@@ -84,7 +83,8 @@ class RegistartionController {
 
     fun signInWithPhoneAuthCredential() {
         try {
-            firebaseAuth.signInWithCredential(this.getCredential)
+            getCredential = PhoneAuthProvider.getCredential(verificationID, smsCodeCheckActivity?.respondCodeTextView?.text.toString())
+            firebaseAuth.signInWithCredential(getCredential!!)
                 .addOnCompleteListener(smsCodeCheckActivity!!) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information

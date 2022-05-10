@@ -5,12 +5,14 @@ package com.example.meetme.Models
 class Invited {
      var uid : String? = null;
     var iHavePlace : Boolean? = false;
-    var owner : User;
-    var place : String;
+    var owner : User? = null;
+    var place : String = "";
     var describe : String? = null
-    var title : String
+    var title : String = ""
     var location : Location? = null
-    var kindOfAlcohol : String
+    var kindOfAlcohol : String = ""
+
+
 
 
     constructor(
@@ -51,6 +53,6 @@ class Invited {
         this.owner = owner
 
     }
-
+    constructor()
 
 }
