@@ -12,10 +12,6 @@ import com.example.meetme.R
 class MyInvitiesRecyclerViewAdapter(private val invitations: List<Invited>) :
     RecyclerView.Adapter<MyInvitiesRecyclerViewAdapter.ViewHolder>() {
 
-    val context : Context? = null
-
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_my_invities_recycler_view_adapter, parent, false)

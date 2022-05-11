@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 
 class MyInvitationsFragmentController {
     val myInvitationsFragment : MyInvitedFragment
+
     private var database: DatabaseReference
 
     constructor(myInvitationsFragment: MyInvitedFragment) {
@@ -23,15 +24,19 @@ class MyInvitationsFragmentController {
 
     fun getMyInvitations() : List<Invited>
     {
-        var invitations : List<Invited> = ArrayList()
+        var invitations : MutableList<Invited> = ArrayList()
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (item in snapshot.children) {
                     val invited: Invited? = snapshot.child(item.key!!).getValue(Invited::class.java)
-                    invitations.toMutableList().add(invited!!)
+                    invitations.add(invited!!)
                     Log.i("Pobrano", invited?.place.toString())
+
+
                 }
                 Log.i("Rozmiar", invitations.size.toString())
+                myInvitationsFragment.adapter?.notifyDataSetChanged()
+                Log.i("Adapter Controller", myInvitationsFragment.adapter?.itemCount.toString())
             }
 
             override fun onCancelled(error: DatabaseError) {
