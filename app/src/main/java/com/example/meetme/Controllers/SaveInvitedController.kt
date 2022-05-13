@@ -99,8 +99,8 @@ class SaveInvitedController {
     }
 
     private fun createInvited(location: Location): Invited {
-        if (StartUpController.loggedUser.token == null)
-            StartUpController.loggedUser.token = MenuActivityController.getRegistrationToken(newInvitedActivity)
+
+            //StartUpController.loggedUser.token = MenuActivityController.getRegistrationToken(newInvitedActivity)
         val iHavePlace = newInvitedActivity.havePlaceToDrink?.isChecked
         val place = ""
         val describe = newInvitedActivity.describe_textfield?.text.toString()
@@ -126,7 +126,7 @@ class SaveInvitedController {
         alertDialog.setMessage("Czy przejść do ustawień GPS ?")
         alertDialog.setPositiveButton(
             "Tak"
-        ) { dialog, which ->
+        ) { _, _ ->
             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             newInvitedActivity.startActivity(intent)
         }
