@@ -12,6 +12,7 @@ import com.example.meetme.Activities.NewInvitedActivity
 import com.example.meetme.Controllers.StartUpController.Companion.currentUser
 import com.example.meetme.Models.Invited
 import com.example.meetme.Dialogs.LoadingScreen
+import com.example.meetme.Fragments.MyInvitedFragment
 import com.example.meetme.Models.Location
 import com.example.meetme.Models.User
 import com.google.android.gms.location.*
@@ -37,6 +38,7 @@ class SaveInvitedController {
 
     fun addInvited() {
         var currentLocation: Location?
+        if(CountOfMyInvitations()!! <= 2)
         if (ActivityCompat.checkSelfPermission(
                 newInvitedActivity,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -52,18 +54,21 @@ class SaveInvitedController {
             loadingScreen.displayLoading(newInvitedActivity)
             fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null)
                 .addOnSuccessListener { location: android.location.Location? ->
-                    if (location != null) {
-                        currentLocation = Location(location.longitude, location.latitude)
-                        saveInvited(createInvited(currentLocation!!))
-                        loadingScreen.hideLoading()
-                        showDialogBox("Zaproszenie zostało dodane")
+                        if (location != null) {
+                            currentLocation = Location(location.longitude, location.latitude)
+                            saveInvited(createInvited(currentLocation!!))
+                            loadingScreen.hideLoading()
+                            showDialogBox("Zaproszenie zostało dodane")
+                        } else {
+                            loadingScreen.hideLoading()
+                            showSettingAlert()
+                        }
                     }
-                    else {
-                        loadingScreen.hideLoading()
-                        showSettingAlert()
-                    }
-                }
+
+
         }
+        else
+            showDialogBox("Możesz mieć maksymalnie 3 zaproszenia")
     }
 
     private fun showPermissionAlert() {
@@ -89,7 +94,7 @@ class SaveInvitedController {
 
     private fun saveInvited(invited: Invited) {
 
-        myRef = database.getReference("invited").push()
+        myRef = database.getReference("invited").child(StartUpController.loggedUser.uid).push()
         this.myRef.setValue(invited)
     }
 
@@ -106,7 +111,7 @@ class SaveInvitedController {
         return invited
     }
 
-    fun showDialogBox(message: String) {
+   private fun showDialogBox(message: String) {
         val alertDialog: AlertDialog = AlertDialog.Builder(newInvitedActivity).create()
         alertDialog.setMessage(message)
         alertDialog.setButton(
@@ -115,7 +120,7 @@ class SaveInvitedController {
         alertDialog.show()
     }
 
-    fun showSettingAlert() {
+    private fun showSettingAlert() {
         val alertDialog = AlertDialog.Builder(newInvitedActivity)
         alertDialog.setTitle("Ustawienia GPS")
         alertDialog.setMessage("Czy przejść do ustawień GPS ?")
@@ -129,6 +134,11 @@ class SaveInvitedController {
             "Nie"
         ) { dialog, which -> dialog.cancel() }
         alertDialog.show()
+    }
+
+    private fun CountOfMyInvitations() : Int?
+    {
+        return MyInvitedFragment.invitations?.size
     }
 }
 

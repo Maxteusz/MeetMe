@@ -16,29 +16,32 @@ class MyInvitationsFragmentController {
     val myInvitationsFragment : MyInvitedFragment
 
     private var database: DatabaseReference
+    val invitations : MutableList<Invited>;
+
 
     constructor(myInvitationsFragment: MyInvitedFragment) {
         this.myInvitationsFragment = myInvitationsFragment
-        database = Firebase.database.getReference("invited")
+        database = Firebase.database.getReference("invited").child(StartUpController.loggedUser.uid)
+        invitations = getMyInvitations()
     }
 
-    fun getMyInvitations() : List<Invited>
+
+
+    private fun getMyInvitations() : MutableList<Invited>
     {
         var invitations : MutableList<Invited> = ArrayList()
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                invitations.clear()
                 for (item in snapshot.children) {
                     val invited: Invited? = snapshot.child(item.key!!).getValue(Invited::class.java)
                     invitations.add(invited!!)
                     Log.i("Pobrano", invited?.place.toString())
-
-
                 }
                 Log.i("Rozmiar", invitations.size.toString())
                 myInvitationsFragment.adapter?.notifyDataSetChanged()
                 Log.i("Adapter Controller", myInvitationsFragment.adapter?.itemCount.toString())
             }
-
             override fun onCancelled(error: DatabaseError) {
                 // calling on cancelled method when we receive
                 // any error or we are not able to get the data.

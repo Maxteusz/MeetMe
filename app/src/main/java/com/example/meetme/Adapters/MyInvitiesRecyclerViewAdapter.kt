@@ -1,6 +1,5 @@
 package com.example.meetme.Adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +30,10 @@ class MyInvitiesRecyclerViewAdapter(private val invitations: List<Invited>) :
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title_textView : TextView = itemView.findViewById(R.id.title_textView)
+        val title_textView : TextView;
+        init {
+            title_textView = itemView.findViewById(R.id.title_textView)
+        }
 
     }
 }
