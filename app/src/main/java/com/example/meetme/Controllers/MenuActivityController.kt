@@ -32,7 +32,7 @@ class MenuActivityController {
     fun addInvitedActivity ()
     {
         val intent = Intent(menuActivity, NewInvitedActivity::class.java)
-       menuActivity!!.startActivity(intent)
+       menuActivity.startActivity(intent)
     }
 
     fun loadFirstFragment()

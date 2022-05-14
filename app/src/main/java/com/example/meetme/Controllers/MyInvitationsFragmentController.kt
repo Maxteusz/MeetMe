@@ -36,7 +36,7 @@ class MyInvitationsFragmentController {
                 for (item in snapshot.children) {
                     val invited: Invited? = snapshot.child(item.key!!).getValue(Invited::class.java)
                     invitations.add(invited!!)
-                    Log.i("Pobrano", invited?.place.toString())
+                    Log.i("Pobrano", invited.place)
                 }
                 Log.i("Rozmiar", invitations.size.toString())
                 myInvitationsFragment.adapter?.notifyDataSetChanged()
