@@ -100,7 +100,7 @@ class SaveInvitedController {
 
     private fun createInvited(location: Location): Invited {
 
-            //StartUpController.loggedUser.token = MenuActivityController.getRegistrationToken(newInvitedActivity)
+
         val iHavePlace = newInvitedActivity.havePlaceToDrink?.isChecked
         val place = ""
         val describe = newInvitedActivity.describe_textfield?.text.toString()
@@ -116,7 +116,16 @@ class SaveInvitedController {
         alertDialog.setMessage(message)
         alertDialog.setButton(
             AlertDialog.BUTTON_POSITIVE, "OK",
-            { dialog, which -> dialog.dismiss()})
+
+            { dialog, which ->
+                if(message.equals("Zaproszenie zostało dodane")) {
+                    dialog.dismiss()
+                    newInvitedActivity.finish()
+                }
+                else
+                    dialog.dismiss()
+
+            })
         alertDialog.show()
     }
 
@@ -140,5 +149,7 @@ class SaveInvitedController {
     {
         return MyInvitedFragment.invitations?.size
     }
+
+
 }
 

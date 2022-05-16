@@ -1,34 +1,42 @@
 package com.example.meetme.Activities
 
-import android.content.ContentValues.TAG
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.example.meetme.Controllers.MenuActivityController
 import com.example.meetme.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.android.gms.tasks.OnCompleteListener
-import android.util.Log
-import android.widget.FrameLayout
-import android.widget.Toast
-import com.example.meetme.Services.MyFirebaseMessagingService
-import com.google.firebase.messaging.FirebaseMessaging
+import com.google.android.material.navigation.NavigationBarView
 
 class MenuActivity : AppCompatActivity() {
     var floatingButton : FloatingActionButton? = null
+    var bottomNavigationView : BottomNavigationView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
         val menuActivityController = MenuActivityController(this)
+        bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView?.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener {
+            item ->
+            when(item.itemId) {
+                R.id.myInvitations_page -> {
+                   menuActivityController.loadMyInvitationsFragment()
+                    true
+                }
+                R.id.search_page -> {
+                    menuActivityController.loadSearchInvitationsFragment()
+                    true
+                }
+                else -> false
+            }
+        })
         floatingButton = findViewById(R.id.floating_button)
         floatingButton?.setOnClickListener({
             menuActivityController.addInvitedActivity()
         })
-
-        menuActivityController.loadFirstFragment()
+        menuActivityController.loadMyInvitationsFragment()
 
     }
 

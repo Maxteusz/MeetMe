@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/myInvitations_page"
         android:enabled="true"
-        android:icon="@color/common_google_signin_btn_text_dark"
-        android:title="Moje zgłoszenia"/>
-    <item
-        android:id="@+id/page_3"
-        android:enabled="true"
+        android:icon="@drawable/invited_icon"
         android:title="Zaproszenia"/>
-
-
-
+    <item
+        android:id="@+id/search_page"
+        android:enabled="true"
+        android:icon="@drawable/search_icon"
+        android:title="Szukaj"/>
 </menu>

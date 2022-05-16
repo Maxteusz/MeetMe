@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.meetme.Activities.MenuActivity
 import com.example.meetme.Activities.NewInvitedActivity
 import com.example.meetme.Fragments.MyInvitedFragment
+import com.example.meetme.Fragments.SearchInvitationsFragment
 import com.example.meetme.R
 
 
@@ -35,11 +36,21 @@ class MenuActivityController {
        menuActivity.startActivity(intent)
     }
 
-    fun loadFirstFragment()
+    fun loadMyInvitationsFragment()
     {
         val fm = menuActivity.supportFragmentManager
         val fragmentTransaction : FragmentTransaction
         val fragment = MyInvitedFragment()
+        fragmentTransaction = fm.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container_view,fragment).addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+
+    fun loadSearchInvitationsFragment()
+    {
+        val fm = menuActivity.supportFragmentManager
+        val fragmentTransaction : FragmentTransaction
+        val fragment = SearchInvitationsFragment()
         fragmentTransaction = fm.beginTransaction()
         fragmentTransaction.replace(R.id.fragment_container_view,fragment).addToBackStack(null)
         fragmentTransaction.commit()

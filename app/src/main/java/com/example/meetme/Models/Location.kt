@@ -1,10 +1,4 @@
 package com.example.meetme.Models
-
-import android.location.Location
-import android.location.LocationListener
-import android.os.Parcel
-import android.os.Parcelable
-
 class Location  {
 
     var  latitude : Double = 0.0
@@ -15,4 +9,6 @@ class Location  {
         this.longtitude = longtitude
     }
     constructor()
+
+
 }
