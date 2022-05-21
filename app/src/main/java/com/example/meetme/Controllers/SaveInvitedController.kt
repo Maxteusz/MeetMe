@@ -2,6 +2,7 @@ package com.example.meetme.Controllers
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -19,12 +20,12 @@ import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 class SaveInvitedController {
     var newInvitedActivity: NewInvitedActivity
-    var database = FirebaseDatabase.getInstance("https://meetme-5a1e5-default-rtdb.firebaseio.com")
-    lateinit var myRef: DatabaseReference;
     private var fusedLocationClient: FusedLocationProviderClient
 
 
@@ -56,9 +57,8 @@ class SaveInvitedController {
                 .addOnSuccessListener { location: android.location.Location? ->
                         if (location != null) {
                             currentLocation = Location(location.longitude, location.latitude)
-                            saveInvited(createInvited(currentLocation!!))
-                            loadingScreen.hideLoading()
-                            showDialogBox("Zaproszenie zostało dodane")
+                            saveInvited(createInvited(currentLocation!!), loadingScreen)
+
                         } else {
                             loadingScreen.hideLoading()
                             showSettingAlert()
@@ -92,10 +92,29 @@ class SaveInvitedController {
         }
     }
 
-    private fun saveInvited(invited: Invited) {
+    private fun saveInvited(invited: Invited, loadingScreen : LoadingScreen) {
+        //Zapisywanie do Firebase Realtime
+        /*var database = FirebaseDatabase.getInstance("https://meetme-5a1e5-default-rtdb.firebaseio.com")
+        var myRef: DatabaseReference;
+        myRef = database.getReference("Invitations").push()
+        myRef.setValue(invited)*/
 
-        myRef = database.getReference("invited").child(StartUpController.loggedUser.uid).push()
-        this.myRef.setValue(invited)
+        val db = Firebase.firestore
+        db.collection("Invitations")
+            .add(invited)
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                loadingScreen.hideLoading()
+                showDialogBox("Zaproszenie zostało dodane")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error adding document", e)
+                loadingScreen.hideLoading()
+                showSettingAlert()
+            }
+
+
+
     }
 
     private fun createInvited(location: Location): Invited {

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "994845884064",
+    "firebase_url": "https://meetme-5a1e5-default-rtdb.firebaseio.com",
     "project_id": "meetme-5a1e5",
     "storage_bucket": "meetme-5a1e5.appspot.com"
   },
@@ -13,6 +14,22 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "994845884064-j0q6j3p61pove3akmbcsnh59m7tihpgj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.meetme",
+            "certificate_hash": "bb579406d96413f5c37e8a9d8fbc16b60923a3c3"
+          }
+        },
+        {
+          "client_id": "994845884064-jj408419jdordgui67clo4trd1jprpvq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.meetme",
+            "certificate_hash": "271ad9661306c1f8bf063ba5459ab5d558d03117"
+          }
+        },
         {
           "client_id": "994845884064-htu205ala859gigucd9k43c8rnule0dh.apps.googleusercontent.com",
           "client_type": 3
