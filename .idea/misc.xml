@@ -23,7 +23,7 @@
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.29846014492753625" />
         <entry key="app/src/main/res/layout/activity_sms_cod_check.xml" value="0.18177083333333333" />
         <entry key="app/src/main/res/layout/activity_sms_code_check.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/card_my_invities_recycler_view_adapter.xml" value="0.18177083333333333" />
+        <entry key="app/src/main/res/layout/card_my_invities_recycler_view_adapter.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_my_invited.xml" value="0.18177083333333333" />
       </map>
     </option>

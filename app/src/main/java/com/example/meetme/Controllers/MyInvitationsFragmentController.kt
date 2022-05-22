@@ -51,6 +51,14 @@ class MyInvitationsFragmentController {
             }
         return invitations
     }
+
+    fun DeleteInvitation (uid : String)
+    {
+        db.collection("Invitations").document(uid)
+            .delete()
+            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
+    }
 }
 
 

@@ -6,16 +6,16 @@ import com.firebase.geofire.GeoLocation
 
 
 class Invited {
-     var uid : String? = null;
-    var iHavePlace : Boolean? = false;
-    var owner : User? = null;
-    var place : String = "";
-    var describe : String? = null
-    var title : String = ""
-  var longitude : Double = 0.0;
-          var latitude : Double = 0.0;
-    var kindOfAlcohol : String = ""
-    var geohash : String = ""
+    var uid: String? = null;
+    var iHavePlace: Boolean? = false;
+    var owner: User? = null;
+    var place: String = "";
+    var describe: String? = null
+    var title: String = ""
+    var longitude: Double = 0.0;
+    var latitude: Double = 0.0;
+    var kindOfAlcohol: String = ""
+    var geohash: String = ""
 
 
     constructor()

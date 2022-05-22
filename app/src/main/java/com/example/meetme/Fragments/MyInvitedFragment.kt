@@ -36,7 +36,7 @@ class MyInvitedFragment : Fragment() {
         layoutManager = LinearLayoutManager(context)
         invitations = myInvitedFragmentController.invitations
         recyclerView?.layoutManager = layoutManager
-        adapter = MyInvitiesRecyclerViewAdapter(invitations!!)
+        adapter = MyInvitiesRecyclerViewAdapter(invitations!!, myInvitedFragmentController)
         recyclerView?.adapter = adapter
         return view
     }
