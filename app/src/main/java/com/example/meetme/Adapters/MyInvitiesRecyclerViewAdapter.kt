@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.meetme.Controllers.MyInvitationsFragmentController
@@ -28,6 +29,13 @@ class MyInvitiesRecyclerViewAdapter(private val invitations: List<Invited>, val 
         holder.deleteInvited_button.setOnClickListener {
             view -> myInvitationsFragmentController.DeleteInvitation(invitations[position].uid.toString())
         }
+        if(invitations[position].iHavePlace == true)
+            holder.statusPlace_imageView.setImageResource(R.drawable.check_icon)
+        else
+            holder.statusPlace_imageView.setImageResource(R.drawable.unchecked_icon)
+        holder.place_textView.text = ItemsViewModel.place.toString()
+
+
     }
 
     override fun getItemCount(): Int {
@@ -38,9 +46,13 @@ class MyInvitiesRecyclerViewAdapter(private val invitations: List<Invited>, val 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title_textView : TextView;
         val deleteInvited_button : Button;
+        val statusPlace_imageView : ImageView;
+        val place_textView : TextView;
         init {
             title_textView = itemView.findViewById(R.id.title_textView)
             deleteInvited_button = itemView.findViewById(R.id.delete_invited_button)
+            statusPlace_imageView = itemView.findViewById(R.id.status_place)
+            place_textView = itemView.findViewById(R.id.place_textview)
         }
 
     }

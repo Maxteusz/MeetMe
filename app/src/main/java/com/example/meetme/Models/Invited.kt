@@ -31,7 +31,10 @@ class Invited {
     ) {
         this.iHavePlace = iHavePlace
         this.owner = StartUpController.loggedUser
-        this.place = place
+        if (this.iHavePlace == true && place.equals(""))
+        this.place = "U mnie"
+        else
+            this.place = place
         this.describe = describe
         this.title = title
         this.longitude = longitude
