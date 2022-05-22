@@ -1,5 +1,6 @@
 package com.example.meetme.Controllers
 
+import android.location.Geocoder
 import android.util.Log
 import com.example.meetme.Fragments.SearchInvitationsFragment
 import com.firebase.geofire.GeoFireUtils
@@ -15,24 +16,22 @@ import com.google.firebase.ktx.Firebase
 
 
 class SearchInvitationsFragmentController {
-    val searchInvitationsFragment : SearchInvitationsFragment
-   private var database = FirebaseDatabase.getInstance("https://meetme-5a1e5-default-rtdb.firebaseio.com").getReference("Invitations")
+    val searchInvitationsFragment: SearchInvitationsFragment
+
 
     constructor(searchInvitationsFragment: SearchInvitationsFragment) {
         this.searchInvitationsFragment = searchInvitationsFragment
     }
 
-     fun searchInvitations()
-    {
-        //test
-        val center = GeoLocation(51.5074, 0.1278)
+    fun searchInvitations() {
+        val center = GeoLocation(50.4467685, 18.8202764)
         val radiusInM = (50 * 1000).toDouble()
         val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
         val db = Firebase.firestore
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
         for (b in bounds) {
             val q: Query = db.collection("Invitations")
-                .orderBy("location")
+                .orderBy("geohash")
                 .startAt(b.startHash)
                 .endAt(b.endHash)
             tasks.add(q.get())
@@ -44,8 +43,8 @@ class SearchInvitationsFragmentController {
                 for (task in tasks) {
                     val snap = task.result
                     for (doc in snap.documents) {
-                        val lat = doc.getDouble("latitute")!!
-                        val lng = doc.getDouble("longtitude")!!
+                        val lat = doc.getDouble("latitude")!!
+                        val lng = doc.getDouble("longitude")!!
 
                         // We have to filter out a few false positives due to GeoHash
                         // accuracy, but most will match
@@ -54,13 +53,15 @@ class SearchInvitationsFragmentController {
                         if (distanceInM <= radiusInM) {
                             matchingDocs.add(doc)
                         }
-                        Log.i("Found", matchingDocs.size.toString())
                     }
                 }
+                Log.i("Nearest invitations", matchingDocs.size.toString())
 
-                Log.i("Found", matchingDocs.size.toString())
+                // matchingDocs contains the results
                 // ...
             }
+
+
     }
 
 

@@ -1,5 +1,8 @@
 package com.example.meetme.Models
 
+import com.example.meetme.Controllers.StartUpController
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
 
 
 class Invited {
@@ -9,50 +12,33 @@ class Invited {
     var place : String = "";
     var describe : String? = null
     var title : String = ""
-    var location : Location? = null
+  var longitude : Double = 0.0;
+          var latitude : Double = 0.0;
     var kindOfAlcohol : String = ""
+    var geohash : String = ""
 
 
-
-
-    constructor(
-        uid: String?,
-        iHavePlace: Boolean,
-        owner: User,
-        place: String,
-        describe: String?,
-        title: String,
-        location: Location?,
-        kindOfAlcohol: String
-    ) {
-        this.uid = uid
-        this.iHavePlace = iHavePlace
-        this.owner = owner
-        this.place = place
-        this.describe = describe
-        this.title = title
-        this.location = location
-        this.kindOfAlcohol = kindOfAlcohol
-    }
+    constructor()
 
     constructor(
         iHavePlace: Boolean?,
         place: String,
         describe: String?,
         title: String,
+        longitude: Double,
+        latitude: Double,
         kindOfAlcohol: String,
-        location: Location?,
-        owner : User
     ) {
         this.iHavePlace = iHavePlace
+        this.owner = StartUpController.loggedUser
         this.place = place
         this.describe = describe
         this.title = title
+        this.longitude = longitude
+        this.latitude = latitude
         this.kindOfAlcohol = kindOfAlcohol
-        this.location  = location
-        this.owner = owner
-
+        this.geohash = GeoFireUtils.getGeoHashForLocation(GeoLocation(latitude, longitude))
     }
-    constructor()
+
 
 }

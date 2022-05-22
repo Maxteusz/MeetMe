@@ -22,8 +22,8 @@ class MyInvitationsFragmentController {
 
     constructor(myInvitationsFragment: MyInvitedFragment) {
         this.myInvitationsFragment = myInvitationsFragment
-
         invitations = getMyInvitations()
+
     }
 
 
@@ -31,26 +31,7 @@ class MyInvitationsFragmentController {
     private fun getMyInvitations() : MutableList<Invited>
     {
         var invitations : MutableList<Invited> = ArrayList()
-       /* database.orderByChild("owner/uid").equalTo(StartUpController.loggedUser.uid).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                invitations.clear()
-                for (item in snapshot.children) {
-                    val invited: Invited? = snapshot.child(item.key!!).getValue(Invited::class.java)
-                    invitations.add(invited!!)
-                    Log.i("Pobrano", invited.place)
-                }
-                Log.i("Rozmiar", invitations.size.toString())
-                myInvitationsFragment.adapter?.notifyDataSetChanged()
-                Log.i("Adapter Controller", myInvitationsFragment.adapter?.itemCount.toString())
-            }
-            override fun onCancelled(error: DatabaseError) {
-                // calling on cancelled method when we receive
-                // any error or we are not able to get the data.
-                Toast.makeText(myInvitationsFragment.context, "Fail to get data.", Toast.LENGTH_SHORT).show()
-            }
-        })*/
-
-        db.collection("Invitations")
+              db.collection("Invitations")
             .whereEqualTo(FieldPath.of("owner", "uid"),StartUpController.loggedUser.uid)
             .addSnapshotListener { value, e ->
                 if (e != null) {
@@ -59,7 +40,10 @@ class MyInvitationsFragmentController {
                 }
                 invitations.clear()
                 for (doc in value!!) {
-                        invitations.add(doc.toObject())
+                    val invited = doc.toObject<Invited>()
+                    invited.uid = doc.id
+                        invitations.add(invited)
+                    Log.i("test", invitations[0].uid.toString())
                     }
 
                 myInvitationsFragment.adapter?.notifyDataSetChanged()
