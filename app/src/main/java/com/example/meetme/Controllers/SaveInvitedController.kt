@@ -46,7 +46,7 @@ class SaveInvitedController {
                 showPermissionAlert();
                 return
             } else {
-                val loadingScreen = LoadingScreen()
+                val loadingScreen = LoadingScreen("Dodawanie zaproszenia")
                 loadingScreen.displayLoading(newInvitedActivity)
                 fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null)
                     .addOnSuccessListener { location: android.location.Location? ->

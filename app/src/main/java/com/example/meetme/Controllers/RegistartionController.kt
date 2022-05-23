@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import com.example.meetme.Activities.MenuActivity
 import com.example.meetme.Activities.SmsCodeCheckActivity
+import com.example.meetme.Activities.UserInformationActivity
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
@@ -123,7 +124,7 @@ fun showCorrectLoginDialogBox(message: String) {
     alertDialog.setMessage(message)
     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
         { dialog, which -> dialog.dismiss()
-            val intent = Intent(smsCodeCheckActivity, MenuActivity::class.java)
+            val intent = Intent(smsCodeCheckActivity, UserInformationActivity::class.java)
             smsCodeCheckActivity!!.startActivity(intent)
         smsCodeCheckActivity!!.finish()})
     alertDialog.show()

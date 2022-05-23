@@ -20,7 +20,7 @@ class StartUpController {
         fun getCurrentUser (context : Context) : User
         {
 
-            val user =  User(currentUser!!.uid, "Maxteusz", User.Sex.Male, "fdfdfd",
+            val user =  User(currentUser!!.uid, "Maxteusz", "fdfdfd",
                 MenuActivityController.getRegistrationToken(context)
             )
             return user

@@ -11,6 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MeetMe">
+        <activity
+            android:name=".Activities.UserInformationActivity"
+            android:exported="false" />
+
         <service
             android:name=".Services.MyFirebaseMessagingService"
             android:exported="false">
@@ -22,7 +26,6 @@
         <activity
             android:name=".Activities.MenuActivity"
             android:exported="false" />
-
         <activity
             android:name=".Activities.NewInvitedActivity"
             android:exported="false" />
@@ -40,10 +43,7 @@
             android:exported="false" />
         <activity
             android:name=".Activities.MainActivity"
-            android:exported="false">
-        </activity>
-
-
+            android:exported="false"></activity>
     </application>
 
 </manifest>
