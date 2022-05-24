@@ -2,10 +2,7 @@ package com.example.meetme.Controllers
 
 import android.content.Context
 import android.content.Intent
-import com.example.meetme.Activities.LogoActivity
-import com.example.meetme.Activities.MainActivity
-import com.example.meetme.Activities.MenuActivity
-import com.example.meetme.Activities.NewInvitedActivity
+import com.example.meetme.Activities.*
 import com.example.meetme.Models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth

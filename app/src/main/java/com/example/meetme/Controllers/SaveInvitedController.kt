@@ -3,8 +3,13 @@ package com.example.meetme.Controllers
 import android.Manifest
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkInfo
+import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import androidx.core.app.ActivityCompat
@@ -12,11 +17,10 @@ import com.example.meetme.Activities.NewInvitedActivity
 import com.example.meetme.Dialogs.LoadingScreen
 import com.example.meetme.Fragments.MyInvitedFragment
 import com.example.meetme.Models.Invited
-import com.example.meetme.Models.Location
-import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -34,35 +38,40 @@ class SaveInvitedController {
 
     fun addInvited() {
         var currentLocation: GeoLocation?
-        if (CountOfMyInvitations()!! <= 2)
-            if (ActivityCompat.checkSelfPermission(
-                    newInvitedActivity,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    newInvitedActivity,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                showPermissionAlert();
-                return
-            } else {
-                val loadingScreen = LoadingScreen("Dodawanie zaproszenia")
-                loadingScreen.displayLoading(newInvitedActivity)
-                fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null)
-                    .addOnSuccessListener { location: android.location.Location? ->
-                        if (location != null) {
-                            currentLocation = GeoLocation(location.latitude, location.longitude)
-                            saveInvited(createInvited(currentLocation!!), loadingScreen)
+        if (CountOfMyInvitations()!! <= 2) {
+            if (isOnline(newInvitedActivity)) {
+                if (ActivityCompat.checkSelfPermission(
+                        newInvitedActivity,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        newInvitedActivity,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    showPermissionAlert();
+                    return
+                } else {
+                    val loadingScreen = LoadingScreen("Dodawanie zaproszenia")
+                    loadingScreen.displayLoading(newInvitedActivity)
+                    fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null)
+                        .addOnSuccessListener { location: android.location.Location? ->
+                            if (location != null) {
+                                currentLocation = GeoLocation(location.latitude, location.longitude)
+                                saveInvited(createInvited(currentLocation!!), loadingScreen)
 
-                        } else {
-                            loadingScreen.hideLoading()
-                            showSettingAlert()
+                            } else {
+                                loadingScreen.hideLoading()
+                                showSettingAlert()
+                            }
                         }
-                    }
+                }
             }
-        else
-            showDialogBox("Możesz mieć maksymalnie 3 zaproszenia")
+        }
+            else
+                showDialogBox("Możesz mieć maksymalnie 3 zaproszenia")
+
     }
+
 
     private fun showPermissionAlert() {
         if (ActivityCompat.checkSelfPermission(
@@ -155,6 +164,13 @@ class SaveInvitedController {
 
     private fun CountOfMyInvitations(): Int? {
         return MyInvitedFragment.invitations?.size
+    }
+
+    fun isOnline(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var activeNetworkInfo: NetworkInfo? = null
+        activeNetworkInfo = cm.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
     }
 
 
