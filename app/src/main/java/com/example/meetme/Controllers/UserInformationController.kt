@@ -26,6 +26,7 @@ import java.io.ByteArrayOutputStream
 class UserInformationController (val userInformationActivity: UserInformationActivity) {
 
     var db = Firebase.firestore
+   var refStorage = FirebaseStorage.getInstance().reference
 
 
 
@@ -38,8 +39,8 @@ class UserInformationController (val userInformationActivity: UserInformationAct
         val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         userInformationActivity.startActivityForResult(gallery,3)
     }
-    fun SaveImage (image : ImageView?)
-    {
+    fun SaveImage (image : ImageView?) {
+
         if(image != null) {
             val refStorage =
                 FirebaseStorage.getInstance().reference.child(StartUpController.loggedUser.uid)
@@ -48,9 +49,12 @@ class UserInformationController (val userInformationActivity: UserInformationAct
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             val data = baos.toByteArray()
             refStorage.putBytes(data)
-
         }
+
+
     }
+
+    fun DownloadImage () = refStorage.child(StartUpController.loggedUser.uid).getBytes(1024 * 1024 *5)
 
      fun SaveUserData() {
         val db = Firebase.firestore

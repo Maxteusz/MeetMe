@@ -50,9 +50,9 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="20dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             app:strokeWidth="6dp"
-            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+
             android:layout_gravity="center_horizontal"
             android:clipToOutline="true"
             app:contentPadding="10dp"
