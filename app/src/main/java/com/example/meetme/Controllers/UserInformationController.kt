@@ -78,7 +78,11 @@ class UserInformationController (val userInformationActivity: UserInformationAct
             .update(mapOf(
                 "nick" to user.nick,
                 "aboutMe" to user.aboutMe))
-            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+            .addOnSuccessListener {
+                val intent = Intent(userInformationActivity, MenuActivity::class.java)
+                userInformationActivity!!.startActivity(intent)
+                userInformationActivity!!.finish()
+                Log.d(TAG, "DocumentSnapshot successfully updated!") }
             .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
     }
 

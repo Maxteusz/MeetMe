@@ -1,5 +1,7 @@
 package com.example.meetme.Models
 
+import android.graphics.Bitmap
+import android.media.Image
 import android.widget.ImageView
 
 class User {
@@ -8,7 +10,7 @@ class User {
     var sex : Sex = Sex.None;
     var aboutMe : String = "";
     var token : String = ""
-    var image : ImageView? = null
+    var image : Bitmap? = null
 
     constructor(uid: String, nick: String, aboutMe: String, token : String) {
         this.uid = uid
@@ -31,7 +33,7 @@ class User {
         sex: Sex,
         aboutMe: String,
         token: String,
-        image: ImageView?
+        image: Bitmap?
     ) {
         this.uid = uid
         this.nick = nick
