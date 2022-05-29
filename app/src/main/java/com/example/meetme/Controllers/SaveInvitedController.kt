@@ -36,6 +36,7 @@ class SaveInvitedController {
 
     }
 
+
     fun addInvited() {
         var currentLocation: GeoLocation?
         if (CountOfMyInvitations()!! <= 2) {
@@ -49,6 +50,7 @@ class SaveInvitedController {
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     showPermissionAlert();
+
                     return
                 } else {
                     val loadingScreen = LoadingScreen("Dodawanie zaproszenia")
