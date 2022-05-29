@@ -41,4 +41,8 @@ class MyInvitedFragment : Fragment() {
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        adapter?.notifyDataSetChanged()
+    }
 }
