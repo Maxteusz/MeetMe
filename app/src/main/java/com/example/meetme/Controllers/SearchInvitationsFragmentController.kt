@@ -66,7 +66,7 @@ class SearchInvitationsFragmentController {
             val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
             for (b in bounds) {
                 val q: Query = db.collection("Invitations")
-                    .orderBy("geohash")
+                    .orderBy("geohasjh")
                     .startAt(b.startHash)
                     .endAt(b.endHash)
                 tasks.add(q.get())
