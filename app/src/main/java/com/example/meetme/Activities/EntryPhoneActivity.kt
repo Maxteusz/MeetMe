@@ -12,9 +12,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class MainActivity : AppCompatActivity() {
+class EntryPhoneActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
                 putExtra("PHONE_NUMBER", EPhoneNumber.text)
             }
             startActivity(intent)
-            //finish()
+            finish()
         })
 
     }

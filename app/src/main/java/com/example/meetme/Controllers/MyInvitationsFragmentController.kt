@@ -32,7 +32,7 @@ class MyInvitationsFragmentController {
     {
         var invitations : MutableList<Invited> = ArrayList()
               db.collection("Invitations")
-            .whereEqualTo(FieldPath.of("owner", "uid"),StartUpController.loggedUser.uid)
+            .whereEqualTo(FieldPath.of("owner", "uid"),StartUpController.loggedUser?.uid!!)
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     Log.w(TAG, "Listen failed.", e)

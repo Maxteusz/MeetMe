@@ -14,8 +14,7 @@ import com.firebase.geofire.GeoLocation
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
+import com.google.android.gms.tasks.*
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
@@ -53,7 +52,16 @@ class SearchInvitationsFragmentController {
             );
 
         }
-        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null)
+        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, object : CancellationToken()
+        {
+            override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
+                return CancellationTokenSource().token
+            }
+
+            override fun isCancellationRequested(): Boolean {
+                return false
+            }
+        })
     }
 
 

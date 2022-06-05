@@ -16,6 +16,7 @@ class Invited {
     var latitude: Double = 0.0;
     var kindOfAlcohol: String = ""
     var geohash: String = ""
+    var memebers : List<User>? = null
 
 
     constructor()

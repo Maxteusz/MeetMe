@@ -21,6 +21,9 @@ import com.firebase.geofire.GeoLocation
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -55,7 +58,18 @@ class SaveInvitedController {
                 } else {
                     val loadingScreen = LoadingScreen("Dodawanie zaproszenia")
                     loadingScreen.displayLoading(newInvitedActivity)
-                    fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null)
+                    fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, object : CancellationToken()
+                    {
+                        override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
+                            return CancellationTokenSource().token
+                        }
+
+                        override fun isCancellationRequested(): Boolean {
+                           return false
+                        }
+                    }
+
+                    )
                         .addOnSuccessListener { location: android.location.Location? ->
                             if (location != null) {
                                 currentLocation = GeoLocation(location.latitude, location.longitude)

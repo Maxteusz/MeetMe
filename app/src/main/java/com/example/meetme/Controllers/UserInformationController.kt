@@ -31,7 +31,7 @@ class UserInformationController (val userInformationActivity: UserInformationAct
 
 
   fun  ReadDataUser()  = db.collection("Users")
-                .whereEqualTo("uid", StartUpController.loggedUser.uid)
+                .whereEqualTo("uid", StartUpController.loggedUser?.uid)
                 .get()
 
     fun AddImage()
@@ -43,8 +43,8 @@ class UserInformationController (val userInformationActivity: UserInformationAct
 
         if(image != null) {
             val refStorage =
-                FirebaseStorage.getInstance().reference.child(StartUpController.loggedUser.uid)
-            val bitmap = (image?.drawable as BitmapDrawable).bitmap
+                FirebaseStorage.getInstance().reference.child(StartUpController.loggedUser?.uid!!)
+            val bitmap = (image.drawable as BitmapDrawable).bitmap
             val baos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             val data = baos.toByteArray()
@@ -54,19 +54,19 @@ class UserInformationController (val userInformationActivity: UserInformationAct
 
     }
 
-    fun DownloadImage () = refStorage.child(StartUpController.loggedUser.uid).getBytes(1024 * 1024 *5)
+    fun DownloadImage () = refStorage.child(StartUpController.loggedUser?.uid!!).getBytes(1024 * 1024 *5)
 
      fun SaveUserData() {
         val db = Firebase.firestore
         db.collection("Users")
             .add(CreateUser())
-            .addOnSuccessListener { documentReference ->
+            .addOnSuccessListener {
                 val intent = Intent(userInformationActivity, MenuActivity::class.java)
-                userInformationActivity!!.startActivity(intent)
-                userInformationActivity!!.finish()
+                userInformationActivity.startActivity(intent)
+                userInformationActivity.finish()
             }
             .addOnFailureListener { e ->
-                Log.w(ContentValues.TAG, "Error adding document", e)
+                Log.w(TAG, "Error adding document", e)
             }
 
     }
@@ -80,28 +80,29 @@ class UserInformationController (val userInformationActivity: UserInformationAct
                 "aboutMe" to user.aboutMe))
             .addOnSuccessListener {
                 val intent = Intent(userInformationActivity, MenuActivity::class.java)
-                userInformationActivity!!.startActivity(intent)
-                userInformationActivity!!.finish()
+                userInformationActivity.startActivity(intent)
+                userInformationActivity.finish()
                 Log.d(TAG, "DocumentSnapshot successfully updated!") }
             .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
     }
 
     private fun CreateUser () : User
     {
+
         val nick  = userInformationActivity.nick_TextView?.text.toString()
         val aboutMe : String = userInformationActivity.aboutMe_TextView?.text.toString()
         val token = MenuActivityController.getRegistrationToken(userInformationActivity)
-        val uid = StartUpController.loggedUser.uid
-        return User(uid,nick,aboutMe,token)
+        val uid = StartUpController.loggedUser?.uid
+        return User(uid!!,nick,aboutMe,token)
 
     }
 
       fun FillActivity (user : User)
     {
-        if(user!= null) {
+
             userInformationActivity.nick_TextView?.text = user.nick
-            userInformationActivity.aboutMe_TextView?.text = user?.aboutMe
-        }
+            userInformationActivity.aboutMe_TextView?.text = user.aboutMe
+
     }
 
 

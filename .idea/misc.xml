@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.18705035971223022" />
         <entry key="..\:/MeetMe2/app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.124" />
         <entry key="..\:/MeetMe2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1775" />
         <entry key="..\:/MeetMe2/app/src/main/res/drawable/invited_icon.xml" value="0.124" />
@@ -23,6 +24,7 @@
         <entry key="..\:/MeetMe44/app/src/main/res/layout/loading_dialog_layout.xml" value="0.338768115942029" />
         <entry key="app/src/main/res/drawable/check_icon.xml" value="0.189" />
         <entry key="app/src/main/res/drawable/unchecked_icon.xml" value="0.189" />
+        <entry key="app/src/main/res/layout/activity_invited_information.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/activity_logo.xml" value="0.29846014492753625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.30027173913043476" />
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.29846014492753625" />
@@ -30,6 +32,7 @@
         <entry key="app/src/main/res/layout/activity_sms_code_check.xml" value="0.33" />
         <entry key="app/src/main/res/layout/card_my_invities_recycler_view_adapter.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_my_invited.xml" value="0.18177083333333333" />
+        <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.22037037037037038" />
       </map>
     </option>
   </component>
@@ -38,5 +41,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.35625" />
+      </ProjectState>
+    </option>
   </component>
 </project>

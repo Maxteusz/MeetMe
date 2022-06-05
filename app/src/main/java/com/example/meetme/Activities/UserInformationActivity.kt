@@ -27,10 +27,10 @@ class UserInformationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_user_information)
         val userInformationController = UserInformationController(this)
         imageView = findViewById(R.id.user_image)
-        userInformationController.DownloadImage().addOnSuccessListener {
+      /*  userInformationController.DownloadImage().addOnSuccessListener {
             val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
             imageView?.setImageBitmap(bmp)
-        }
+        }*/
         imageView?.setOnClickListener { userInformationController.AddImage() }
         save_button = findViewById(R.id.save_button)
 
@@ -53,12 +53,14 @@ class UserInformationActivity : AppCompatActivity() {
             if(value.size() > 0) {
                 val user = value.toObjects<User>()[0]
                 idDocument = value.documents.first().id
-                Log.i("Token", idDocument)
+                StartUpController.loggedUser = user
+                Log.i("UserInformationActivity", user.nick + " " + user.aboutMe)
+
                 userInformationController.FillActivity(user)
             }
 
         }
-
+        Log.i("UserInformationActivity", StartUpController.loggedUser?.uid!!)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

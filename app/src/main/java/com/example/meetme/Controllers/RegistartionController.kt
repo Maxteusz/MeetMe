@@ -5,7 +5,6 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import com.example.meetme.Activities.MenuActivity
 import com.example.meetme.Activities.SmsCodeCheckActivity
 import com.example.meetme.Activities.UserInformationActivity
 import com.google.firebase.FirebaseException
@@ -35,6 +34,7 @@ class RegistartionController {
 
     private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
+
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
             Log.d(TAG, "onVerificationCompleted:$credential")
             smsCodeCheckActivity?.loadingProgressBar?.visibility = View.INVISIBLE
@@ -42,17 +42,26 @@ class RegistartionController {
         }
 
         override fun onVerificationFailed(e: FirebaseException) {
-            // This callback is invoked in an invalid request for verification is made,
-            // for instance if the the phone number format is not valid.
-            Log.w(TAG, "onVerificationFailed", e)
-            showCorrectLoginDialogBox("Coś poszło nie tak")
-            smsCodeCheckActivity?.loadingProgressBar?.visibility = View.INVISIBLE
-            //respondCodeInputActivity?.button?.isClickable = false
-            if (e is FirebaseAuthInvalidCredentialsException) {
-                // Invalid request
-            } else if (e is FirebaseTooManyRequestsException) {
-                // The SMS quota for the project has been exceeded
+            try {
+
+                // This callback is invoked in an invalid request for verification is made,
+                // for instance if the the phone number format is not valid.
+                Log.w(TAG, "onVerificationFailed", e)
+                showWrongLoginDialogBox("Coś poszło nie tak")
+                smsCodeCheckActivity?.loadingProgressBar?.visibility = View.INVISIBLE
+                //respondCodeInputActivity?.button?.isClickable = false
+                if (e is FirebaseAuthInvalidCredentialsException) {
+                    // Invalid request
+                } else if (e is FirebaseTooManyRequestsException) {
+                    // The SMS quota for the project has been exceeded
+                }
             }
+            catch (e : Exception)
+            {
+                showWrongLoginDialogBox("Coś poszło nie tak")
+                smsCodeCheckActivity?.loadingProgressBar?.visibility = View.INVISIBLE
+            }
+
 
 
         }
@@ -61,6 +70,7 @@ class RegistartionController {
             verificationId: String,
             token: PhoneAuthProvider.ForceResendingToken
         ) {// Save verification ID and resending token so we can use them later
+
             verificationID = verificationId
             respondToken = token;
             smsCodeCheckActivity?.loadingProgressBar?.visibility = View.INVISIBLE
@@ -90,12 +100,9 @@ class RegistartionController {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success")
-
-                        StartUpController.currentUser = firebaseAuth.currentUser
-                        if (StartUpController.currentUser != null) {
-                        StartUpController.loggedUser = StartUpController.getCurrentUser(
-                            smsCodeCheckActivity!!
-                        )
+                        StartUpController.firebaseUser = firebaseAuth.currentUser
+                        if (StartUpController.firebaseUser != null) {
+                            StartUpController.loggedUser?.uid = firebaseAuth.currentUser?.uid!!
                         showCorrectLoginDialogBox("Weryfikacja poprawna")
                         smsCodeCheckActivity?.loadingProgressBar?.visibility =
                             View.INVISIBLE

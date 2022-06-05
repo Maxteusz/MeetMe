@@ -14,11 +14,11 @@ class LogoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_logo)
-        Handler().postDelayed({
+
             val startUpController = StartUpController(this)
             startUpController.nextActivity()
-            finish()
-        }, 3000)
+
+
 
 
     }
