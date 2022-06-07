@@ -3,9 +3,10 @@ package com.example.meetme.Models
 import com.example.meetme.Controllers.StartUpController
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
+import java.io.Serializable
 
 
-class Invited {
+class Invited : Serializable {
     var uid: String? = null;
     var iHavePlace: Boolean? = false;
     var owner: User? = null;
@@ -17,6 +18,7 @@ class Invited {
     var kindOfAlcohol: String = ""
     var geohash: String = ""
     var memebers : List<User>? = null
+    var messages : List<Message>? = null
 
 
     constructor()

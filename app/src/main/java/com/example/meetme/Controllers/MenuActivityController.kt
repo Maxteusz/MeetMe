@@ -42,7 +42,7 @@ class MenuActivityController {
         val fragmentTransaction: FragmentTransaction
         val fragment = MyInvitedFragment()
         fragmentTransaction = fm.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment_container_view, fragment).addToBackStack(null)
+        fragmentTransaction.replace(R.id.fragment_container_view, fragment)
         fragmentTransaction.commit()
     }
 
@@ -51,7 +51,8 @@ class MenuActivityController {
         val fragmentTransaction: FragmentTransaction
         val fragment = SearchInvitationsFragment()
         fragmentTransaction = fm.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment_container_view, fragment).addToBackStack(null)
+        fragmentTransaction.replace(R.id.fragment_container_view, fragment)
+
         fragmentTransaction.commit()
     }
 

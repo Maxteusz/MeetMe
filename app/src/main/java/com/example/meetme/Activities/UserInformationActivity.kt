@@ -27,10 +27,10 @@ class UserInformationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_user_information)
         val userInformationController = UserInformationController(this)
         imageView = findViewById(R.id.user_image)
-      /*  userInformationController.DownloadImage().addOnSuccessListener {
+        userInformationController.DownloadImage().addOnSuccessListener {
             val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
             imageView?.setImageBitmap(bmp)
-        }*/
+        }
         imageView?.setOnClickListener { userInformationController.AddImage() }
         save_button = findViewById(R.id.save_button)
 

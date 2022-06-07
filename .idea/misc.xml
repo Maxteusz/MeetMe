@@ -20,7 +20,11 @@
         <entry key="..\:/MeetMe2/app/src/main/res/layout/layout_loading_dialog.xml" value="0.11302083333333333" />
         <entry key="..\:/MeetMe2/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/MeetMe44/app/src/main/res/layout/activity_user_information.xml" value="0.36666666666666664" />
+        <entry key="..\:/MeetMe44/app/src/main/res/layout/card_my_invities_recycler_view_adapter.xml" value="0.536" />
+        <entry key="..\:/MeetMe44/app/src/main/res/layout/card_searched_invited.xml" value="0.11197916666666667" />
         <entry key="..\:/MeetMe44/app/src/main/res/layout/fragment_my_invited.xml" value="0.18802083333333333" />
+        <entry key="..\:/MeetMe44/app/src/main/res/layout/fragment_search_invitations.xml" value="0.1421875" />
+        <entry key="..\:/MeetMe44/app/src/main/res/layout/fragment_searched_invitations.xml" value="0.1421875" />
         <entry key="..\:/MeetMe44/app/src/main/res/layout/loading_dialog_layout.xml" value="0.338768115942029" />
         <entry key="app/src/main/res/drawable/check_icon.xml" value="0.189" />
         <entry key="app/src/main/res/drawable/unchecked_icon.xml" value="0.189" />

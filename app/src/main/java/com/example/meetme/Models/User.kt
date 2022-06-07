@@ -3,8 +3,9 @@ package com.example.meetme.Models
 import android.graphics.Bitmap
 import android.media.Image
 import android.widget.ImageView
+import java.io.Serializable
 
-class User {
+class User : Serializable {
     var uid : String = "";
     var nick : String = "";
     var sex : Sex = Sex.None;

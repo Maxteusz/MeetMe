@@ -44,6 +44,7 @@ class StartUpController {
                     loggedUser = user;
                     intent = Intent(logoActivity, MenuActivity::class.java)
                     logoActivity.startActivity(intent)
+                    logoActivity.finish()
                     Log.i("User", loggedUser?.nick!!)
                 }
             }

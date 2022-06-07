@@ -17,6 +17,7 @@ class MenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
         val menuActivityController = MenuActivityController(this)
+        menuActivityController.loadMyInvitationsFragment()
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         bottomNavigationView?.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener {
             item ->
@@ -32,11 +33,12 @@ class MenuActivity : AppCompatActivity() {
                 else -> false
             }
         })
+
         floatingButton = findViewById(R.id.floating_button)
         floatingButton?.setOnClickListener({
             menuActivityController.addInvitedActivity()
         })
-        menuActivityController.loadMyInvitationsFragment()
+
 
     }
 

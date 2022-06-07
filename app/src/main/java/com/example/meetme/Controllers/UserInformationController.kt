@@ -35,6 +35,7 @@ class UserInformationController (val userInformationActivity: UserInformationAct
                 .get()
 
     fun AddImage()
+
     {
         val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         userInformationActivity.startActivityForResult(gallery,3)
@@ -45,8 +46,9 @@ class UserInformationController (val userInformationActivity: UserInformationAct
             val refStorage =
                 FirebaseStorage.getInstance().reference.child(StartUpController.loggedUser?.uid!!)
             val bitmap = (image.drawable as BitmapDrawable).bitmap
+            val reduceBitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true)
             val baos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            reduceBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             val data = baos.toByteArray()
             refStorage.putBytes(data)
         }
@@ -54,7 +56,7 @@ class UserInformationController (val userInformationActivity: UserInformationAct
 
     }
 
-    fun DownloadImage () = refStorage.child(StartUpController.loggedUser?.uid!!).getBytes(1024 * 1024 *5)
+    fun DownloadImage () = refStorage.child(StartUpController.loggedUser?.uid!!).getBytes(1024 * 1024 * 5)
 
      fun SaveUserData() {
         val db = Firebase.firestore

@@ -26,8 +26,6 @@ class MyInvitationsFragmentController {
 
     }
 
-
-
     private fun getMyInvitations() : MutableList<Invited>
     {
         var invitations : MutableList<Invited> = ArrayList()

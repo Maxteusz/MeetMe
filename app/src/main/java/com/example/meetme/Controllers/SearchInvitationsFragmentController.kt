@@ -4,28 +4,30 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.pm.PackageManager
-import android.location.Geocoder
-import android.util.Log
+import android.os.Bundle
 import androidx.core.app.ActivityCompat
-import com.example.meetme.Activities.MenuActivity
+import androidx.fragment.app.FragmentTransaction
 import com.example.meetme.Fragments.SearchInvitationsFragment
+import com.example.meetme.Fragments.SearchedInvitationsFragment
+import com.example.meetme.Models.Invited
+import com.example.meetme.R
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.*
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
 
 class SearchInvitationsFragmentController {
     val searchInvitationsFragment: SearchInvitationsFragment
     private var fusedLocationClient: FusedLocationProviderClient
+
 
 
     constructor(searchInvitationsFragment: SearchInvitationsFragment) {
@@ -81,30 +83,46 @@ class SearchInvitationsFragmentController {
             }
             Tasks.whenAllComplete(tasks)
                 .addOnCompleteListener {
-                    val matchingDocs: MutableList<DocumentSnapshot> = ArrayList()
-                    matchingDocs.clear()
+                    val invitations: MutableList<Invited> = ArrayList()
+                    invitations.clear()
                     for (task in tasks) {
                         val snap = task.result
                         for (doc in snap.documents) {
                             val lat = doc.getDouble("latitude")!!
                             val lng = doc.getDouble("longitude")!!
 
-                            // We have to filter out a few false positives due to GeoHash
-                            // accuracy, but most will match
+
                             val docLocation = GeoLocation(lat, lng)
                             val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center)
                             if (distanceInM <= radiusInM) {
-                                matchingDocs.add(doc)
+                                val invited = doc.toObject<Invited>()
+                                invitations.add(invited!!)
                             }
                         }
                     }
-                    searchInvitationsFragment.search_button?.text = matchingDocs.size.toString()
-                    Log.i("Nearest invitations", matchingDocs.size.toString())
+
+                   OpenSearchedInvitationsFragment(invitations as ArrayList<Invited>)
                 }
                 .addOnFailureListener { showDialogBox("Błąd, spróbuj pornownie.") }
         }
 
 
+
+    }
+
+    private fun OpenSearchedInvitationsFragment(invitations : ArrayList<Invited>)
+    {
+        val bundle = Bundle ()
+        bundle.putSerializable("invitations", invitations)
+        val activity = searchInvitationsFragment.activity
+        val fm =    activity?.supportFragmentManager
+        val fragmentTransaction: FragmentTransaction
+        val fragment = SearchedInvitationsFragment()
+        fragment.arguments = bundle
+        fragmentTransaction = fm?.beginTransaction()!!
+        fragmentTransaction.replace(R.id.fragment_container_view, fragment)
+
+        fragmentTransaction.commit()
 
     }
 
