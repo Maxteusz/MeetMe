@@ -76,19 +76,12 @@ class SearchInvitationsFragmentController {
             val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
             val db = Firebase.firestore
             val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
-            db.collection("Invitations")
-                .whereEqualTo(FieldPath.of("owner", "uid"),StartUpController.loggedUser?.uid!!)
-                .get()
-                .addOnSuccessListener {
                     for (b in bounds) {
                         val q: Query = db.collection("Invitations")
                             .orderBy("geohash")
-                            .
                             .startAt(b.startHash)
                             .endAt(b.endHash)
                         tasks.add(q.get())
-
-                }
 
             }
             Tasks.whenAllComplete(tasks)
@@ -106,6 +99,7 @@ class SearchInvitationsFragmentController {
                             val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center)
                             if (distanceInM <= radiusInM) {
                                 val invited = doc.toObject<Invited>()
+                                if (invited?.owner?.uid != StartUpController.firebaseUser?.uid)
                                 invitations.add(invited!!)
                             }
                         }

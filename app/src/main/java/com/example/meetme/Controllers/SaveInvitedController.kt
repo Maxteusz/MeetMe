@@ -29,6 +29,7 @@ import com.google.firebase.ktx.Firebase
 class SaveInvitedController {
     var newInvitedActivity: NewInvitedActivity
     private var fusedLocationClient: FusedLocationProviderClient
+    private var loadingScreen : LoadingScreen = LoadingScreen("Dodawanie zaproszenia");
 
 
     constructor(newInvitedActivity: NewInvitedActivity) {
@@ -39,8 +40,11 @@ class SaveInvitedController {
 
 
     fun addInvited() {
+
         var currentLocation: GeoLocation?
+        if(checkValidation())
         if (CountOfMyInvitations()!! <= 2) {
+            loadingScreen.displayLoading(newInvitedActivity)
             if (isOnline(newInvitedActivity)) {
                 if (ActivityCompat.checkSelfPermission(
                         newInvitedActivity,
@@ -51,18 +55,14 @@ class SaveInvitedController {
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     showPermissionAlert();
-
                     return
                 } else {
-
-
                     fusedLocationClient.getCurrentLocation(
                         PRIORITY_HIGH_ACCURACY,
                         object : CancellationToken() {
                             override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
                                 return CancellationTokenSource().token
                             }
-
                             override fun isCancellationRequested(): Boolean {
                                 return false
                             }
@@ -77,7 +77,7 @@ class SaveInvitedController {
                                     saveInvited(invited)
 
                             } else {
-
+                                loadingScreen.hideLoading()
                                 showSettingAlert()
                             }
                         }
@@ -111,9 +111,6 @@ class SaveInvitedController {
     }
 
     private fun saveInvited(invited: Invited) {
-        val loadingScreen = LoadingScreen("Dodawanie zaproszenia")
-        loadingScreen.displayLoading(newInvitedActivity)
-
             val db = Firebase.firestore
             db.collection("Invitations")
                 .add(invited)
@@ -131,28 +128,34 @@ class SaveInvitedController {
 
     }
 
-    private fun createInvited(location: GeoLocation): Invited? {
-        var title = ""
-        val iHavePlace = newInvitedActivity.havePlaceToDrink?.isChecked
-        val place = ""
-        val describe = newInvitedActivity.describe_textfield?.text.toString()
-        if (newInvitedActivity.title_textfield?.text.toString() != "")
-            title = newInvitedActivity.title_textfield?.text.toString()
-        else {
+    fun checkValidation () : Boolean
+    {
+        if (newInvitedActivity.title_textfield?.text.toString() == "") {
             newInvitedActivity.title_textfield?.error = "Tytuł jest wymagany"
-            return null
+            return false
         }
-        val alcohol = newInvitedActivity.spinner_alcokohol?.text.toString()
-        val invited = Invited(
-            iHavePlace,
-            place,
-            describe,
-            title,
-            location.longitude,
-            location.latitude,
-            alcohol
-        )
-        return invited
+        return true;
+
+
+    }
+
+    private fun createInvited(location: GeoLocation): Invited? {
+            val iHavePlace = newInvitedActivity.havePlaceToDrink?.isChecked
+            val place = ""
+            val describe = newInvitedActivity.describe_textfield?.text.toString()
+            val title = newInvitedActivity.title_textfield?.text.toString()
+            val alcohol = newInvitedActivity.spinner_alcokohol?.text.toString()
+            val invited = Invited(
+                iHavePlace,
+                place,
+                describe,
+                title,
+                location.longitude,
+                location.latitude,
+                alcohol
+            )
+            return invited
+
     }
 
     private fun showDialogBox(message: String) {
