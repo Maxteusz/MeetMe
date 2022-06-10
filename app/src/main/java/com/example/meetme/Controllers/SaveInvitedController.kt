@@ -7,9 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.net.NetworkInfo
-import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import androidx.core.app.ActivityCompat
@@ -56,35 +54,37 @@ class SaveInvitedController {
 
                     return
                 } else {
-                    val loadingScreen = LoadingScreen("Dodawanie zaproszenia")
-                    loadingScreen.displayLoading(newInvitedActivity)
-                    fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, object : CancellationToken()
-                    {
-                        override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
-                            return CancellationTokenSource().token
-                        }
 
-                        override fun isCancellationRequested(): Boolean {
-                           return false
+
+                    fusedLocationClient.getCurrentLocation(
+                        PRIORITY_HIGH_ACCURACY,
+                        object : CancellationToken() {
+                            override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
+                                return CancellationTokenSource().token
+                            }
+
+                            override fun isCancellationRequested(): Boolean {
+                                return false
+                            }
                         }
-                    }
 
                     )
                         .addOnSuccessListener { location: android.location.Location? ->
                             if (location != null) {
                                 currentLocation = GeoLocation(location.latitude, location.longitude)
-                                saveInvited(createInvited(currentLocation!!), loadingScreen)
+                                val invited = createInvited(currentLocation!!)
+                                if (invited != null)
+                                    saveInvited(invited)
 
                             } else {
-                                loadingScreen.hideLoading()
+
                                 showSettingAlert()
                             }
                         }
                 }
             }
-        }
-            else
-                showDialogBox("Możesz mieć maksymalnie 3 zaproszenia")
+        } else
+            showDialogBox("Możesz mieć maksymalnie 3 zaproszenia")
 
     }
 
@@ -110,28 +110,38 @@ class SaveInvitedController {
         }
     }
 
-    private fun saveInvited(invited: Invited, loadingScreen: LoadingScreen) {
-        val db = Firebase.firestore
-        db.collection("Invitations")
-            .add(invited)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                loadingScreen.hideLoading()
-                showDialogBox("Zaproszenie zostało dodane")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-                loadingScreen.hideLoading()
-                showSettingAlert()
-            }
+    private fun saveInvited(invited: Invited) {
+        val loadingScreen = LoadingScreen("Dodawanie zaproszenia")
+        loadingScreen.displayLoading(newInvitedActivity)
+
+            val db = Firebase.firestore
+            db.collection("Invitations")
+                .add(invited)
+                .addOnSuccessListener { documentReference ->
+                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                    loadingScreen.hideLoading()
+                    showDialogBox("Zaproszenie zostało dodane")
+                }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error adding document", e)
+                    loadingScreen.hideLoading()
+                    showSettingAlert()
+                }
+
 
     }
 
-    private fun createInvited(location: GeoLocation): Invited {
+    private fun createInvited(location: GeoLocation): Invited? {
+        var title = ""
         val iHavePlace = newInvitedActivity.havePlaceToDrink?.isChecked
         val place = ""
         val describe = newInvitedActivity.describe_textfield?.text.toString()
-        val title = newInvitedActivity.title_textfield?.text.toString()
+        if (newInvitedActivity.title_textfield?.text.toString() != "")
+            title = newInvitedActivity.title_textfield?.text.toString()
+        else {
+            newInvitedActivity.title_textfield?.error = "Tytuł jest wymagany"
+            return null
+        }
         val alcohol = newInvitedActivity.spinner_alcokohol?.text.toString()
         val invited = Invited(
             iHavePlace,
@@ -184,7 +194,7 @@ class SaveInvitedController {
 
     fun isOnline(context: Context): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        var activeNetworkInfo: NetworkInfo? = null
+        var activeNetworkInfo: NetworkInfo?
         activeNetworkInfo = cm.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
     }

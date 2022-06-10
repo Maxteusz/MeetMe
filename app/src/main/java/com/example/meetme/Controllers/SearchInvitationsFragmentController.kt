@@ -17,6 +17,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.*
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -68,18 +69,27 @@ class SearchInvitationsFragmentController {
 
 
     fun searchInvitations() {
+
         getCurrentLocation().addOnSuccessListener {
             val center = GeoLocation(it.latitude, it.longitude)
-            val radiusInM = (5 * 1000).toDouble()
+            val radiusInM = (500000 * 1000).toDouble()
             val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
             val db = Firebase.firestore
             val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
-            for (b in bounds) {
-                val q: Query = db.collection("Invitations")
-                    .orderBy("geohash")
-                    .startAt(b.startHash)
-                    .endAt(b.endHash)
-                tasks.add(q.get())
+            db.collection("Invitations")
+                .whereEqualTo(FieldPath.of("owner", "uid"),StartUpController.loggedUser?.uid!!)
+                .get()
+                .addOnSuccessListener {
+                    for (b in bounds) {
+                        val q: Query = db.collection("Invitations")
+                            .orderBy("geohash")
+                            .
+                            .startAt(b.startHash)
+                            .endAt(b.endHash)
+                        tasks.add(q.get())
+
+                }
+
             }
             Tasks.whenAllComplete(tasks)
                 .addOnCompleteListener {

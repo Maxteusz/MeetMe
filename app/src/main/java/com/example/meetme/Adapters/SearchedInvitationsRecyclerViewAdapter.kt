@@ -36,8 +36,8 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
         holder.place_textView.text = ItemsViewModel.place
         searchedInvitationsFragmentController.DownloadImage(ItemsViewModel.owner?.uid!!).addOnCompleteListener {
             val bmp = BitmapFactory.decodeByteArray(it.result, 0,it.result.size)
-            val reduceBitmap = Bitmap.createScaledBitmap(bmp, 200, 200, true)
-           holder.user_image?.setImageBitmap(reduceBitmap)
+            val reduceBitmap = Bitmap.createScaledBitmap(bmp, 250, 250, true)
+           holder.user_image.setImageBitmap(reduceBitmap)
         }
     }
 

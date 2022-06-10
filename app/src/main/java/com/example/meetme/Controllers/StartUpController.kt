@@ -52,6 +52,7 @@ class StartUpController {
         } else {
             intent = Intent(logoActivity, EntryPhoneActivity::class.java)
             logoActivity.startActivity(intent)
+            logoActivity.finish()
         }
     }
 
