@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
         <activity
+            android:name=".Activities.DetailsInviteActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.InvitedInformationActivity"
             android:exported="false" />
         <activity

@@ -12,21 +12,19 @@ import com.example.meetme.R
 
 class SearchInvitationsFragment : Fragment() {
 
-var search_button : Button? = null;
-    var searchInvitationsFragmentController : SearchInvitationsFragmentController? = null
-
-
+    var search_button: Button? = null;
+    var searchInvitationsFragmentController: SearchInvitationsFragmentController? = null
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view : View = inflater.inflate(R.layout.fragment_search_invitations, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_search_invitations, container, false)
         searchInvitationsFragmentController = SearchInvitationsFragmentController(this)
 
         search_button = view.findViewById(R.id.search_button)
-        search_button?.setOnClickListener {view ->
+        search_button?.setOnClickListener { view ->
             searchInvitationsFragmentController?.searchInvitations()
         }
 

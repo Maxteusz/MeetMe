@@ -29,7 +29,7 @@ class SearchedInvitationsFragment : Fragment() {
         recyclerView = view?.findViewById(R.id.serched_invitations_recyclerview)
         layoutManager = LinearLayoutManager(context)
         recyclerView?.layoutManager = layoutManager
-        adapter = SearchedInvitationsRecyclerViewAdapter(searchedInvitationsFragmentController.invitations ,searchedInvitationsFragmentController)
+        adapter = SearchedInvitationsRecyclerViewAdapter(searchedInvitationsFragmentController.invitations ,searchedInvitationsFragmentController,this.requireContext())
         recyclerView?.adapter = adapter
 
         return view

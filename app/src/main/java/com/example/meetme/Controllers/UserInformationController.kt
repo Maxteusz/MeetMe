@@ -46,7 +46,7 @@ class UserInformationController (val userInformationActivity: UserInformationAct
             val refStorage =
                 FirebaseStorage.getInstance().reference.child(StartUpController.loggedUser?.uid!!)
             val bitmap = (image.drawable as BitmapDrawable).bitmap
-            val reduceBitmap = Bitmap.createScaledBitmap(bitmap, 500, 500, true)
+            val reduceBitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, true)
             val baos = ByteArrayOutputStream()
             reduceBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             val data = baos.toByteArray()
