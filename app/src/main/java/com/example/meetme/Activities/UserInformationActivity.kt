@@ -53,14 +53,14 @@ class UserInformationActivity : AppCompatActivity() {
             if(value.size() > 0) {
                 val user = value.toObjects<User>()[0]
                 idDocument = value.documents.first().id
-                StartUpController.loggedUser = user
+                StartUpController.currentUser = user
                 Log.i("UserInformationActivity", user.nick + " " + user.aboutMe)
 
                 userInformationController.FillActivity(user)
             }
 
         }
-        Log.i("UserInformationActivity", StartUpController.loggedUser?.uid!!)
+        Log.i("UserInformationActivity", StartUpController.currentUser?.uid!!)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

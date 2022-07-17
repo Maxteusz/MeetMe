@@ -31,7 +31,7 @@ class UserInformationController (val userInformationActivity: UserInformationAct
 
 
   fun  ReadDataUser()  = db.collection("Users")
-                .whereEqualTo("uid", StartUpController.loggedUser?.uid)
+                .whereEqualTo("uid", StartUpController.currentUser?.uid)
                 .get()
 
     fun AddImage()
@@ -44,7 +44,7 @@ class UserInformationController (val userInformationActivity: UserInformationAct
 
         if(image != null) {
             val refStorage =
-                FirebaseStorage.getInstance().reference.child(StartUpController.loggedUser?.uid!!)
+                FirebaseStorage.getInstance().reference.child(StartUpController.currentUser?.uid!!)
             val bitmap = (image.drawable as BitmapDrawable).bitmap
             val reduceBitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, true)
             val baos = ByteArrayOutputStream()
@@ -56,7 +56,7 @@ class UserInformationController (val userInformationActivity: UserInformationAct
 
     }
 
-    fun DownloadImage () = refStorage.child(StartUpController.loggedUser?.uid!!).getBytes(1024 * 1024 * 5)
+    fun DownloadImage () = refStorage.child(StartUpController.currentUser?.uid!!).getBytes(1024 * 1024 * 5)
 
      fun SaveUserData() {
         val db = Firebase.firestore
@@ -94,7 +94,7 @@ class UserInformationController (val userInformationActivity: UserInformationAct
         val nick  = userInformationActivity.nick_TextView?.text.toString()
         val aboutMe : String = userInformationActivity.aboutMe_TextView?.text.toString()
         val token = MenuActivityController.getRegistrationToken(userInformationActivity)
-        val uid = StartUpController.loggedUser?.uid
+        val uid = StartUpController.currentUser?.uid
         return User(uid!!,nick,aboutMe,token)
 
     }

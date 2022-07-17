@@ -33,7 +33,7 @@ class Invited : Serializable {
         kindOfAlcohol: String,
     ) {
         this.iHavePlace = iHavePlace
-        this.owner = StartUpController.loggedUser
+        this.owner = StartUpController.currentUser
         if (this.iHavePlace == true && place.equals(""))
         this.place = "U mnie"
         else

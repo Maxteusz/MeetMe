@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import com.example.meetme.Activities.SmsCodeCheckActivity
 import com.example.meetme.Activities.UserInformationActivity
+import com.example.meetme.Models.User
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
@@ -100,13 +101,13 @@ class RegistartionController {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success")
-                        StartUpController.firebaseUser = firebaseAuth.currentUser
-                        if (StartUpController.firebaseUser != null) {
-                            StartUpController.loggedUser?.uid = firebaseAuth.currentUser?.uid!!
+                        StartUpController.currentUser = User(firebaseAuth)
+
+
                         showCorrectLoginDialogBox("Weryfikacja poprawna")
                         smsCodeCheckActivity?.loadingProgressBar?.visibility =
                             View.INVISIBLE
-                    }
+
 
                         } else {
                             // Sign in failed, display a message and update the UI

@@ -99,7 +99,7 @@ class SearchInvitationsFragmentController {
                             val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center)
                             if (distanceInM <= radiusInM) {
                                 val invited = doc.toObject<Invited>()
-                                if (invited?.owner?.uid != StartUpController.firebaseUser?.uid)
+                                if (invited?.owner?.uid != StartUpController.currentUser?.uid)
                                 invitations.add(invited!!)
                             }
                         }
@@ -136,7 +136,7 @@ class SearchInvitationsFragmentController {
         alertDialog.setButton(
             AlertDialog.BUTTON_POSITIVE, "OK",
 
-            { dialog, which ->
+            { dialog, _ ->
                     dialog.dismiss()
 
             })
