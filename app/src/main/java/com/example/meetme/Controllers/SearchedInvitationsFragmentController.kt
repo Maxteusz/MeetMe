@@ -10,7 +10,6 @@ class SearchedInvitationsFragmentController {
 
     val searchedInvitationsFragment : SearchedInvitationsFragment
     val invitations : ArrayList<Invited>
-    var db = Firebase.firestore
     var refStorage = FirebaseStorage.getInstance().reference
 
     constructor(searchedInvitationsFragment: SearchedInvitationsFragment) {

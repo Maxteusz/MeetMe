@@ -1,23 +1,27 @@
 package com.example.meetme.Adapters
 
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.meetme.Activities.DetailsInviteActivity
-import com.example.meetme.Activities.MenuActivity
 import com.example.meetme.Controllers.SearchedInvitationsFragmentController
+import com.example.meetme.Controllers.StartUpController
 
 import com.example.meetme.Models.Invited
+import com.example.meetme.Models.Request
 import com.example.meetme.R
 import com.google.android.material.card.MaterialCardView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.lang.Exception
 
 class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invited>, val searchedInvitationsFragmentController: SearchedInvitationsFragmentController, val context: Context) :
@@ -49,9 +53,40 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
             catch (e : Exception) {}
         }
         holder.cardView.setOnClickListener {
-            val intent = Intent(context, DetailsInviteActivity::class.java)
-            context.startActivity(intent)
+            CheckExistReqest(ItemsViewModel)
         }
+    }
+
+    fun SendRequest(invite : Invited)
+    {
+        val db = Firebase.firestore
+        db.collection("Requests")
+            .add(Request(StartUpController.currentUser?.uid!!,invite.uid!!, invite.owner?.uid!!))
+            .addOnSuccessListener { documentReference ->
+                Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+
+            }
+            .addOnFailureListener { e ->
+                Log.w(ContentValues.TAG, "Error adding document", e)
+            }
+    }
+
+    fun CheckExistReqest (invite: Invited)
+    {
+        val db = Firebase.firestore
+        db.collection("Requests")
+            .whereEqualTo("ownerID", invite.owner?.uid)
+            .whereEqualTo("PersonID", StartUpController.currentUser?.uid)
+            .get()
+            .addOnSuccessListener { result ->
+                Log.i("Znaleziono", result.size().toString() + StartUpController.currentUser?.uid)
+                for (document in result) {
+
+                }
+            }
+            .addOnFailureListener { exception ->
+
+            }
     }
 
     override fun getItemCount(): Int {

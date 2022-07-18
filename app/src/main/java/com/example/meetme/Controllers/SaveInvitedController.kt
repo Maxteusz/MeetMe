@@ -24,8 +24,6 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.type.Date
-import com.google.type.DateTime
 
 
 class SaveInvitedController {
@@ -115,10 +113,11 @@ class SaveInvitedController {
     private fun saveInvited(invited: Invited) {
         try {
             val db = Firebase.firestore
+            val ref = db.collection("Invitations").document().id
+            invited.uid = ref
             db.collection("Invitations")
                 .add(invited)
                 .addOnSuccessListener { documentReference ->
-                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
                     loadingScreen.hideLoading()
                     showDialogBox("Zaproszenie zostało dodane")
                 }

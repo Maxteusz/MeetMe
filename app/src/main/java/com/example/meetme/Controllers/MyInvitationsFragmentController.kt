@@ -39,7 +39,6 @@ class MyInvitationsFragmentController {
                 invitations.clear()
                 for (doc in value!!) {
                     val invited = doc.toObject<Invited>()
-                    invited.uid = doc.id
                         invitations.add(invited)
                     Log.i("test", invitations[0].uid.toString())
                     }
