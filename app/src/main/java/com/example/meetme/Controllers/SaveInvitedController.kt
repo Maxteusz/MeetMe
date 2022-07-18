@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.type.Date
+import com.google.type.DateTime
 
 
 class SaveInvitedController {
@@ -111,6 +113,7 @@ class SaveInvitedController {
     }
 
     private fun saveInvited(invited: Invited) {
+        try {
             val db = Firebase.firestore
             db.collection("Invitations")
                 .add(invited)
@@ -124,6 +127,11 @@ class SaveInvitedController {
                     loadingScreen.hideLoading()
                     showSettingAlert()
                 }
+        }
+        catch (e :Exception) {
+            loadingScreen.hideLoading()
+            Log.i("Exception", e.toString())
+        }
 
 
     }

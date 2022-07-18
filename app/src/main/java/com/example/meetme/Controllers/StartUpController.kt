@@ -39,7 +39,7 @@ class StartUpController {
             ReadDataUser().addOnSuccessListener { value ->
                 if (value.size() > 0) {
                     val user = value.toObjects<User>()[0]
-                   // currentUser = user;
+                    currentUser = user;
                     intent = Intent(logoActivity, MenuActivity::class.java)
                     logoActivity.startActivity(intent)
                     logoActivity.finish()

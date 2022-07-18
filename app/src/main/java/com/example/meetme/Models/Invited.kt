@@ -3,10 +3,12 @@ package com.example.meetme.Models
 import com.example.meetme.Controllers.StartUpController
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
+import com.google.firebase.firestore.Exclude
 import java.io.Serializable
 
 
 class Invited : Serializable {
+    @Exclude
     var uid: String? = null;
     var iHavePlace: Boolean? = false;
     var owner: User? = null;

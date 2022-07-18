@@ -2,6 +2,7 @@ package com.example.meetme.Models
 
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Exclude
 import java.io.Serializable
 
 class User : Serializable {
@@ -9,7 +10,8 @@ class User : Serializable {
     var nick : String = "";
     var aboutMe : String = "";
     var token : String = ""
-    var auth : FirebaseAuth? = null;
+    @Exclude
+    private var auth : FirebaseAuth? = null;
 
     constructor(uid: String, nick: String, aboutMe: String, token : String) {
         this.uid = uid
@@ -24,6 +26,7 @@ class User : Serializable {
         this.uid = auth.currentUser?.uid.toString()
     }
 
+    @Exclude
     fun isUserLogged() : Boolean
     {
         if(auth?.currentUser == null)
