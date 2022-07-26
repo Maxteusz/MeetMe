@@ -99,7 +99,7 @@ class SearchInvitationsFragmentController {
                             val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center)
                             if (distanceInM <= radiusInM) {
                                 val invited = doc.toObject<Invited>()
-                               // if (invited?.owner?.uid != StartUpController.currentUser?.uid)
+                                if (invited?.owner?.uid != StartUpController.currentUser?.uid)
                                 invitations.add(invited!!)
                             }
                         }
@@ -125,6 +125,7 @@ class SearchInvitationsFragmentController {
         fragment.arguments = bundle
         fragmentTransaction = fm?.beginTransaction()!!
         fragmentTransaction.replace(R.id.fragment_container_view, fragment)
+
         fragmentTransaction.commit()
 
     }
@@ -135,7 +136,7 @@ class SearchInvitationsFragmentController {
         alertDialog.setButton(
             AlertDialog.BUTTON_POSITIVE, "OK",
 
-            { dialog, _ ->
+            { dialog, which ->
                     dialog.dismiss()
 
             })

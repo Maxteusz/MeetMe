@@ -15,13 +15,10 @@ import com.example.meetme.Activities.NewInvitedActivity
 import com.example.meetme.Dialogs.LoadingScreen
 import com.example.meetme.Fragments.MyInvitedFragment
 import com.example.meetme.Models.Invited
+import com.example.meetme.Models.Location
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.CancellationToken
-import com.google.android.gms.tasks.CancellationTokenSource
-import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -30,16 +27,32 @@ class SaveInvitedController {
     var newInvitedActivity: NewInvitedActivity
     private var fusedLocationClient: FusedLocationProviderClient
     private var loadingScreen : LoadingScreen = LoadingScreen("Dodawanie zaproszenia");
+    private var location : Location
 
 
     constructor(newInvitedActivity: NewInvitedActivity) {
         this.newInvitedActivity = newInvitedActivity
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(newInvitedActivity)
+        location = Location(newInvitedActivity)
+
+    }
+
+  fun addInvited()
+    {
+        location.getLocation {
+
+            val invited = createInvited(GeoLocation(it.latitude,it.longitude))
+            if (CountOfMyInvitations()!! <= 2)
+            if(checkValidation())
+            saveInvited(invited!!)
+        }
+
+
 
     }
 
 
-    fun addInvited() {
+    /*fun addInvited() {
 
         var currentLocation: GeoLocation?
         if(checkValidation())
@@ -69,6 +82,7 @@ class SaveInvitedController {
                         }
 
                     )
+
                         .addOnSuccessListener { location: android.location.Location? ->
                             if (location != null) {
                                 currentLocation = GeoLocation(location.latitude, location.longitude)
@@ -86,7 +100,7 @@ class SaveInvitedController {
         } else
             showDialogBox("Możesz mieć maksymalnie 3 zaproszenia")
 
-    }
+    }*/
 
 
     private fun showPermissionAlert() {

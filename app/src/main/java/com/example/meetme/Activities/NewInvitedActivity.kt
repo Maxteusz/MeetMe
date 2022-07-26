@@ -7,6 +7,9 @@ import android.widget.*
 import com.example.meetme.Controllers.SaveInvitedController
 import com.example.meetme.R
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class NewInvitedActivity : AppCompatActivity() {
     var spinner_alcokohol: AutoCompleteTextView? = null
@@ -31,7 +34,7 @@ class NewInvitedActivity : AppCompatActivity() {
         havePlaceToDrink = findViewById(R.id.have_place)
 
 
-        addInvited.setOnClickListener(View.OnClickListener {
+        addInvited.setOnClickListener({
             saveInvitedController.addInvited()
         })
 
