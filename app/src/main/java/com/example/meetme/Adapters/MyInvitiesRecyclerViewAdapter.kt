@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.meetme.Controllers.MyInvitationsFragmentController
-import com.example.meetme.Fragments.SearchInvitationsFragment
 import com.example.meetme.Models.Invited
 import com.example.meetme.R
 
@@ -27,7 +26,7 @@ class MyInvitiesRecyclerViewAdapter(private val invitations: List<Invited>, val 
         val ItemsViewModel = invitations[position]
         holder.title_textView.text = ItemsViewModel.title
         holder.deleteInvited_button.setOnClickListener {
-            view -> myInvitationsFragmentController.DeleteInvitation(invitations[position].uid.toString())
+            view -> myInvitationsFragmentController.deleteInvitation(invitations[position].uid.toString())
         }
         if(invitations[position].iHavePlace == true)
             holder.statusPlace_imageView.setImageResource(R.drawable.check_icon)

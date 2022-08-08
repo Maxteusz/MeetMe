@@ -1,6 +1,5 @@
 package com.example.meetme.Adapters
 
-import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,15 +13,15 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.meetme.Controllers.SearchedInvitationsFragmentController
 import com.example.meetme.Controllers.StartUpController
-
 import com.example.meetme.Models.Invited
 import com.example.meetme.Models.LoadingScreen
 import com.example.meetme.Models.Request
 import com.example.meetme.R
 import com.google.android.material.card.MaterialCardView
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
-import java.lang.Exception
 
 class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invited>, val searchedInvitationsFragmentController: SearchedInvitationsFragmentController, val context: Context) :
     RecyclerView.Adapter<SearchedInvitationsRecyclerViewAdapter.ViewHolder>() {
@@ -55,8 +54,10 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
         holder.cardView.setOnClickListener {
             existsRequest(Invitation, {
                 val loadingScreen = LoadingScreen();
-               // loadingScreen.displayLoading(context)
-              /*  Request.sendRequest(StartUpController.currentUser!!.uid!!,Invitation.uid!!, Invitation.owner!!.uid,
+                loadingScreen.displayLoading(context)
+                Request.sendRequest(StartUpController.currentUser!!.uid!!,
+                    Invitation.uid!!,
+                    StartUpController.currentUser!!.uid!!,
                     {
                         //Success operation
                         loadingScreen.hideLoading()
@@ -64,8 +65,8 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
                     {
                         // Failure operation
                         loadingScreen.hideLoading()
-                        Toast.makeText(context,"Wystąpił błąd", Toast.LENGTH_SHORT)
-                    })*/
+                        Toast.makeText(context, "Wystąpił błąd", Toast.LENGTH_SHORT)
+                    })
             })
 
 
@@ -74,25 +75,32 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
     }
 
 
-
-    fun existsRequest (invite: Invited, addRequest: () -> Unit )
-    {
+    fun existsRequest(invited: Invited, addRequest: () -> Unit) {
 
         val db = Firebase.firestore
         db.collection("Requests")
-            .whereEqualTo("invitedID", invite.uid)
-            .get()
-            .addOnSuccessListener { result ->
-                if (result.size() == 0)
-                    addRequest()
-                else
-                    Toast.makeText(context, "Istnieje juz prośba o dodanie", Toast.LENGTH_LONG)
+            .whereEqualTo("ownerID", StartUpController.currentUser?.uid)
 
+            .addSnapshotListener { value, e ->
+
+                val requests = value?.toObjects<Request>()
+                for (doc in requests!!) {
+                    if (doc.invitedID == invited.uid) {
+                        Toast.makeText(context, "Istnieje już żądanie", Toast.LENGTH_LONG)
+                       return@addSnapshotListener
+                   }
+                }
+                addRequest()
 
             }
-            .addOnFailureListener { exception ->
 
-            }
+
+
+
+
+
+
+
     }
 
 

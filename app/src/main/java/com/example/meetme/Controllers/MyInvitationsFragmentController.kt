@@ -4,8 +4,6 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.meetme.Fragments.MyInvitedFragment
 import com.example.meetme.Models.Invited
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -40,8 +38,8 @@ class MyInvitationsFragmentController {
                 for (doc in value!!) {
                     val invited = doc.toObject<Invited>()
                         invitations.add(invited)
-                    Log.i("test", invitations[0].uid.toString())
-                    }
+
+                }
 
                 myInvitationsFragment.adapter?.notifyDataSetChanged()
 
@@ -49,7 +47,7 @@ class MyInvitationsFragmentController {
         return invitations
     }
 
-    fun DeleteInvitation (uid : String)
+    fun deleteInvitation (uid : String)
     {
         db.collection("Invitations").document(uid)
             .delete()
