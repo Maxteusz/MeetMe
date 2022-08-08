@@ -40,7 +40,6 @@ class SaveInvitedController {
   fun addInvited()
     {
         location.getLocation {
-
             val invited = createInvited(GeoLocation(it.latitude,it.longitude))
             if (CountOfMyInvitations()!! <= 2)
             if(checkValidation())
@@ -50,58 +49,6 @@ class SaveInvitedController {
 
 
     }
-
-
-    /*fun addInvited() {
-
-        var currentLocation: GeoLocation?
-        if(checkValidation())
-        if (CountOfMyInvitations()!! <= 2) {
-            loadingScreen.displayLoading(newInvitedActivity)
-            if (isOnline(newInvitedActivity)) {
-                if (ActivityCompat.checkSelfPermission(
-                        newInvitedActivity,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                        newInvitedActivity,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    showPermissionAlert();
-                    return
-                } else {
-                    fusedLocationClient.getCurrentLocation(
-                        PRIORITY_HIGH_ACCURACY,
-                        object : CancellationToken() {
-                            override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
-                                return CancellationTokenSource().token
-                            }
-                            override fun isCancellationRequested(): Boolean {
-                                return false
-                            }
-                        }
-
-                    )
-
-                        .addOnSuccessListener { location: android.location.Location? ->
-                            if (location != null) {
-                                currentLocation = GeoLocation(location.latitude, location.longitude)
-                                val invited = createInvited(currentLocation!!)
-                                if (invited != null)
-                                    saveInvited(invited)
-
-                            } else {
-                                loadingScreen.hideLoading()
-                                showSettingAlert()
-                            }
-                        }
-                }
-            }
-        } else
-            showDialogBox("Możesz mieć maksymalnie 3 zaproszenia")
-
-    }*/
-
 
     private fun showPermissionAlert() {
         if (ActivityCompat.checkSelfPermission(

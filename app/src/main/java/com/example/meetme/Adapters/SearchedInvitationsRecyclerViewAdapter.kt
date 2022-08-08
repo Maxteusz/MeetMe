@@ -2,7 +2,6 @@ package com.example.meetme.Adapters
 
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
@@ -11,12 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.meetme.Activities.DetailsInviteActivity
 import com.example.meetme.Controllers.SearchedInvitationsFragmentController
 import com.example.meetme.Controllers.StartUpController
 
 import com.example.meetme.Models.Invited
+import com.example.meetme.Models.LoadingScreen
 import com.example.meetme.Models.Request
 import com.example.meetme.R
 import com.google.android.material.card.MaterialCardView
@@ -36,15 +36,15 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val ItemsViewModel = invitations[position]
-        holder.title_textView.text = ItemsViewModel.title
+        val Invitation = invitations[position]
+        holder.title_textView.text = Invitation.title
         if(invitations[position].iHavePlace == true)
             holder.statusPlace_imageView.setImageResource(R.drawable.check_icon)
         else
             holder.statusPlace_imageView.setImageResource(R.drawable.unchecked_icon)
 
-        holder.place_textView.text = ItemsViewModel.place
-        searchedInvitationsFragmentController.DownloadImage(ItemsViewModel.owner?.uid!!).addOnCompleteListener {
+        holder.place_textView.text = Invitation.place
+        searchedInvitationsFragmentController.downloadImage(Invitation.owner?.uid!!).addOnCompleteListener {
             try {
                 val bmp = BitmapFactory.decodeByteArray(it.result, 0, it.result.size)
                 val reduceBitmap = Bitmap.createScaledBitmap(bmp, 200, 200, true)
@@ -53,41 +53,48 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
             catch (e : Exception) {}
         }
         holder.cardView.setOnClickListener {
-            CheckExistReqest(ItemsViewModel)
+            existsRequest(Invitation, {
+                val loadingScreen = LoadingScreen();
+               // loadingScreen.displayLoading(context)
+              /*  Request.sendRequest(StartUpController.currentUser!!.uid!!,Invitation.uid!!, Invitation.owner!!.uid,
+                    {
+                        //Success operation
+                        loadingScreen.hideLoading()
+                    },
+                    {
+                        // Failure operation
+                        loadingScreen.hideLoading()
+                        Toast.makeText(context,"Wystąpił błąd", Toast.LENGTH_SHORT)
+                    })*/
+            })
+
+
+
         }
     }
 
-    fun SendRequest(invite : Invited)
+
+
+    fun existsRequest (invite: Invited, addRequest: () -> Unit )
     {
+
         val db = Firebase.firestore
         db.collection("Requests")
-            .add(Request(StartUpController.currentUser?.uid!!,invite.uid!!, invite.owner?.uid!!))
-            .addOnSuccessListener { documentReference ->
-                Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-
-            }
-            .addOnFailureListener { e ->
-                Log.w(ContentValues.TAG, "Error adding document", e)
-            }
-    }
-
-    fun CheckExistReqest (invite: Invited)
-    {
-        val db = Firebase.firestore
-        db.collection("Requests")
-            .whereEqualTo("ownerID", invite.owner?.uid)
-            .whereEqualTo("PersonID", StartUpController.currentUser?.uid)
+            .whereEqualTo("invitedID", invite.uid)
             .get()
             .addOnSuccessListener { result ->
-                Log.i("Znaleziono", result.size().toString() + StartUpController.currentUser?.uid)
-                for (document in result) {
+                if (result.size() == 0)
+                    addRequest()
+                else
+                    Toast.makeText(context, "Istnieje juz prośba o dodanie", Toast.LENGTH_LONG)
 
-                }
+
             }
             .addOnFailureListener { exception ->
 
             }
     }
+
 
     override fun getItemCount(): Int {
         return invitations.size

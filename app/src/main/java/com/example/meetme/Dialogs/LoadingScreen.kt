@@ -9,12 +9,14 @@ import android.widget.TextView
 import com.example.meetme.R
 
 class LoadingScreen {
-    var dialog: Dialog? = null
+   private var dialog: Dialog? = null
     val message : String
 
     constructor(message: String) {
         this.message = message
     }
+
+
 
 
     fun displayLoading(context: Context?) {

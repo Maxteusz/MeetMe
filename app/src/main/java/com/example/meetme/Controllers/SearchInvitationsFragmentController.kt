@@ -17,7 +17,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.*
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -105,7 +104,7 @@ class SearchInvitationsFragmentController {
                         }
                     }
 
-                   OpenSearchedInvitationsFragment(invitations as ArrayList<Invited>)
+                   openSearchedInvitationsFragment(invitations as ArrayList<Invited>)
                 }
                 .addOnFailureListener { showDialogBox("Błąd, spróbuj pornownie.") }
         }
@@ -114,7 +113,7 @@ class SearchInvitationsFragmentController {
 
     }
 
-    private fun OpenSearchedInvitationsFragment(invitations : ArrayList<Invited>)
+    private fun openSearchedInvitationsFragment(invitations : ArrayList<Invited>)
     {
         val bundle = Bundle ()
         bundle.putSerializable("invitations", invitations)

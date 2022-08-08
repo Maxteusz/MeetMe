@@ -18,5 +18,5 @@ class SearchedInvitationsFragmentController {
         this.invitations =  invitations
     }
 
-    fun DownloadImage (uidUser : String) = refStorage.child(uidUser).getBytes(1024 * 1024 *10)
+    fun downloadImage (uidUser : String) = refStorage.child(uidUser).getBytes(1024 * 1024 *10)
 }
