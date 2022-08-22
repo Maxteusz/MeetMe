@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.meetme.Models.Request
 import com.example.meetme.R
 
-class RequsetsRecyclerViewAdapter (private val requests: List<Request>):  RecyclerView.Adapter<RequsetsRecyclerViewAdapter.ViewHolder>() {
+class RequestsRecyclerViewAdapter (private val requests: List<Request>):  RecyclerView.Adapter<RequestsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
