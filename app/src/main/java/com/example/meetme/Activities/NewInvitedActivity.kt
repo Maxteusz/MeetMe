@@ -2,20 +2,17 @@ package com.example.meetme.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import com.example.meetme.Controllers.SaveInvitedController
 import com.example.meetme.R
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class NewInvitedActivity : AppCompatActivity() {
     var spinner_alcokohol: AutoCompleteTextView? = null
     var describe_textfield: TextInputEditText? = null
     var title_textfield: TextInputEditText? = null
     var havePlaceToDrink: CheckBox? = null
+    lateinit var addInvited_button: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,14 +24,14 @@ class NewInvitedActivity : AppCompatActivity() {
             ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, alcohol_array)
         describe_textfield = findViewById(R.id.describe_textfield)
         title_textfield = findViewById(R.id.title_textfield)
-        val addInvited: Button = findViewById(R.id.button3)
+         addInvited_button = findViewById(R.id.add_button)
         val saveInvitedController = SaveInvitedController(this)
 
         spinner_alcokohol?.setAdapter(adapter)
         havePlaceToDrink = findViewById(R.id.have_place)
 
 
-        addInvited.setOnClickListener({
+        addInvited_button.setOnClickListener({
             saveInvitedController.addInvited()
         })
 

@@ -67,7 +67,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/add_button"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"

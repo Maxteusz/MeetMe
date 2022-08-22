@@ -34,12 +34,12 @@ class UserInformationActivity : AppCompatActivity() {
         imageView?.setOnClickListener { userInformationController.AddImage() }
         save_button = findViewById(R.id.save_button)
 
-        var idDocument  = "";
+        var idDocument = "";
 
         save_button?.setOnClickListener {
             userInformationController.SaveImage(imageView)
             if (idDocument == "")
-            userInformationController.SaveUserData()
+                userInformationController.SaveUserData()
             else
                 userInformationController.UpdateUserData(idDocument)
 
@@ -49,17 +49,19 @@ class UserInformationActivity : AppCompatActivity() {
         nick_TextView = findViewById(R.id.login_textfield)
         aboutMe_TextView = findViewById(R.id.aboutMe_textfield)
 
-        userInformationController.ReadDataUser().addOnSuccessListener { value ->
-            if(value.size() > 0) {
-                val user = value.toObjects<User>()[0]
-                idDocument = value.documents.first().id
+        StartUpController.currentUser?.ReadDataUser(
+            {
+                val user = it.toObjects<User>()[0]
+                idDocument = it.documents.first().id
                 StartUpController.currentUser = user
                 Log.i("UserInformationActivity", user.nick + " " + user.aboutMe)
-
                 userInformationController.FillActivity(user)
-            }
+            },
+            {}
+        )
 
-        }
+
+
         Log.i("UserInformationActivity", StartUpController.currentUser?.uid!!)
     }
 

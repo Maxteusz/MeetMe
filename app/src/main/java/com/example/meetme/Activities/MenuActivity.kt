@@ -19,19 +19,9 @@ class MenuActivity : AppCompatActivity() {
         val menuActivityController = MenuActivityController(this)
         menuActivityController.loadMyInvitationsFragment()
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
-        bottomNavigationView?.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener {
-            item ->
-            when(item.itemId) {
-                R.id.myInvitations_page -> {
-                   menuActivityController.loadMyInvitationsFragment()
-                    true
-                }
-                R.id.search_page -> {
-                    menuActivityController.loadSearchInvitationsFragment()
-                    true
-                }
-                else -> false
-            }
+        bottomNavigationView?.setOnItemSelectedListener({
+            menuActivityController.loadFragment(it.itemId)
+            true;
         })
 
         floatingButton = findViewById(R.id.floating_button)

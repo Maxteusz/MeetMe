@@ -39,11 +39,14 @@ class SaveInvitedController {
 
   fun addInvited()
     {
-        location.getLocation {
-            val invited = createInvited(GeoLocation(it.latitude,it.longitude))
-            if (CountOfMyInvitations()!! <= 2)
-            if(checkValidation())
-            saveInvited(invited!!)
+        newInvitedActivity.addInvited_button?.isClickable = false
+        if(isOnline(newInvitedActivity)) {
+            location.getLocation {
+                val invited = createInvited(GeoLocation(it.latitude, it.longitude))
+                if (CountOfMyInvitations()!! <= 2)
+                    if (checkValidation())
+                        saveInvited(invited!!)
+            }
         }
 
 
@@ -73,6 +76,7 @@ class SaveInvitedController {
 
     private fun saveInvited(invited: Invited) {
         try {
+
             val db = Firebase.firestore
             val ref = db.collection("Invitations").document().id
             invited.uid = ref
@@ -80,16 +84,19 @@ class SaveInvitedController {
                 .add(invited)
                 .addOnSuccessListener { documentReference ->
                     loadingScreen.hideLoading()
+                    newInvitedActivity.addInvited_button?.isClickable = true
                     showDialogBox("Zaproszenie zostało dodane")
                 }
                 .addOnFailureListener { e ->
                     Log.w(TAG, "Error adding document", e)
                     loadingScreen.hideLoading()
+                    newInvitedActivity.addInvited_button?.isClickable = true
                     showSettingAlert()
                 }
         }
         catch (e :Exception) {
             loadingScreen.hideLoading()
+            newInvitedActivity.addInvited_button?.isClickable = true
             Log.i("Exception", e.toString())
         }
 

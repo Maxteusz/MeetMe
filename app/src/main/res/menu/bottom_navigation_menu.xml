@@ -7,8 +7,19 @@
         android:icon="@drawable/invited_icon"
         android:title="Zaproszenia"/>
     <item
+        android:id="@+id/requests_page"
+        android:enabled="true"
+        android:icon="@drawable/requests_icon"
+        android:title="Prośby"/>
+    <item android:id="@+id/placegolder"
+        android:title=""/>
+    <item
         android:id="@+id/search_page"
         android:enabled="true"
         android:icon="@drawable/search_icon"
         android:title="Szukaj"/>
+    <item android:id="@+id/placegolder1"
+        android:title=""/>
+
+
 </menu>
