@@ -39,12 +39,14 @@ class SaveInvitedController {
 
   fun addInvited()
     {
-        newInvitedActivity.addInvited_button?.isClickable = false
+
+
+        if (checkValidation())
         if(isOnline(newInvitedActivity)) {
+            newInvitedActivity.addInvited_button?.isClickable = false
             location.getLocation {
                 val invited = createInvited(GeoLocation(it.latitude, it.longitude))
-                if (CountOfMyInvitations()!! <= 2)
-                    if (checkValidation())
+                if (countOfMyInvitations()!! <= 2)
                         saveInvited(invited!!)
             }
         }
@@ -99,14 +101,14 @@ class SaveInvitedController {
             newInvitedActivity.addInvited_button?.isClickable = true
             Log.i("Exception", e.toString())
         }
-
-
     }
 
     fun checkValidation () : Boolean
     {
+
         if (newInvitedActivity.title_textfield?.text.toString() == "") {
             newInvitedActivity.title_textfield?.error = "Tytuł jest wymagany"
+
             return false
         }
         return true;
@@ -166,7 +168,7 @@ class SaveInvitedController {
         alertDialog.show()
     }
 
-    private fun CountOfMyInvitations(): Int? {
+    private fun countOfMyInvitations(): Int? {
         return MyInvitedFragment.invitations?.size
     }
 

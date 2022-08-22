@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.meetme.Models.Invited
 import com.example.meetme.Models.Request
 import com.example.meetme.R
 
@@ -21,7 +20,7 @@ class RequsetsRecyclerViewAdapter (private val requests: List<Request>):  Recycl
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val Request = requests[position]
     }
 
     override fun getItemCount(): Int {
