@@ -17,6 +17,7 @@ import com.example.meetme.Models.Invited
 import com.example.meetme.Models.Request
 import com.example.meetme.R
 import com.google.android.material.card.MaterialCardView
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
@@ -78,10 +79,10 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
 
                 val requests = value?.toObjects<Request>()
                 for (doc in requests!!) {
-                    if (doc.invitedID == invited.uid) {
+                    if (doc.invitedID == invited.uid)
                         Dialogs.InfomationDialog.show(searchedInvitationsFragmentController.searchedInvitationsFragment.context,null,"Istnieje już żądanie")
-                       return@addSnapshotListener
-                   }
+
+
                 }
                 addRequest()
             }
