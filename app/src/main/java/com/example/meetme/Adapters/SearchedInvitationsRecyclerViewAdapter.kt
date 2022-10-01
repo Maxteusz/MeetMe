@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.meetme.Controllers.SearchedInvitationsFragmentController
 import com.example.meetme.Controllers.StartUpController
+import com.example.meetme.Dialogs.Dialogs
 import com.example.meetme.Models.Invited
 import com.example.meetme.Models.Request
 import com.example.meetme.R
@@ -54,13 +55,13 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
                     Invitation.uid!!,
                     StartUpController.currentUser!!.uid!!,
                     {
-                        //Success operation
+                        Dialogs.InfomationDialog.show(searchedInvitationsFragmentController.searchedInvitationsFragment.context,null,"Wysłano żądanie")
 
                     },
                     {
                         // Failure operation
 
-                        Toast.makeText(context, "Wystąpił błąd", Toast.LENGTH_SHORT)
+                        Dialogs.InfomationDialog.show(context,null,"Wystąpił błąd")
                     })
             })
 
@@ -78,7 +79,7 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
                 val requests = value?.toObjects<Request>()
                 for (doc in requests!!) {
                     if (doc.invitedID == invited.uid) {
-                        Toast.makeText(context, "Istnieje już żądanie", Toast.LENGTH_LONG)
+                        Dialogs.InfomationDialog.show(searchedInvitationsFragmentController.searchedInvitationsFragment.context,null,"Istnieje już żądanie")
                        return@addSnapshotListener
                    }
                 }

@@ -11,13 +11,14 @@ import com.example.meetme.R
 import com.google.android.material.button.MaterialButton
 
 class Dialogs {
-
-
     internal class LoadingDialog {
         companion object {
             private var dialog: Dialog? = null
 
-            fun show(activity: Activity, message: String) {
+            fun show(context : Context? , activity: Activity?, message: String) {
+                if (context != null)
+                    dialog = Dialog(context)
+                else
                 dialog = Dialog(activity!!)
                 dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 dialog!!.setContentView(R.layout.layout_loading_dialog)
@@ -39,8 +40,11 @@ class Dialogs {
         internal class InfomationDialog {
             companion object {
                 private var dialog: Dialog? = null
-                fun show(activity: Activity?, message: String?, closeActivity : Boolean = false) {
-                    dialog = Dialog(activity!!)
+                fun show(context : Context?,activity: Activity?, message: String?, closeActivity : Boolean = false) {
+                    if (context != null)
+                        dialog = Dialog(context)
+                    else
+                        dialog = Dialog(activity!!)
                     dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
                     dialog!!.setContentView(R.layout.layout_information_dialog)
                     dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -49,7 +53,7 @@ class Dialogs {
                     info.text = message
                     button.setOnClickListener({
                         if(closeActivity)
-                            activity.finish()
+                            activity?.finish()
                         dialog!!.dismiss() })
 
                     try {
