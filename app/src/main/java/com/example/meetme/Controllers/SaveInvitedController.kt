@@ -1,18 +1,15 @@
 package com.example.meetme.Controllers
 
-import android.Manifest
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.provider.Settings
 import android.util.Log
-import androidx.core.app.ActivityCompat
 import com.example.meetme.Activities.NewInvitedActivity
-import com.example.meetme.Dialogs.LoadingScreen
+import com.example.meetme.Dialogs.Dialogs
 import com.example.meetme.Fragments.MyInvitedFragment
 import com.example.meetme.Models.Invited
 import com.example.meetme.Models.Location
@@ -26,7 +23,6 @@ import com.google.firebase.ktx.Firebase
 class SaveInvitedController {
     var newInvitedActivity: NewInvitedActivity
     private var fusedLocationClient: FusedLocationProviderClient
-    private var loadingScreen : LoadingScreen = LoadingScreen("Dodawanie zaproszenia");
     private var location : Location
 
 
@@ -40,40 +36,21 @@ class SaveInvitedController {
   fun addInvited()
     {
 
-
         if (checkValidation())
-        if(isOnline(newInvitedActivity)) {
+        if(isOnline(newInvitedActivity) && countOfMyInvitations()!! < 3) {
             newInvitedActivity.addInvited_button?.isClickable = false
+            Dialogs.LoadingDialog.show(newInvitedActivity, "Dodawanie fff")
             location.getLocation {
                 val invited = createInvited(GeoLocation(it.latitude, it.longitude))
-                if (countOfMyInvitations()!! <= 2)
-                        saveInvited(invited!!)
+                    saveInvited(invited!!)
+                    Dialogs.LoadingDialog.hide()
             }
         }
+        else
+            Dialogs.InfomationDialog.show(newInvitedActivity, null)
 
 
 
-    }
-
-    private fun showPermissionAlert() {
-        if (ActivityCompat.checkSelfPermission(
-                newInvitedActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(
-                newInvitedActivity,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                newInvitedActivity,
-                arrayOf(
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ),
-                123
-            );
-        }
     }
 
     private fun saveInvited(invited: Invited) {
@@ -85,19 +62,16 @@ class SaveInvitedController {
             db.collection("Invitations")
                 .add(invited)
                 .addOnSuccessListener { documentReference ->
-                    loadingScreen.hideLoading()
                     newInvitedActivity.addInvited_button?.isClickable = true
-                    showDialogBox("Zaproszenie zostało dodane")
+                    Dialogs.InfomationDialog.show(newInvitedActivity,"Zaproszenie zostało dodane", true)
                 }
                 .addOnFailureListener { e ->
                     Log.w(TAG, "Error adding document", e)
-                    loadingScreen.hideLoading()
                     newInvitedActivity.addInvited_button?.isClickable = true
                     showSettingAlert()
                 }
         }
         catch (e :Exception) {
-            loadingScreen.hideLoading()
             newInvitedActivity.addInvited_button?.isClickable = true
             Log.i("Exception", e.toString())
         }
@@ -135,22 +109,7 @@ class SaveInvitedController {
 
     }
 
-    private fun showDialogBox(message: String) {
-        val alertDialog: AlertDialog = AlertDialog.Builder(newInvitedActivity).create()
-        alertDialog.setMessage(message)
-        alertDialog.setButton(
-            AlertDialog.BUTTON_POSITIVE, "OK",
 
-            { dialog, which ->
-                if (message.equals("Zaproszenie zostało dodane")) {
-                    dialog.dismiss()
-                    newInvitedActivity.finish()
-                } else
-                    dialog.dismiss()
-
-            })
-        alertDialog.show()
-    }
 
     private fun showSettingAlert() {
         val alertDialog = AlertDialog.Builder(newInvitedActivity)

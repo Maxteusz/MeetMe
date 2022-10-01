@@ -3,7 +3,6 @@ package com.example.meetme.Adapters
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.meetme.Controllers.SearchedInvitationsFragmentController
 import com.example.meetme.Controllers.StartUpController
 import com.example.meetme.Models.Invited
-import com.example.meetme.Models.LoadingScreen
 import com.example.meetme.Models.Request
 import com.example.meetme.R
 import com.google.android.material.card.MaterialCardView
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
@@ -53,23 +50,19 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
         }
         holder.cardView.setOnClickListener {
             existsRequest(Invitation, {
-                val loadingScreen = LoadingScreen();
-                loadingScreen.displayLoading(context)
                 Request.sendRequest(StartUpController.currentUser!!.uid!!,
                     Invitation.uid!!,
                     StartUpController.currentUser!!.uid!!,
                     {
                         //Success operation
-                        loadingScreen.hideLoading()
+
                     },
                     {
                         // Failure operation
-                        loadingScreen.hideLoading()
+
                         Toast.makeText(context, "Wystąpił błąd", Toast.LENGTH_SHORT)
                     })
             })
-
-
 
         }
     }
@@ -80,7 +73,6 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
         val db = Firebase.firestore
         db.collection("Requests")
             .whereEqualTo("ownerID", StartUpController.currentUser?.uid)
-
             .addSnapshotListener { value, e ->
 
                 val requests = value?.toObjects<Request>()
@@ -91,24 +83,12 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
                    }
                 }
                 addRequest()
-
             }
-
-
-
-
-
-
-
-
     }
-
 
     override fun getItemCount(): Int {
         return invitations.size
     }
-
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val title_textView : TextView;
         val statusPlace_imageView : ImageView;
@@ -123,7 +103,6 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
             user_image = itemView.findViewById(R.id.user_image)
             cardView = itemView.findViewById(R.id.searched_invited_card)
         }
-
 
 
     }
