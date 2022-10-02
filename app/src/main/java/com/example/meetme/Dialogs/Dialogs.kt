@@ -52,9 +52,10 @@ class Dialogs {
                     var info : TextView = dialog!!.findViewById(R.id.info_text)
                     info.text = message
                     button.setOnClickListener({
+                        dialog!!.dismiss()
                         if(closeActivity)
                             activity?.finish()
-                        dialog!!.dismiss() })
+                       })
 
                     try {
                         dialog!!.show()

@@ -63,7 +63,7 @@ class SaveInvitedController {
                 .add(invited)
                 .addOnSuccessListener { documentReference ->
                     newInvitedActivity.addInvited_button?.isClickable = true
-                    Dialogs.InfomationDialog.show(newInvitedActivity,null,"Zaproszenie zostało dodane", true)
+                    Dialogs.InfomationDialog.show(null,newInvitedActivity,"Zaproszenie zostało dodane", true)
                 }
                 .addOnFailureListener { e ->
                     Log.w(TAG, "Error adding document", e)

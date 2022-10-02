@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.meetme.Controllers.SearchedInvitationsFragmentController
 import com.example.meetme.Controllers.StartUpController
@@ -17,7 +16,6 @@ import com.example.meetme.Models.Invited
 import com.example.meetme.Models.Request
 import com.example.meetme.R
 import com.google.android.material.card.MaterialCardView
-import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
@@ -75,18 +73,26 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
         val db = Firebase.firestore
         db.collection("Requests")
             .whereEqualTo("ownerID", StartUpController.currentUser?.uid)
-            .addSnapshotListener { value, e ->
-
-                val requests = value?.toObjects<Request>()
+            .get()
+            .addOnSuccessListener {
+                val requests = it?.toObjects<Request>()
                 for (doc in requests!!) {
-                    if (doc.invitedID == invited.uid)
-                        Dialogs.InfomationDialog.show(searchedInvitationsFragmentController.searchedInvitationsFragment.context,null,"Istnieje już żądanie")
-
+                    if (doc.invitedID == invited.uid && StartUpController.currentUser?.uid == doc.ownerID) {
+                        Dialogs.InfomationDialog.show(
+                            searchedInvitationsFragmentController.searchedInvitationsFragment.context,
+                            null,
+                            "Istnieje już żądanie"
+                        )
+                        return@addOnSuccessListener
+                    }
 
                 }
                 addRequest()
             }
+
+
     }
+
 
     override fun getItemCount(): Int {
         return invitations.size

@@ -4,7 +4,6 @@ import com.example.meetme.Controllers.StartUpController
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.firebase.firestore.DocumentId
-import com.google.firebase.firestore.Exclude
 import java.io.Serializable
 
 
