@@ -6,6 +6,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.Window
+import android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.meetme.R
 import com.google.android.material.button.MaterialButton
@@ -21,11 +23,11 @@ class Dialogs {
                 else
                 dialog = Dialog(activity!!)
                 dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 dialog!!.setContentView(R.layout.layout_loading_dialog)
-                dialog!!.create()
                 var textView: TextView? = dialog!!.findViewById(R.id.loading_text)
                 textView?.text = message
-                dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
                 dialog!!.show()
             }
 
