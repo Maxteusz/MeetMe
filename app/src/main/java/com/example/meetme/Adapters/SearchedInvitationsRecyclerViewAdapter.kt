@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.meetme.Controllers.SearchedInvitationsFragmentController
 import com.example.meetme.Controllers.StartUpController
 import com.example.meetme.Dialogs.Dialogs
+import com.example.meetme.Interfaces.IDialog
 import com.example.meetme.Models.Invited
 import com.example.meetme.Models.Request
 import com.example.meetme.R
@@ -20,8 +21,20 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 
-class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invited>, val searchedInvitationsFragmentController: SearchedInvitationsFragmentController, val context: Context) :
+class SearchedInvitationsRecyclerViewAdapter(
+    private val invitations: Array<Invited>,
+    val searchedInvitationsFragmentController: SearchedInvitationsFragmentController,
+    val context: Context
+) :
     RecyclerView.Adapter<SearchedInvitationsRecyclerViewAdapter.ViewHolder>() {
+
+    val dialogs  = mapOf<String,IDialog>(
+        "LoadingDialog" to Dialogs.LoadingDialog(context),
+        "InformationDialog" to Dialogs.InformationDialog(context),
+        "YesNoDialog" to Dialogs.YesNoDialog(context)
+    )
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -34,41 +47,47 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val Invitation = invitations[position]
         holder.title_textView.text = Invitation.title
-        if(invitations[position].iHavePlace == true)
+        if (invitations[position].iHavePlace == true)
             holder.statusPlace_imageView.setImageResource(R.drawable.check_icon)
         else
             holder.statusPlace_imageView.setImageResource(R.drawable.unchecked_icon)
 
         holder.place_textView.text = Invitation.place
-        searchedInvitationsFragmentController.downloadImage(Invitation.owner?.uid!!).addOnCompleteListener {
-            try {
-                val bmp = BitmapFactory.decodeByteArray(it.result, 0, it.result.size)
-                val reduceBitmap = Bitmap.createScaledBitmap(bmp, 200, 200, true)
-                holder.user_image.setImageBitmap(reduceBitmap)
+        searchedInvitationsFragmentController.downloadImage(Invitation.owner?.uid!!)
+            .addOnCompleteListener {
+                try {
+                    val bmp = BitmapFactory.decodeByteArray(it.result, 0, it.result.size)
+                    val reduceBitmap = Bitmap.createScaledBitmap(bmp, 200, 200, true)
+                    holder.user_image.setImageBitmap(reduceBitmap)
+                } catch (e: Exception) {
+                }
             }
-            catch (e : Exception) {}
-        }
         holder.cardView.setOnClickListener {
+          dialogs["LoadingDialog"]?.show("Wysyłanie zapytania")
+            holder.cardView.isClickable = false
             existsRequest(Invitation, {
+
                 Request.sendRequest(StartUpController.currentUser!!.uid!!,
                     Invitation.uid!!,
                     StartUpController.currentUser!!.uid!!,
                     {
-                        Dialogs.InfomationDialog.show(searchedInvitationsFragmentController.searchedInvitationsFragment.context,null,"Wysłano żądanie")
-
+                        dialogs["InformationDialog"]?.show("Utworzono żądanie")
+                        dialogs["LoadingDialog"]?.hide()
+                        holder.cardView.isClickable = true
                     },
                     {
                         // Failure operation
-
-                        Dialogs.InfomationDialog.show(context,null,"Wystąpił błąd")
+                        dialogs["LoadingDialog"]?.hide()
+                        holder.cardView.isClickable = true
                     })
             })
-
         }
     }
 
 
     fun existsRequest(invited: Invited, addRequest: () -> Unit) {
+
+
 
         val db = Firebase.firestore
         db.collection("Requests")
@@ -78,16 +97,14 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
                 val requests = it?.toObjects<Request>()
                 for (doc in requests!!) {
                     if (doc.invitedID == invited.uid && StartUpController.currentUser?.uid == doc.ownerID) {
-                        Dialogs.InfomationDialog.show(
-                            searchedInvitationsFragmentController.searchedInvitationsFragment.context,
-                            null,
-                            "Istnieje już żądanie"
-                        )
+                        dialogs["LoadingDialog"]?.hide()
+                        dialogs["InformationDialog"]?.show("Żądanie już istnieje")
                         return@addOnSuccessListener
                     }
 
                 }
                 addRequest()
+
             }
 
 
@@ -97,12 +114,13 @@ class SearchedInvitationsRecyclerViewAdapter (private val invitations: List<Invi
     override fun getItemCount(): Int {
         return invitations.size
     }
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val title_textView : TextView;
-        val statusPlace_imageView : ImageView;
-        val place_textView : TextView;
-        val user_image : ImageView
-        val cardView : MaterialCardView
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val title_textView: TextView;
+        val statusPlace_imageView: ImageView;
+        val place_textView: TextView;
+        val user_image: ImageView
+        val cardView: MaterialCardView
 
         init {
             title_textView = itemView.findViewById(R.id.title_textView)

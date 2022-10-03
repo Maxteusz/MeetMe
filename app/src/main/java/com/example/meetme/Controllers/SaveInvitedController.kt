@@ -39,15 +39,15 @@ class SaveInvitedController {
         if (checkValidation())
         if(isOnline(newInvitedActivity) && countOfMyInvitations()!! < 3) {
             newInvitedActivity.addInvited_button?.isClickable = false
-            Dialogs.LoadingDialog.show(newInvitedActivity,null, "Dodawanie wydarzenia")
+
             location.getLocation {
                 val invited = createInvited(GeoLocation(it.latitude, it.longitude))
                     saveInvited(invited!!)
-                    Dialogs.LoadingDialog.hide()
+
             }
         }
-        else
-            Dialogs.InfomationDialog.show(newInvitedActivity, null, "Przekroczono maksymalną liczbę wydarzeń")
+
+
 
 
 
@@ -63,7 +63,7 @@ class SaveInvitedController {
                 .add(invited)
                 .addOnSuccessListener { documentReference ->
                     newInvitedActivity.addInvited_button?.isClickable = true
-                    Dialogs.InfomationDialog.show(null,newInvitedActivity,"Wydarzenie zostało dodane", true)
+
                 }
                 .addOnFailureListener { e ->
                     Log.w(TAG, "Error adding document", e)

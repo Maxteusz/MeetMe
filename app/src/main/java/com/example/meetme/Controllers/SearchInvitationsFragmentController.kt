@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentTransaction
+import com.example.meetme.Dialogs.Dialogs
 import com.example.meetme.Fragments.SearchInvitationsFragment
 import com.example.meetme.Fragments.SearchedInvitationsFragment
 import com.example.meetme.Models.Invited
@@ -68,7 +69,8 @@ class SearchInvitationsFragmentController {
 
 
     fun searchInvitations() {
-
+        val loadingDialog : Dialogs.LoadingDialog = Dialogs.LoadingDialog(searchInvitationsFragment.requireContext())
+        loadingDialog.show("Szukanie wydarzeń...")
         getCurrentLocation().addOnSuccessListener {
             val center = GeoLocation(it.latitude, it.longitude)
             val radiusInM = (500000 * 1000).toDouble()
@@ -103,10 +105,11 @@ class SearchInvitationsFragmentController {
                             }
                         }
                     }
-
+                    loadingDialog.hide()
                    openSearchedInvitationsFragment(invitations as ArrayList<Invited>)
                 }
-                .addOnFailureListener { showDialogBox("Błąd, spróbuj pornownie.") }
+                .addOnFailureListener { val informationDialog : Dialogs.InformationDialog = Dialogs.InformationDialog(searchInvitationsFragment.requireContext())
+                informationDialog.show("Wystąpił błąd")}
         }
 
 
