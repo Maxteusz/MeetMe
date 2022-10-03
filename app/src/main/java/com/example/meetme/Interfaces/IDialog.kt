@@ -8,5 +8,6 @@ interface IDialog {
 
 
     fun show (text : String)
+    fun show (text : String, action: () -> Unit)
     fun hide ()
 }

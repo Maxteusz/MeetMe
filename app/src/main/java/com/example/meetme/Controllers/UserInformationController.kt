@@ -10,6 +10,7 @@ import android.widget.ImageView
 import com.example.meetme.Activities.MenuActivity
 import com.example.meetme.Activities.UserInformationActivity
 import com.example.meetme.Models.User
+import com.example.meetme.Services.MyFirebaseMessagingService
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -61,12 +62,14 @@ class UserInformationController(val userInformationActivity: UserInformationActi
     }
 
     fun UpdateUserData(token: String) {
-        val user = CreateUser()
+        val user =
+            CreateUser()
         db.collection("Users").document(token)
             .update(
                 mapOf(
                     "nick" to user.nick,
-                    "aboutMe" to user.aboutMe
+                    "aboutMe" to user.aboutMe,
+                     "token" to MyFirebaseMessagingService.fcmToken
                 )
             )
             .addOnSuccessListener {
@@ -82,9 +85,9 @@ class UserInformationController(val userInformationActivity: UserInformationActi
 
         val nick = userInformationActivity.nick_TextView?.text.toString()
         val aboutMe: String = userInformationActivity.aboutMe_TextView?.text.toString()
-        val token = MenuActivityController.getRegistrationToken(userInformationActivity)
+        val token = MyFirebaseMessagingService.fcmToken
         val uid = StartUpController.currentUser?.uid
-        return User(uid!!, nick, aboutMe, token)
+        return User(uid!!, nick, aboutMe, token!!)
 
     }
 

@@ -18,6 +18,7 @@ class MenuActivity : AppCompatActivity() {
         setContentView(R.layout.activity_menu)
         val menuActivityController = MenuActivityController(this)
         menuActivityController.loadMyInvitationsFragment()
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         bottomNavigationView?.setOnItemSelectedListener({
             menuActivityController.loadFragment(it.itemId)

@@ -31,6 +31,10 @@ class Dialogs {
             dialog!!.show()
         }
 
+        override fun show(text: String, action: () -> Unit) {
+            TODO("Not yet implemented")
+        }
+
         override fun hide() {
             if (dialog != null) {
                 dialog!!.dismiss()
@@ -57,6 +61,10 @@ class Dialogs {
             dialog!!.show()
         }
 
+        override fun show(text: String, action: () -> Unit) {
+            TODO("Not yet implemented")
+        }
+
         override fun hide() {
             if (dialog != null) {
                 dialog!!.dismiss()
@@ -70,6 +78,10 @@ class Dialogs {
         override fun show(text: String) {
 
 
+        }
+
+        override fun show(text: String, action: () -> Unit) {
+            dialog = Dialog(context)
             dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog!!.setContentView(R.layout.layout_yes_no_dialog)
             dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -79,18 +91,16 @@ class Dialogs {
             info.text = text
             noButton.setOnClickListener({
                 dialog!!.dismiss()
-
             })
             yesButton.setOnClickListener {
                 dialog!!.dismiss()
-
+                action()
             }
 
             try {
                 dialog!!.show()
             } catch (e: Exception) {
             }
-
         }
 
         override fun hide() {

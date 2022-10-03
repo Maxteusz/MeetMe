@@ -13,25 +13,18 @@ import com.example.meetme.Fragments.MyInvitedFragment
 import com.example.meetme.Fragments.RequestFragment
 import com.example.meetme.Fragments.SearchInvitationsFragment
 import com.example.meetme.R
+import com.example.meetme.Services.MyFirebaseMessagingService
 
 
 class MenuActivityController {
     val menuActivity: MenuActivity
 
-    companion object {
 
-        fun getRegistrationToken(context: Context): String {
-            val refreshedToken =
-                context.getSharedPreferences("_", MODE_PRIVATE).getString("FcmToken", "empty")
-                    .toString()
-            Log.i("Token", refreshedToken)
-            return refreshedToken
-        }
-    }
 
 
     constructor(menuActivity: MenuActivity) {
         this.menuActivity = menuActivity
+        StartUpController.currentUser?.token = MyFirebaseMessagingService.fcmToken!!
     }
 
     fun addInvitedActivity() {

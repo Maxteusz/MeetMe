@@ -28,12 +28,11 @@ class SearchedInvitationsRecyclerViewAdapter(
 ) :
     RecyclerView.Adapter<SearchedInvitationsRecyclerViewAdapter.ViewHolder>() {
 
-    val dialogs  = mapOf<String,IDialog>(
+    val dialogs = mapOf<String, IDialog>(
         "LoadingDialog" to Dialogs.LoadingDialog(context),
         "InformationDialog" to Dialogs.InformationDialog(context),
         "YesNoDialog" to Dialogs.YesNoDialog(context)
     )
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -63,30 +62,35 @@ class SearchedInvitationsRecyclerViewAdapter(
                 }
             }
         holder.cardView.setOnClickListener {
-          dialogs["LoadingDialog"]?.show("Wysyłanie zapytania")
-            holder.cardView.isClickable = false
-            existsRequest(Invitation, {
-
-                Request.sendRequest(StartUpController.currentUser!!.uid!!,
-                    Invitation.uid!!,
-                    StartUpController.currentUser!!.uid!!,
+            dialogs["YesNoDialog"]?.show("Czy chcesz dodać żądanie", {
+                dialogs["LoadingDialog"]?.show("Wysyłanie zapytania")
+                holder.cardView.isClickable = false
+                existsRequest(Invitation,
                     {
-                        dialogs["InformationDialog"]?.show("Utworzono żądanie")
-                        dialogs["LoadingDialog"]?.hide()
-                        holder.cardView.isClickable = true
-                    },
+                    Request.sendRequest(StartUpController.currentUser!!.uid!!,
+                        Invitation.uid!!,
+                        StartUpController.currentUser!!.uid!!,
+                        {
+                            dialogs["InformationDialog"]?.show("Utworzono żądanie")
+                            dialogs["LoadingDialog"]?.hide()
+                            holder.cardView.isClickable = true
+                        },
+                        {
+                            // Failure operation
+                            dialogs["LoadingDialog"]?.hide()
+                            holder.cardView.isClickable = true
+                        })
+                },
                     {
-                        // Failure operation
-                        dialogs["LoadingDialog"]?.hide()
                         holder.cardView.isClickable = true
                     })
             })
         }
+
     }
 
 
-    fun existsRequest(invited: Invited, addRequest: () -> Unit) {
-
+    fun existsRequest(invited: Invited, addRequest: () -> Unit, unblockUI : () -> Unit) {
 
 
         val db = Firebase.firestore
@@ -99,6 +103,7 @@ class SearchedInvitationsRecyclerViewAdapter(
                     if (doc.invitedID == invited.uid && StartUpController.currentUser?.uid == doc.ownerID) {
                         dialogs["LoadingDialog"]?.hide()
                         dialogs["InformationDialog"]?.show("Żądanie już istnieje")
+                        unblockUI()
                         return@addOnSuccessListener
                     }
 
