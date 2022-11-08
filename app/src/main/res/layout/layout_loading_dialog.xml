@@ -28,6 +28,5 @@
             android:textColor="@color/black"
             android:text="Dodawanie zaproszenia..."/>
     </LinearLayout>
-
 </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>

@@ -91,8 +91,6 @@ class SearchedInvitationsRecyclerViewAdapter(
 
 
     fun existsRequest(invited: Invited, addRequest: () -> Unit, unblockUI : () -> Unit) {
-
-
         val db = Firebase.firestore
         db.collection("Requests")
             .whereEqualTo("ownerID", StartUpController.currentUser?.uid)

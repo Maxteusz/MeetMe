@@ -1,5 +1,6 @@
 package com.example.meetme.Controllers
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.meetme.Fragments.MyInvitedFragment
@@ -24,6 +25,7 @@ class MyInvitationsFragmentController {
 
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun getMyInvitations() : MutableList<Invited>
     {
         var invitations : MutableList<Invited> = ArrayList()

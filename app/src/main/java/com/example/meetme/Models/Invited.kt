@@ -36,6 +36,7 @@ class Invited : Serializable {
     ) {
         this.iHavePlace = iHavePlace
         this.owner = StartUpController.currentUser
+
         if (this.iHavePlace == true && place.equals(""))
         this.place = "U mnie"
         else

@@ -14,8 +14,8 @@ class Request {
     var invitedID: String = "";
     var ownerID: String = "";
 
-    constructor(invitedID: String, ownerID: String) {
-        this.invitedID = invitedID
+    constructor(invited: String, ownerID: String) {
+        this.invitedID= invited
         this.ownerID = ownerID
     }
 

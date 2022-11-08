@@ -14,7 +14,6 @@ import com.example.meetme.Controllers.UserInformationController
 import com.example.meetme.Models.User
 import com.example.meetme.R
 import com.google.firebase.firestore.ktx.toObjects
-import kotlinx.coroutines.*
 
 
 class UserInformationActivity : AppCompatActivity() {
