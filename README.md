@@ -5,6 +5,7 @@ The purpouse of this application provide possibility people for meeting. The mai
 In this application I used:
 - MVC how main project pattern
 
-Database which I use is Firestore Database, and mechanism of registration is firebase too.
+Database: Firestore Database, 
+User Authentication: Firebase Authentication (phone number)
 
 
