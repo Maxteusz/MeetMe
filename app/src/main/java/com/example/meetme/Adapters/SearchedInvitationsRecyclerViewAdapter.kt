@@ -69,6 +69,7 @@ class SearchedInvitationsRecyclerViewAdapter(
                     {
                     Request.sendRequest(StartUpController.currentUser!!.uid!!,
                         Invitation.uid!!,
+                        Invitation.owner!!.uid!!,
                         StartUpController.currentUser!!.uid!!,
                         {
                             dialogs["InformationDialog"]?.show("Utworzono żądanie")

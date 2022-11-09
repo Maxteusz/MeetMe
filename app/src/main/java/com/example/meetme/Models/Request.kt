@@ -5,21 +5,26 @@ import android.util.Log
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.io.Serializable
 
-class Request {
+class Request : Serializable {
 
     @DocumentId
     var id: String? = null;
-    val isAccepted = false;
+    val accepted : Boolean  = true;
     var invitedID: String = "";
     var ownerID: String = "";
-
-    constructor(invited: String, ownerID: String) {
-        this.invitedID= invited
-        this.ownerID = ownerID
-    }
+    var ownerInvitation : String = ""
 
     constructor()
+
+    constructor(invitedID: String, ownerID: String, ownerInvitation: String) {
+        this.invitedID= invitedID
+        this.ownerID = ownerID
+        this.ownerInvitation = ownerInvitation
+    }
+
+
 
 
     companion object {
@@ -28,12 +33,13 @@ class Request {
             personID: String,
             invitedID: String,
             ownerID: String,
+            ownerInvitation: String,
             successFunction: () -> Unit,
             failFunction: () -> Unit
         ) {
             val db = Firebase.firestore
             db.collection("Requests")
-                .add(Request(invitedID, ownerID))
+                .add(Request(invitedID, ownerID, ownerInvitation))
                 .addOnSuccessListener {
                     successFunction()
                 }

@@ -36,6 +36,7 @@ class MyInvitationsFragmentController {
                     Log.w(TAG, "Listen failed.", e)
                     return@addSnapshotListener
                 }
+
                 invitations.clear()
                 for (doc in value!!) {
                     val invited = doc.toObject<Invited>()
