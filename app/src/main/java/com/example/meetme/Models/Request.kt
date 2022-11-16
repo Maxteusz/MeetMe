@@ -11,7 +11,7 @@ class Request : Serializable {
 
     @DocumentId
     var id: String? = null;
-    val accepted : Boolean  = true;
+    val accepted : Boolean  = false;
     var invitedID: String = "";
     var ownerID: String = "";
     var ownerInvitation : String = ""

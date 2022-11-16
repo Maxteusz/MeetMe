@@ -26,13 +26,8 @@ class RequestFragmentController(val requestFragment: RequestFragment) {
                     if(!request.accepted)
                     requests.add(request)
                 }
-                Log.i("Pobrano ż ządania ${requests.count()}", "fd")
+
             }
-
-
-
-
-
         return requests
 
 

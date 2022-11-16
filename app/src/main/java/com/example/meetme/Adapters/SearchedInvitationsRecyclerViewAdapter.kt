@@ -3,6 +3,7 @@ package com.example.meetme.Adapters
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -92,14 +93,16 @@ class SearchedInvitationsRecyclerViewAdapter(
 
 
     fun existsRequest(invited: Invited, addRequest: () -> Unit, unblockUI : () -> Unit) {
+        Log.i("Current user UID", StartUpController.currentUser?.uid.toString())
         val db = Firebase.firestore
         db.collection("Requests")
             .whereEqualTo("ownerID", StartUpController.currentUser?.uid)
             .get()
             .addOnSuccessListener {
+                Log.i("Current user UID", StartUpController.currentUser?.uid.toString())
                 val requests = it?.toObjects<Request>()
                 for (doc in requests!!) {
-                    if (doc.invitedID == invited.uid && StartUpController.currentUser?.uid == doc.ownerID) {
+                    if (doc.invitedID == invited.uid) {
                         dialogs["LoadingDialog"]?.hide()
                         dialogs["InformationDialog"]?.show("Żądanie już istnieje")
                         unblockUI()
