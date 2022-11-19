@@ -17,6 +17,7 @@ class RequestFragmentController(val requestFragment: RequestFragment) {
     fun getRequests(): MutableList<Request> {
         var requests: MutableList<Request> = ArrayList()
 
+
         db.collection("Requests")
             .whereEqualTo("ownerInvitation", StartUpController.currentUser?.uid)
             .get()
@@ -25,6 +26,7 @@ class RequestFragmentController(val requestFragment: RequestFragment) {
                     val request = document.toObject<Request>()
                     if(!request.accepted)
                     requests.add(request)
+                    requestFragment.adapter!!.notifyDataSetChanged()
                 }
 
             }

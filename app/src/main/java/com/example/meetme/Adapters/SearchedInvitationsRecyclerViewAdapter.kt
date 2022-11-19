@@ -72,6 +72,7 @@ class SearchedInvitationsRecyclerViewAdapter(
                         Invitation.uid!!,
                         Invitation.owner!!.uid!!,
                         StartUpController.currentUser!!.uid!!,
+                        Invitation,
                         {
                             dialogs["InformationDialog"]?.show("Utworzono żądanie")
                             dialogs["LoadingDialog"]?.hide()
@@ -99,7 +100,6 @@ class SearchedInvitationsRecyclerViewAdapter(
             .whereEqualTo("ownerID", StartUpController.currentUser?.uid)
             .get()
             .addOnSuccessListener {
-                Log.i("Current user UID", StartUpController.currentUser?.uid.toString())
                 val requests = it?.toObjects<Request>()
                 for (doc in requests!!) {
                     if (doc.invitedID == invited.uid) {

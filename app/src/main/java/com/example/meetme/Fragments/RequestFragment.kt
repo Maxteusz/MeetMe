@@ -14,6 +14,7 @@ import com.example.meetme.Adapters.RequestsRecyclerViewAdapter
 import com.example.meetme.Adapters.SearchedInvitationsRecyclerViewAdapter
 import com.example.meetme.Controllers.MyInvitationsFragmentController
 import com.example.meetme.Controllers.RequestFragmentController
+import com.example.meetme.Models.Request
 import com.example.meetme.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -29,6 +30,8 @@ var requestFragmentController : RequestFragmentController? = null
     var layoutManager : LinearLayoutManager? = null
     var adapter : RequestsRecyclerViewAdapter? = null;
 
+
+
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,9 +43,9 @@ var requestFragmentController : RequestFragmentController? = null
         layoutManager = LinearLayoutManager(context)
 
         recyclerView?.layoutManager = layoutManager
-        var requests = requestFragmentController!!.getRequests()
-        adapter = RequestsRecyclerViewAdapter(requests)
-        Log.i("Requests", requests.size.toString())
+        //var requests = requestFragmentController!!.getRequests()
+        adapter = RequestsRecyclerViewAdapter(requestFragmentController!!.getRequests())
+
 
         recyclerView?.adapter = adapter
 

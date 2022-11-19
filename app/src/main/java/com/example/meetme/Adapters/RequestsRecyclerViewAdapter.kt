@@ -1,5 +1,6 @@
 package com.example.meetme.Adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,23 +21,34 @@ class RequestsRecyclerViewAdapter (private val requests: List<Request>):  Recycl
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val Request = requests[position]
+        val request = requests[position]
+        holder.title_textView.text = request.invited?.title
+        holder.describe.text = request.invited?.describe;
+        holder.ownerNick.text = request.invited?.owner?.nick
     }
 
     override fun getItemCount(): Int {
+
         return requests.size
     }
 
+
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title_textView : TextView;
-        val deleteInvited_button : Button;
-        val statusPlace_imageView : ImageView;
-        val place_textView : TextView;
+       val title_textView: TextView;
+        //private val deleteInvited_button: Button;
+        //private val statusPlace_imageView: ImageView;
+        //private val place_textView: TextView;
+        val describe : TextView
+        val ownerNick : TextView;
+
         init {
             title_textView = itemView.findViewById(R.id.title_textView)
-            deleteInvited_button = itemView.findViewById(R.id.delete_invited_button)
-            statusPlace_imageView = itemView.findViewById(R.id.status_place)
-            place_textView = itemView.findViewById(R.id.place_textview)
+            //deleteInvited_button = itemView.findViewById(R.id.delete_invited_button)
+          //  statusPlace_imageView = itemView.findViewById(R.id.status_place)
+            //place_textView = itemView.findViewById(R.id.place_textview)
+            describe = itemView.findViewById(R.id.describe_textfield)
+            ownerNick = itemView.findViewById(R.id.nickName_textfield)
         }
 
     }

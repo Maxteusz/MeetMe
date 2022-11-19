@@ -15,13 +15,15 @@ class Request : Serializable {
     var invitedID: String = "";
     var ownerID: String = "";
     var ownerInvitation : String = ""
+    var invited : Invited? = null
 
     constructor()
 
-    constructor(invitedID: String, ownerID: String, ownerInvitation: String) {
+    constructor(invitedID: String, ownerID: String, ownerInvitation: String, invited: Invited) {
         this.invitedID= invitedID
         this.ownerID = ownerID
         this.ownerInvitation = ownerInvitation
+        this.invited = invited
     }
 
 
@@ -34,12 +36,13 @@ class Request : Serializable {
             invitedID: String,
             ownerID: String,
             ownerInvitation: String,
+            invited: Invited,
             successFunction: () -> Unit,
             failFunction: () -> Unit
         ) {
             val db = Firebase.firestore
             db.collection("Requests")
-                .add(Request(invitedID, ownerID, ownerInvitation))
+                .add(Request(invitedID, ownerID, ownerInvitation, invited))
                 .addOnSuccessListener {
                     successFunction()
                 }

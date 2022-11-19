@@ -16,8 +16,8 @@ import com.example.meetme.R
 
 class SearchedInvitationsFragment : Fragment() {
 
-    var recyclerView : RecyclerView? = null
-    var adapter : SearchedInvitationsRecyclerViewAdapter? = null;
+  private var recyclerView : RecyclerView? = null
+  private var adapter : SearchedInvitationsRecyclerViewAdapter? = null;
     private var layoutManager: RecyclerView.LayoutManager? = null
 
     override fun onCreateView(
