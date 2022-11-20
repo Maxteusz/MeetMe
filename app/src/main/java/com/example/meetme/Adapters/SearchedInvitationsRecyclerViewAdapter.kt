@@ -100,8 +100,6 @@ class SearchedInvitationsRecyclerViewAdapter(
             .get()
             .addOnSuccessListener {
                 val requests = it?.toObjects<Request>()
-               Log.i("Pobrano", it.size().toString());
-
                 for (doc in requests!!) {
                     if (doc.invited?.geohash ==  invited.geohash) {
                         Log.i("Znaleziono", doc.invited?.uid + " " +  invited.uid);

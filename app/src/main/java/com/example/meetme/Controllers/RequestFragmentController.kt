@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import com.example.meetme.Fragments.RequestFragment
 import com.example.meetme.Models.Request
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -19,7 +20,7 @@ class RequestFragmentController(val requestFragment: RequestFragment) {
 
 
         db.collection("Requests")
-            .whereEqualTo("ownerInvitation", StartUpController.currentUser?.uid)
+            //.whereEqualTo(FieldPath.of("owner", "uid"),StartUpController.currentUser?.uid!!)
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
