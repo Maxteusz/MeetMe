@@ -2,58 +2,37 @@ package com.example.meetme.Models
 
 import android.content.ContentValues
 import android.util.Log
-import com.google.firebase.firestore.DocumentId
+import com.example.meetme.Controllers.StartUpController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.io.Serializable
 
 class Request : Serializable {
 
-    @DocumentId
     var id: String? = null;
-    val accepted : Boolean  = false;
-    var invitedID: String = "";
-    var ownerID: String = "";
-    var ownerInvitation : String = ""
-    var invited : Invited? = null
+    val accepted: Boolean = false;
+    var ownerRequest: User? = null;
+    var invited: Invited? = null
 
     constructor()
 
-    constructor(invitedID: String, ownerID: String, ownerInvitation: String, invited: Invited) {
-        this.invitedID= invitedID
-        this.ownerID = ownerID
-        this.ownerInvitation = ownerInvitation
+    constructor(ownerRequest: User, invited: Invited) {
+
+        this.ownerRequest = ownerRequest
+        this.invited = invited
+    }
+
+    constructor(id: String, ownerRequest: User, invited: Invited) {
+        this.id = id
+        this.ownerRequest = ownerRequest
         this.invited = invited
     }
 
 
-
-
     companion object {
-
-        fun sendRequest(
-            personID: String,
-            invitedID: String,
-            ownerID: String,
-            ownerInvitation: String,
-            invited: Invited,
-            successFunction: () -> Unit,
-            failFunction: () -> Unit
-        ) {
+        fun deleteRequest(request: Request) {
             val db = Firebase.firestore
-            db.collection("Requests")
-                .add(Request(invitedID, ownerID, ownerInvitation, invited))
-                .addOnSuccessListener {
-                    successFunction()
-                }
-                .addOnFailureListener {
-                    failFunction()
-                }
-        }
-
-        fun deleteRequest(uid: String) {
-            val db = Firebase.firestore
-            db.collection("Requests").document(uid)
+            db.collection("Requests").document(request.id.toString())
                 .delete()
                 .addOnSuccessListener {
                     Log.d(
@@ -69,8 +48,23 @@ class Request : Serializable {
                     )
                 }
         }
+    }
 
+    fun sendRequest(
+        successFunction: () -> Unit,
+        failFunction: () -> Unit
+    ) {
+        val db = Firebase.firestore
+        val requestID =  db.collection("Requests").document().id;
 
+        db.collection("Requests")
+            .add(Request(requestID,StartUpController.currentUser!!, invited!!))
+            .addOnSuccessListener {
+                successFunction()
+            }
+            .addOnFailureListener {
+                failFunction()
+            }
     }
 
 

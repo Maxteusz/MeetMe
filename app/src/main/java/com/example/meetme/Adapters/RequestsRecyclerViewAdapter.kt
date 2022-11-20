@@ -32,6 +32,11 @@ class RequestsRecyclerViewAdapter (private val requests: List<Request>):  Recycl
         return requests.size
     }
 
+    fun addMember (request: Request)
+    {
+
+    }
+
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

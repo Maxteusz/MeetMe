@@ -68,11 +68,8 @@ class SearchedInvitationsRecyclerViewAdapter(
                 holder.cardView.isClickable = false
                 existsRequest(Invitation,
                     {
-                    Request.sendRequest(StartUpController.currentUser!!.uid!!,
-                        Invitation.uid!!,
-                        Invitation.owner!!.uid!!,
-                        StartUpController.currentUser!!.uid!!,
-                        Invitation,
+                    val request = Request(StartUpController.currentUser!!, Invitation)
+                        request.sendRequest(
                         {
                             dialogs["InformationDialog"]?.show("Utworzono żądanie")
                             dialogs["LoadingDialog"]?.hide()
@@ -102,7 +99,7 @@ class SearchedInvitationsRecyclerViewAdapter(
             .addOnSuccessListener {
                 val requests = it?.toObjects<Request>()
                 for (doc in requests!!) {
-                    if (doc.invitedID == invited.uid) {
+                    if (doc.invited?.uid == invited.uid) {
                         dialogs["LoadingDialog"]?.hide()
                         dialogs["InformationDialog"]?.show("Żądanie już istnieje")
                         unblockUI()
