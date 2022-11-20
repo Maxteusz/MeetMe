@@ -96,14 +96,15 @@ class SearchedInvitationsRecyclerViewAdapter(
         val db = Firebase.firestore
         db.collection("Requests")
             .whereEqualTo(FieldPath.of("ownerRequest", "uid"),StartUpController.currentUser?.uid!!)
-            .whereEqualTo(FieldPath.of("invited", "describe"),invited.describe)
+
             .get()
             .addOnSuccessListener {
                 val requests = it?.toObjects<Request>()
                Log.i("Pobrano", it.size().toString());
 
                 for (doc in requests!!) {
-                    if (doc.invited?.uid == invited.uid) {
+                    if (doc.invited?.geohash ==  invited.geohash) {
+                        Log.i("Znaleziono", doc.invited?.uid + " " +  invited.uid);
                         dialogs["LoadingDialog"]?.hide()
                         dialogs["InformationDialog"]?.show("Żądanie już istnieje")
                         unblockUI()
