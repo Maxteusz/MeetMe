@@ -37,11 +37,10 @@ class UserInformationActivity : AppCompatActivity() {
 
         save_button?.setOnClickListener {
             userInformationController.SaveImage(imageView)
-            if (idDocument == "")
+            if (idDocument.isNullOrEmpty())
                 userInformationController.SaveUserData()
             else
                 userInformationController.UpdateUserData(idDocument)
-
         }
 
 

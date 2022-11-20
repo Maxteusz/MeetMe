@@ -20,14 +20,16 @@ class RequestFragmentController(val requestFragment: RequestFragment) {
 
 
         db.collection("Requests")
-            //.whereEqualTo(FieldPath.of("owner", "uid"),StartUpController.currentUser?.uid!!)
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    val request = document.toObject<Request>()
-                    if(!request.accepted)
-                    requests.add(request)
-                    requestFragment.adapter!!.notifyDataSetChanged()
+            .whereEqualTo(FieldPath.of("invited","owner","uid"),StartUpController.currentUser?.uid!!)
+            .whereEqualTo("accepted", false)
+            .addSnapshotListener { result, error ->
+                if (result != null) {
+                    requests.clear()
+                    for (document in result) {
+                        val request = document.toObject<Request>()
+                        requests.add(request)
+                        requestFragment.adapter!!.notifyDataSetChanged()
+                    }
                 }
 
             }

@@ -108,13 +108,9 @@ class SearchedInvitationsRecyclerViewAdapter(
                         unblockUI()
                         return@addOnSuccessListener
                     }
-
                 }
                 addRequest()
-
             }
-
-
     }
 
 
