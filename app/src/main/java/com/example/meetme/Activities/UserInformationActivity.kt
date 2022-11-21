@@ -21,6 +21,7 @@ class UserInformationActivity : AppCompatActivity() {
     var save_button : Button? = null
     var nick_TextView : TextView? = null
     var aboutMe_TextView : TextView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_information)
@@ -55,7 +56,11 @@ class UserInformationActivity : AppCompatActivity() {
                 Log.i("UserInformationActivity", user.nick + " " + user.aboutMe)
                 userInformationController.FillActivity(user)
             },
-            {}
+            {},
+            this
+
+
+
         )
 
 

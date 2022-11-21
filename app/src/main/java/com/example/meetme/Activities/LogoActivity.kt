@@ -18,11 +18,6 @@ class LogoActivity : AppCompatActivity() {
             val startUpController = StartUpController(this)
             startUpController.nextActivity()
 
-
-
-
-
-
     }
 
 }

@@ -91,6 +91,8 @@ class UserInformationController(val userInformationActivity: UserInformationActi
 
     }
 
+   // fun test ()
+
     fun FillActivity(user: User) {
 
         userInformationActivity.nick_TextView?.text = user.nick

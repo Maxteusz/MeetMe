@@ -1,6 +1,8 @@
 package com.example.meetme.Models
 
 
+import android.content.Context
+import com.example.meetme.Dialogs.Dialogs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.QuerySnapshot
@@ -37,17 +39,24 @@ class User : Serializable {
         return true;
     }
 
-    fun  ReadDataUser(successFunction: (it : QuerySnapshot) -> Unit, failFunction: () -> Unit, userUid: String? = uid) {
+    fun  ReadDataUser(successFunction: (it : QuerySnapshot) -> Unit, failFunction: () -> Unit, context : Context, userUid: String? = uid) {
 
+        val dialog  = Dialogs.LoadingDialog(context);
+        dialog.show("Ładowanie danych")
 
         var db = Firebase.firestore
         db.collection("Users")
             .whereEqualTo("uid", userUid)
             .get()
             .addOnSuccessListener {
-                if(it.size() > 0)
-                    successFunction(it)  }
-            .addOnFailureListener { failFunction() }
+                if(it.size() > 0) {
+                    successFunction(it)
+                     dialog.hide()
+                }
+            }
+            .addOnFailureListener { failFunction()
+                dialog.hide()
+            }
     }
 
     enum class Sex
