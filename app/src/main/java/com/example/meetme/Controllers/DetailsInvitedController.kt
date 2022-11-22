@@ -23,12 +23,13 @@ class DetailsInvitedController(val detailsInviteActivity: DetailsInviteActivity)
                 val temp = value?.toObject<Invited>()
                 Log.i("ddd", temp?.messages?.size.toString())
                 if(temp?.messages != null) {
-                    messages = (temp!!.messages as MutableList<Message>?)!!
-                    detailsInviteActivity.adapter?.notifyDataSetChanged()
-                }
-
+                    messages.addAll(temp.messages!!)
                 }
                 detailsInviteActivity.adapter?.notifyDataSetChanged()
+
+
+                }
+
 
         return messages
     }

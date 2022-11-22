@@ -53,8 +53,8 @@ class DetailsInviteActivity : AppCompatActivity() {
             }
         }
         detailsInvitedController = DetailsInvitedController(this)
-        val message = detailsInvitedController!!.getMessages(invited!!)
-        adapter = MessagesRecyclerViewAdapter(message)
+        val messages = detailsInvitedController!!.getMessages(invited!!)
+        adapter = MessagesRecyclerViewAdapter(messages)
         recyclerView = findViewById(R.id.messages_recyclerview)
         layoutManager = LinearLayoutManager(this.applicationContext)
         recyclerView?.layoutManager = layoutManager
