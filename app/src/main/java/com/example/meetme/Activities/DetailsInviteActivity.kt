@@ -51,14 +51,19 @@ class DetailsInviteActivity : AppCompatActivity() {
             if(!text.isNullOrEmpty()) {
                 val message = Message(StartUpController.currentUser!!, text.toString(), 1)
                 message.sendMessage()
+                eMessage.text = null
             }
         }
-
-        recyclerView = findViewById(R.id.messages_recyclerview)
-        layoutManager = LinearLayoutManager(this)
-        recyclerView?.layoutManager = layoutManager
         detailsInvitedController = DetailsInvitedController(this)
-        adapter = MessagesRecyclerViewAdapter(detailsInvitedController!!.getMessages())
+        val message = detailsInvitedController!!.getMessages()
+        adapter = MessagesRecyclerViewAdapter(message)
+        recyclerView = findViewById(R.id.messages_recyclerview)
+        layoutManager = LinearLayoutManager(this.applicationContext)
+        //layoutManager?.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView?.layoutManager = layoutManager
+
         recyclerView?.adapter = adapter
+
+        adapter?.notifyDataSetChanged()
     }
 }
