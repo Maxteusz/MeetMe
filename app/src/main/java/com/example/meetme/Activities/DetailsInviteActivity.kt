@@ -46,22 +46,18 @@ class DetailsInviteActivity : AppCompatActivity() {
 
         tMessage.setEndIconOnClickListener(){
             val text = eMessage.text
-            Log.i("Message", text.toString())
-            Log.i("Click Icon", "Click")
             if(!text.isNullOrEmpty()) {
-                val message = Message(StartUpController.currentUser!!, text.toString(), 1)
-                message.sendMessage()
+                val message = Message(StartUpController.currentUser!!.nick!!, text.toString())
+                message.sendMessage(invited!!)
                 eMessage.text = null
             }
         }
         detailsInvitedController = DetailsInvitedController(this)
-        val message = detailsInvitedController!!.getMessages()
+        val message = detailsInvitedController!!.getMessages(invited!!)
         adapter = MessagesRecyclerViewAdapter(message)
         recyclerView = findViewById(R.id.messages_recyclerview)
         layoutManager = LinearLayoutManager(this.applicationContext)
-        //layoutManager?.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView?.layoutManager = layoutManager
-
         recyclerView?.adapter = adapter
 
         adapter?.notifyDataSetChanged()

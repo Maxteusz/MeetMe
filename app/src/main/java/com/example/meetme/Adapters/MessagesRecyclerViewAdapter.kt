@@ -22,7 +22,7 @@ class MessagesRecyclerViewAdapter (private val messages: List<Message>) :  Recyc
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val message = messages[position]
        holder.tMessage.text = message.message
-        holder.tUser.text = message.user?.nick
+        holder.tUser.text = message.nickUser
     }
 
     override fun getItemCount(): Int {

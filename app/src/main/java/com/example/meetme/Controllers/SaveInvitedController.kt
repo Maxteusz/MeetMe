@@ -38,7 +38,7 @@ class SaveInvitedController {
 
         if (checkValidation())
         if(isOnline(newInvitedActivity) && countOfMyInvitations()!! < 3) {
-            newInvitedActivity.addInvited_button?.isClickable = false
+            newInvitedActivity.addInvited_button.isClickable = false
 
             location.getLocation {
                 val invited = createInvited(GeoLocation(it.latitude, it.longitude))
@@ -58,21 +58,21 @@ class SaveInvitedController {
 
             val db = Firebase.firestore
             val ref = db.collection("Invitations").document().id
-            invited.uid = ref
-            db.collection("Invitations")
-                .add(invited)
+            invited.id = ref
+            db.collection("Invitations").document(invited.id.toString())
+                .set(invited)
                 .addOnSuccessListener { documentReference ->
-                    newInvitedActivity.addInvited_button?.isClickable = true
+                    newInvitedActivity.addInvited_button.isClickable = true
 
                 }
                 .addOnFailureListener { e ->
                     Log.w(TAG, "Error adding document", e)
-                    newInvitedActivity.addInvited_button?.isClickable = true
+                    newInvitedActivity.addInvited_button.isClickable = true
                     showSettingAlert()
                 }
         }
         catch (e :Exception) {
-            newInvitedActivity.addInvited_button?.isClickable = true
+            newInvitedActivity.addInvited_button.isClickable = true
             Log.i("Exception", e.toString())
         }
     }
@@ -123,7 +123,7 @@ class SaveInvitedController {
         }
         alertDialog.setNegativeButton(
             "Nie"
-        ) { dialog, which -> dialog.cancel() }
+        ) { dialog,_ -> dialog.cancel() }
         alertDialog.show()
     }
 

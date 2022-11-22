@@ -10,6 +10,7 @@ import java.io.Serializable
 class Invited : Serializable {
     @DocumentId
     var uid: String? = null;
+
     var iHavePlace: Boolean? = false;
     var owner: User? = null;
     var place: String = "";
@@ -21,11 +22,13 @@ class Invited : Serializable {
     var geohash: String = ""
     var memebers : List<User>? = null
     var messages : List<Message>? = null
+    var id : String? = null
 
 
     constructor()
 
     constructor(
+
         iHavePlace: Boolean?,
         place: String,
         describe: String?,
@@ -34,6 +37,7 @@ class Invited : Serializable {
         latitude: Double,
         kindOfAlcohol: String,
     ) {
+
         this.iHavePlace = iHavePlace
         this.owner = StartUpController.currentUser
 

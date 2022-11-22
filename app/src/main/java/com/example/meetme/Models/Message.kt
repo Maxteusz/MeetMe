@@ -1,30 +1,29 @@
 package com.example.meetme.Models
 
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
 class Message : java.io.Serializable {
 
-    var user: User? = null
+    var nickUser: String? = null
     var message: String? = ""
-    var idInvited: Int = -1
     var date: Date? = Calendar.getInstance().time
 
     constructor()
 
-    constructor(user: User?, message: String?, idInvited: Int) {
-        this.user = user
+    constructor(nickUser : String, message: String?) {
+        this.nickUser = nickUser
         this.message = message
-        this.idInvited = idInvited
         this.date = date
     }
 
 
-    fun sendMessage() {
+    fun sendMessage(invited: Invited) {
         val db = Firebase.firestore
-        db.collection("Messages")
-            .add(this)
+        db.collection("Invitations").document(invited.id.toString())
+            .update("messages", FieldValue.arrayUnion(this))
             .addOnSuccessListener {}
 
     }
