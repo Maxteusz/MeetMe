@@ -26,6 +26,7 @@ class DetailsInvitedController(val detailsInviteActivity: DetailsInviteActivity)
                     messages.addAll(temp.messages!!)
                 }
                 detailsInviteActivity.adapter?.notifyDataSetChanged()
+                detailsInviteActivity.recyclerView?.scrollToPosition(messages.size-1)
 
 
                 }
