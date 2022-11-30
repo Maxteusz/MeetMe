@@ -3,7 +3,7 @@ package com.example.meetme.Activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
-import com.example.meetme.Controllers.SaveInvitedController
+import com.example.meetme.Controllers.NewInvitedController
 import com.example.meetme.R
 import com.google.android.material.textfield.TextInputEditText
 
@@ -25,14 +25,14 @@ class NewInvitedActivity : AppCompatActivity() {
         describe_textfield = findViewById(R.id.describe_textfield)
         title_textfield = findViewById(R.id.title_textfield)
          addInvited_button = findViewById(R.id.add_button)
-        val saveInvitedController = SaveInvitedController(this)
+        val newInvitedController = NewInvitedController(this)
 
         spinner_alcokohol?.setAdapter(adapter)
         havePlaceToDrink = findViewById(R.id.have_place)
 
 
         addInvited_button.setOnClickListener({
-            saveInvitedController.addInvited()
+            newInvitedController.addInvited()
         })
 
 

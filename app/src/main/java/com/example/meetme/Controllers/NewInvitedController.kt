@@ -9,7 +9,6 @@ import android.net.NetworkInfo
 import android.provider.Settings
 import android.util.Log
 import com.example.meetme.Activities.NewInvitedActivity
-import com.example.meetme.Dialogs.Dialogs
 import com.example.meetme.Fragments.MyInvitedFragment
 import com.example.meetme.Models.Invited
 import com.example.meetme.Models.Location
@@ -20,7 +19,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 
-class SaveInvitedController {
+class NewInvitedController {
     var newInvitedActivity: NewInvitedActivity
     private var fusedLocationClient: FusedLocationProviderClient
     private var location : Location
@@ -59,7 +58,7 @@ class SaveInvitedController {
             val db = Firebase.firestore
             val ref = db.collection("Invitations").document().id
             invited.id = ref
-            db.collection("Invitations").document(invited.id.toString())
+            db.collection("Invitations").document(invited.id!!)
                 .set(invited)
                 .addOnSuccessListener { documentReference ->
                     newInvitedActivity.addInvited_button.isClickable = true
