@@ -1,6 +1,5 @@
 package com.example.meetme.Dialogs
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -18,9 +17,9 @@ class Dialogs {
     internal class LoadingDialog(override val context: Context) :
         IDialog {
         private var dialog: Dialog? = null
-        override fun show(text: String) {
+        override fun show(text: String, action: () -> Unit?) {
 
-            if (context != null)
+
                 dialog = Dialog(context)
             dialog!!.setCancelable(false)
             dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -31,9 +30,7 @@ class Dialogs {
             dialog!!.show()
         }
 
-        override fun show(text: String, action: () -> Unit) {
-            TODO("Not yet implemented")
-        }
+
 
         override fun hide() {
             if (dialog != null) {
@@ -46,9 +43,10 @@ class Dialogs {
     internal class InformationDialog(override val context: Context) :
         IDialog {
         private var dialog: Dialog? = null
-        override fun show(text: String) {
 
-            if (context != null)
+        override fun show(text: String, action: () -> Unit?) {
+
+
                 dialog = Dialog(context)
             dialog!!.setCancelable(false)
             dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -56,14 +54,14 @@ class Dialogs {
             dialog!!.setContentView(R.layout.layout_information_dialog)
             var textView: TextView? = dialog!!.findViewById(R.id.info_text)
             var button: Button = dialog!!.findViewById(R.id.ok_button)
-            button.setOnClickListener { dialog!!.dismiss() }
+            button.setOnClickListener {
+                dialog!!.dismiss()
+                action()
+            }
             textView?.text = text
             dialog!!.show()
         }
 
-        override fun show(text: String, action: () -> Unit) {
-            TODO("Not yet implemented")
-        }
 
         override fun hide() {
             if (dialog != null) {
@@ -75,12 +73,9 @@ class Dialogs {
     internal class YesNoDialog(override val context: Context) :
         IDialog {
         private var dialog: Dialog? = null
-        override fun show(text: String) {
 
 
-        }
-
-        override fun show(text: String, action: () -> Unit) {
+        override fun show(text: String, action: () -> Unit?) {
             dialog = Dialog(context)
             dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog!!.setContentView(R.layout.layout_yes_no_dialog)
@@ -115,79 +110,6 @@ class Dialogs {
 
 
 
-    /*internal class InfomationDialog {
-
-        private var dialog: Dialog? = null
-        fun show(
-            context: Context?,
-            activity: Activity?,
-            message: String?,
-            closeActivity: Boolean = false
-        ) {
-            if (context != null)
-                dialog = Dialog(context)
-            else
-                dialog = Dialog(activity!!)
-            dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog!!.setContentView(R.layout.layout_information_dialog)
-            dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            var button: MaterialButton = dialog!!.findViewById(R.id.ok_button)
-            var info: TextView = dialog!!.findViewById(R.id.info_text)
-            info.text = message
-            button.setOnClickListener({
-                dialog!!.dismiss()
-                if (closeActivity)
-                    activity?.finish()
-            })
-
-            try {
-                dialog!!.show()
-            } catch (e: Exception) {
-            }
-        }
-    }
-
-
-    internal class YesNoDialog {
-
-        private var dialog: Dialog? = null
-        fun show(
-            context: Context?,
-            activity: Activity?,
-            message: String?,
-            closeActivity: Boolean = false,
-            action: () -> Unit
-
-        ) {
-            if (context != null)
-                dialog = Dialog(context)
-            else
-                dialog = Dialog(activity!!)
-            dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog!!.setContentView(R.layout.layout_yes_no_dialog)
-            dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            var noButton: MaterialButton = dialog!!.findViewById(R.id.no_button)
-            var yesButton: MaterialButton = dialog!!.findViewById(R.id.yes_button)
-            var info: TextView = dialog!!.findViewById(R.id.info_text)
-            info.text = message
-            noButton.setOnClickListener({
-                dialog!!.dismiss()
-                if (closeActivity)
-                    activity?.finish()
-            })
-            yesButton.setOnClickListener {
-                dialog!!.dismiss()
-                if (closeActivity)
-                    activity?.finish()
-                action()
-            }
-
-            try {
-                dialog!!.show()
-            } catch (e: Exception) {
-            }
-        }
-    }*/
 
 
 

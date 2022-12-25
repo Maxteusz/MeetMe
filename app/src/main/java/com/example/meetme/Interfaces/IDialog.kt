@@ -7,7 +7,7 @@ interface IDialog {
     val context : Context
 
 
-    fun show (text : String)
-    fun show (text : String, action: () -> Unit)
+
+    fun show (text : String, action: () -> Unit?)
     fun hide ()
 }

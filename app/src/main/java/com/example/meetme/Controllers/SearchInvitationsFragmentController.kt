@@ -1,11 +1,17 @@
 package com.example.meetme.Controllers
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.pm.PackageManager
+import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.FragmentTransaction
 import com.example.meetme.Dialogs.Dialogs
 import com.example.meetme.Fragments.SearchInvitationsFragment
@@ -17,6 +23,7 @@ import com.firebase.geofire.GeoLocation
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.*
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
@@ -55,7 +62,8 @@ class SearchInvitationsFragmentController {
             );
 
         }
-        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, object : CancellationToken()
+
+        fusedLocationClient.getCurrentLocation( Priority.PRIORITY_HIGH_ACCURACY, object : CancellationToken()
         {
             override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
                 return CancellationTokenSource().token
@@ -68,10 +76,17 @@ class SearchInvitationsFragmentController {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.P)
+    @SuppressLint("SuspiciousIndentation")
     fun searchInvitations() {
+        if(!checkEnableLocalization())
+            return
         val loadingDialog : Dialogs.LoadingDialog = Dialogs.LoadingDialog(searchInvitationsFragment.requireContext())
-        loadingDialog.show("Szukanie wydarzeń...")
+        loadingDialog.show("Szukanie wydarzeń...", {})
+
         getCurrentLocation().addOnSuccessListener {
+            if (it.latitude == null || it.longitude == null)
+                return@addOnSuccessListener
             val center = GeoLocation(it.latitude, it.longitude)
             val radiusInM = (500000 * 1000).toDouble()
             val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
@@ -108,13 +123,17 @@ class SearchInvitationsFragmentController {
                     loadingDialog.hide()
                    openSearchedInvitationsFragment(invitations as ArrayList<Invited>)
                 }
-                .addOnFailureListener { val informationDialog : Dialogs.InformationDialog = Dialogs.InformationDialog(searchInvitationsFragment.requireContext())
-                informationDialog.show("Wystąpił błąd")}
+                .addOnFailureListener {
+                    val informationDialog : Dialogs.InformationDialog = Dialogs.InformationDialog(searchInvitationsFragment.requireContext())
+                informationDialog.show("Wystąpił błąd", {})}
         }
+        getCurrentLocation().addOnFailureListener({loadingDialog.hide()})
 
 
 
     }
+
+
 
     private fun openSearchedInvitationsFragment(invitations : ArrayList<Invited>)
     {
@@ -132,18 +151,13 @@ class SearchInvitationsFragmentController {
 
     }
 
-    private fun showDialogBox(message: String) {
-        val alertDialog: AlertDialog = AlertDialog.Builder(searchInvitationsFragment.context).create()
-        alertDialog.setMessage(message)
-        alertDialog.setButton(
-            AlertDialog.BUTTON_POSITIVE, "OK",
 
-            { dialog, which ->
-                    dialog.dismiss()
-
-            })
-        alertDialog.show()
+    @RequiresApi(Build.VERSION_CODES.P)
+    private fun checkEnableLocalization () : Boolean
+    {
+        val context : Context? = null
+        val locationManager = searchInvitationsFragment.activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isLocationEnabled
     }
-
 
 }

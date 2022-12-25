@@ -65,14 +65,14 @@ class SearchedInvitationsRecyclerViewAdapter(
             }
         holder.cardView.setOnClickListener {
             dialogs["YesNoDialog"]?.show("Czy chcesz dodać żądanie", {
-                dialogs["LoadingDialog"]?.show("Wysyłanie zapytania")
+                dialogs["LoadingDialog"]?.show("Wysyłanie zapytania", {})
                 holder.cardView.isClickable = false
                 existsRequest(Invitation,
                     {
                     val request = Request(StartUpController.currentUser!!, Invitation)
                         request.sendRequest(
                         {
-                            dialogs["InformationDialog"]?.show("Utworzono żądanie")
+                            dialogs["InformationDialog"]?.show("Utworzono żądanie", {})
                             dialogs["LoadingDialog"]?.hide()
                             holder.cardView.isClickable = true
                         },
@@ -104,7 +104,7 @@ class SearchedInvitationsRecyclerViewAdapter(
                     if (doc.invited?.geohash ==  invited.geohash) {
                         Log.i("Znaleziono", doc.invited?.uid + " " +  invited.uid);
                         dialogs["LoadingDialog"]?.hide()
-                        dialogs["InformationDialog"]?.show("Żądanie już istnieje")
+                        dialogs["InformationDialog"]?.show("Żądanie już istnieje", {})
                         unblockUI()
                         return@addOnSuccessListener
                     }

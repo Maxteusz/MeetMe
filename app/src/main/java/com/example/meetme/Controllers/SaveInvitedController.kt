@@ -1,5 +1,6 @@
 package com.example.meetme.Controllers
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -23,38 +24,43 @@ import com.google.firebase.ktx.Firebase
 class SaveInvitedController {
     var newInvitedActivity: NewInvitedActivity
     private var fusedLocationClient: FusedLocationProviderClient
-    private var location : Location
+    private var location: Location
+    private var loadingDialog: Dialogs.LoadingDialog
 
 
     constructor(newInvitedActivity: NewInvitedActivity) {
         this.newInvitedActivity = newInvitedActivity
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(newInvitedActivity)
         location = Location(newInvitedActivity)
+        loadingDialog = Dialogs.LoadingDialog(newInvitedActivity)
 
     }
 
-  fun addInvited()
-    {
-
+    @SuppressLint("SuspiciousIndentation")
+    fun addInvited() {
+        if (countOfMyInvitations()!! == 3) {
+            val informationDialog = Dialogs.InformationDialog(newInvitedActivity)
+            informationDialog.show("Masz maksymalną ilość wydarzeń", {})
+            return
+        }
         if (checkValidation())
-        if(isOnline(newInvitedActivity) && countOfMyInvitations()!! < 3) {
-            newInvitedActivity.addInvited_button.isClickable = false
+            if (isOnline(newInvitedActivity) && countOfMyInvitations()!! < 3) {
+                newInvitedActivity.addInvited_button.isClickable = false
+                loadingDialog.show("Dodawanie zlecenia", {})
+                location.getLocation {
 
-            location.getLocation {
-                val invited = createInvited(GeoLocation(it.latitude, it.longitude))
+                    val invited = createInvited(GeoLocation(it.latitude, it.longitude))
                     saveInvited(invited!!)
 
+                }
             }
-        }
-
-
-
 
 
     }
 
     private fun saveInvited(invited: Invited) {
         try {
+            val dialog = Dialogs.InformationDialog(newInvitedActivity);
 
             val db = Firebase.firestore
             val ref = db.collection("Invitations").document().id
@@ -62,11 +68,17 @@ class SaveInvitedController {
             db.collection("Invitations").document(invited.id.toString())
                 .set(invited)
                 .addOnSuccessListener { documentReference ->
+                    loadingDialog.hide()
                     newInvitedActivity.addInvited_button.isClickable = true
+                    loadingDialog.hide()
+                    dialog.show("Utworzono zdarzenie", {
+                        newInvitedActivity.finish()
+                    })
 
                 }
                 .addOnFailureListener { e ->
                     Log.w(TAG, "Error adding document", e)
+                    loadingDialog.hide()
                     newInvitedActivity.addInvited_button.isClickable = true
                     showSettingAlert()
                 }

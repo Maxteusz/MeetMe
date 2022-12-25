@@ -42,7 +42,7 @@ class User : Serializable {
     fun  ReadDataUser(successFunction: (it : QuerySnapshot) -> Unit, failFunction: () -> Unit, context : Context, userUid: String? = uid) {
 
         val dialog  = Dialogs.LoadingDialog(context);
-        dialog.show("Ładowanie danych")
+        dialog.show("Ładowanie danych", {})
 
         var db = Firebase.firestore
         db.collection("Users")
