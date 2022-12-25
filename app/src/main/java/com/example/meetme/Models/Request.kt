@@ -3,6 +3,7 @@ package com.example.meetme.Models
 import android.content.ContentValues
 import android.util.Log
 import com.example.meetme.Controllers.StartUpController
+import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.io.Serializable
@@ -35,10 +36,7 @@ class Request : Serializable {
             db.collection("Requests").document(request.id.toString())
                 .delete()
                 .addOnSuccessListener {
-                    Log.d(
-                        ContentValues.TAG,
-                        "DocumentSnapshot successfully deleted!"
-                    )
+
                 }
                 .addOnFailureListener { e ->
                     Log.w(
@@ -55,10 +53,10 @@ class Request : Serializable {
         failFunction: () -> Unit
     ) {
         val db = Firebase.firestore
-        val requestID =  db.collection("Requests").document().id;
+        id =  db.collection("Requests").document().id;
 
-        db.collection("Requests")
-            .add(Request(requestID,StartUpController.currentUser!!, invited!!))
+        db.collection("Requests").document(id!!)
+            .set(this)
             .addOnSuccessListener {
                 successFunction()
             }

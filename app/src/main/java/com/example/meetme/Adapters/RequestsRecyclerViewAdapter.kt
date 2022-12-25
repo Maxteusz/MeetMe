@@ -8,10 +8,15 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.meetme.Controllers.RequestFragmentController
 import com.example.meetme.Models.Request
 import com.example.meetme.R
+import com.google.android.material.button.MaterialButton
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
-class RequestsRecyclerViewAdapter (private val requests: List<Request>):  RecyclerView.Adapter<RequestsRecyclerViewAdapter.ViewHolder>() {
+class RequestsRecyclerViewAdapter (private val requests: List<Request>, private val requestFragmentController: RequestFragmentController):  RecyclerView.Adapter<RequestsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -25,6 +30,9 @@ class RequestsRecyclerViewAdapter (private val requests: List<Request>):  Recycl
         holder.title_textView.text = request.invited?.title
         holder.describe.text = request.invited?.describe;
         holder.ownerNick.text = request.invited?.owner?.nick
+        holder.bAccept.setOnClickListener({
+            requestFragmentController.addMember(request,request.invited!!, request.ownerRequest!!)
+        })
     }
 
     override fun getItemCount(): Int {
@@ -32,10 +40,7 @@ class RequestsRecyclerViewAdapter (private val requests: List<Request>):  Recycl
         return requests.size
     }
 
-    fun addMember (request: Request)
-    {
-        TODO()
-    }
+
 
 
 
@@ -44,6 +49,7 @@ class RequestsRecyclerViewAdapter (private val requests: List<Request>):  Recycl
         //private val deleteInvited_button: Button;
         //private val statusPlace_imageView: ImageView;
         //private val place_textView: TextView;
+        val bAccept : MaterialButton
         val describe : TextView
         val ownerNick : TextView;
 
@@ -54,6 +60,7 @@ class RequestsRecyclerViewAdapter (private val requests: List<Request>):  Recycl
             //place_textView = itemView.findViewById(R.id.place_textview)
             describe = itemView.findViewById(R.id.describe_textfield)
             ownerNick = itemView.findViewById(R.id.nickName_textfield)
+            bAccept = itemView.findViewById(R.id.accept_button)
         }
 
     }

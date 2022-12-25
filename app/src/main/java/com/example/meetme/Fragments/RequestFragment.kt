@@ -44,7 +44,7 @@ var requestFragmentController : RequestFragmentController? = null
 
         recyclerView?.layoutManager = layoutManager
         //var requests = requestFragmentController!!.getRequests()
-        adapter = RequestsRecyclerViewAdapter(requestFragmentController!!.getRequests())
+        adapter = RequestsRecyclerViewAdapter(requestFragmentController!!.getRequests(), requestFragmentController!!)
 
 
         recyclerView?.adapter = adapter

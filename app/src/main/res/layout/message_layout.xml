@@ -1,34 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_LinearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        app:cardElevation="10dp"
 
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        app:cardCornerRadius="15dp">
-        <TextView
-            android:id="@+id/message_textview"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:text="message"/>
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            app:cardBackgroundColor="@color/material_dynamic_neutral90"
+            app:cardCornerRadius="15dp"
 
 
-    </com.google.android.material.card.MaterialCardView>
-    <TextView
-        android:id="@+id/user_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="user"
-        android:layout_marginRight="10dp"
-        android:textAlignment="textEnd"/>
+            app:cardElevation="3dp">
+
+            <TextView
+                android:id="@+id/message_textview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:textColor="@color/black"
+                android:text="message" />
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/user_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="user"
+            android:textColor="@color/material_dynamic_neutral_variant40" />
+    </LinearLayout>
 
 </LinearLayout>

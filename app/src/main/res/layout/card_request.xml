@@ -102,6 +102,7 @@
                         android:gravity="end"
                         android:layout_marginRight="10dp">
                         <com.google.android.material.button.MaterialButton
+                           android:id="@+id/accept_button"
                             android:layout_width="80dp"
                             android:layout_height="40dp"
                             android:layout_gravity="bottom"/>
