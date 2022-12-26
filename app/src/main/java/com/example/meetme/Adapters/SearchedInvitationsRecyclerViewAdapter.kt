@@ -1,5 +1,6 @@
 package com.example.meetme.Adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -45,6 +46,7 @@ class SearchedInvitationsRecyclerViewAdapter(
     }
 
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val Invitation = invitations[position]
         holder.title_textView.text = Invitation.title

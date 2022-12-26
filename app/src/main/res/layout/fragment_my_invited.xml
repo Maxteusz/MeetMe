@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Fragments.MyInvitedFragment">
+    android:layout_height="wrap_content"
 
+    tools:context=".Fragments.MyInvitationsFragment">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+   <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Utworzone zdarzenia"
+       android:layout_marginLeft="10dp"
+       android:layout_marginTop="10dp"
+       android:textSize="18sp"
+       android:textColor="@color/black"/>
+   <androidx.recyclerview.widget.RecyclerView
+       android:id="@+id/recycler_view2"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:visibility="visible"
+       android:layout_marginTop="5dp"
+       android:scrollbars="vertical"
+       android:layoutAnimation="@anim/recycler_view_animation"/>
+   <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Zdarzenia w których uczestniczę"
+       android:layout_marginLeft="10dp"
+       android:layout_marginTop="10dp"
+       android:textSize="18sp"
+       android:textColor="@color/black"/>
    <androidx.recyclerview.widget.RecyclerView
        android:id="@+id/recycler_view"
        android:layout_width="match_parent"
-       android:layout_height="match_parent"
+       android:layout_height="wrap_content"
        android:visibility="visible"
+       android:scrollbars="vertical"
        android:layoutAnimation="@anim/recycler_view_animation"/>
 
 
-</FrameLayout>
+
+</LinearLayout>
+</androidx.core.widget.NestedScrollView>

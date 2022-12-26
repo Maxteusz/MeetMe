@@ -10,7 +10,8 @@ import android.net.NetworkInfo
 import android.provider.Settings
 import android.util.Log
 import com.example.meetme.Activities.NewInvitedActivity
-import com.example.meetme.Fragments.MyInvitedFragment
+import com.example.meetme.Dialogs.Dialogs
+import com.example.meetme.Fragments.MyInvitationsFragment
 import com.example.meetme.Models.Invited
 import com.example.meetme.Models.Location
 import com.firebase.geofire.GeoLocation
@@ -25,6 +26,7 @@ class NewInvitedController {
     private var fusedLocationClient: FusedLocationProviderClient
     private var location: Location
     private var loadingDialog: Dialogs.LoadingDialog
+    private val INVITE_LIMIT = 3;
 
 
     constructor(newInvitedActivity: NewInvitedActivity) {
@@ -37,13 +39,13 @@ class NewInvitedController {
 
     @SuppressLint("SuspiciousIndentation")
     fun addInvited() {
-        if (countOfMyInvitations()!! == 3) {
+        if (countOfMyInvitations()!! == INVITE_LIMIT) {
             val informationDialog = Dialogs.InformationDialog(newInvitedActivity)
             informationDialog.show("Masz maksymalną ilość wydarzeń", {})
             return
         }
         if (checkValidation())
-            if (isOnline(newInvitedActivity) && countOfMyInvitations()!! < 3) {
+            if (isOnline(newInvitedActivity) && countOfMyInvitations()!! < INVITE_LIMIT) {
                 newInvitedActivity.addInvited_button.isClickable = false
                 loadingDialog.show("Dodawanie zlecenia", {})
                 location.getLocation {
@@ -139,7 +141,7 @@ class NewInvitedController {
     }
 
     private fun countOfMyInvitations(): Int? {
-        return MyInvitedFragment.invitations?.size
+        return MyInvitationsFragment.myInvitations?.size
     }
 
     fun isOnline(context: Context): Boolean {

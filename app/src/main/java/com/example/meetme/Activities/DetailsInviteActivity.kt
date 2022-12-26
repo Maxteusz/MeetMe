@@ -3,17 +3,12 @@ package com.example.meetme.Activities
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.meetme.Adapters.MessagesRecyclerViewAdapter
-import com.example.meetme.Adapters.MyInvitiesRecyclerViewAdapter
-import com.example.meetme.Adapters.RequestsRecyclerViewAdapter
 import com.example.meetme.Controllers.DetailsInvitedController
-import com.example.meetme.Controllers.RequestFragmentController
 import com.example.meetme.Controllers.StartUpController
-import com.example.meetme.Fragments.MyInvitedFragment
 import com.example.meetme.Models.Invited
 import com.example.meetme.Models.Message
 import com.example.meetme.R
